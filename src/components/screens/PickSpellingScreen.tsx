@@ -49,6 +49,11 @@ interface ShuffledOption {
 const ADVANCE_DELAY_MS = 1500;
 const OPTION_PREFIXES = ['a', 'b', 'c'];
 
+interface LastSubmitResult {
+  correct: boolean;
+  pointsEarned: number;
+}
+
 export function PickSpellingScreen({
   currentWord,
   roundProgress,
@@ -73,6 +78,7 @@ export function PickSpellingScreen({
   const [isProcessing, setIsProcessing] = useState(false);
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastWordIdRef = useRef<string | null>(null);
+  const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
 
   // Generate shuffled options when word changes
   const shuffledOptions = useMemo((): ShuffledOption[] => {
@@ -118,6 +124,13 @@ export function PickSpellingScreen({
     // Check if this was the last word
     if (roundProgress.current >= roundProgress.total) {
       const stats = onEndRound();
+      // Fix stale closure: add the last answer's score if it was correct
+      const lastResult = lastSubmitResultRef.current;
+      if (lastResult && lastResult.correct) {
+        stats.score += 1;
+        stats.perfectRound = stats.score === roundProgress.total;
+      }
+      lastSubmitResultRef.current = null;
       onRoundComplete(stats);
     } else {
       onAdvanceWord();
@@ -131,6 +144,12 @@ export function PickSpellingScreen({
       setIsProcessing(true);
 
       const result = onSubmitAnswer(optionValue);
+
+      // Store result for stale closure fix in handleAdvance
+      lastSubmitResultRef.current = {
+        correct: result.correct,
+        pointsEarned: result.pointsEarned,
+      };
 
       if (result.correct) {
         playCorrectSound();

@@ -43,6 +43,11 @@ export interface ListenSpellScreenProps {
 const ADVANCE_DELAY_MS = 1500;
 const DEBOUNCE_MS = 300;
 
+interface LastSubmitResult {
+  correct: boolean;
+  pointsEarned: number;
+}
+
 export function ListenSpellScreen({
   currentWord,
   roundProgress,
@@ -65,6 +70,7 @@ export function ListenSpellScreen({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastWordIdRef = useRef<string | null>(null);
+  const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
 
   // Reset input when word changes
   useEffect(() => {
@@ -94,6 +100,13 @@ export function ListenSpellScreen({
     // Check if this was the last word
     if (roundProgress.current >= roundProgress.total) {
       const stats = onEndRound();
+      // Fix stale closure: add the last answer's score if it was correct
+      const lastResult = lastSubmitResultRef.current;
+      if (lastResult && lastResult.correct) {
+        stats.score += 1;
+        stats.perfectRound = stats.score === roundProgress.total;
+      }
+      lastSubmitResultRef.current = null;
       onRoundComplete(stats);
     } else {
       onAdvanceWord();
@@ -118,6 +131,12 @@ export function ListenSpellScreen({
     setIsSubmitting(true);
 
     const result = onSubmitAnswer(trimmedInput);
+
+    // Store result for stale closure fix in handleAdvance
+    lastSubmitResultRef.current = {
+      correct: result.correct,
+      pointsEarned: result.pointsEarned,
+    };
 
     if (result.correct) {
       playCorrectSound();
