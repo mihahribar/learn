@@ -8,21 +8,21 @@ export const badges: Badge[] = [
   {
     id: 'first-round',
     name: 'Prvi korak',
-    description: 'Zakljuci svojo prvo igro',
+    description: 'Zaključi svojo prvo igro',
     icon: 'star',
     condition: (progress: PersistedProgress) => progress.roundsPlayed >= 1,
   },
   {
     id: 'ten-rounds',
     name: 'Vztrajnost',
-    description: 'Zakljuci 10 iger',
+    description: 'Zaključi 10 iger',
     icon: 'trophy',
     condition: (progress: PersistedProgress) => progress.roundsPlayed >= 10,
   },
   {
     id: 'perfect-round',
     name: 'Popolno!',
-    description: 'Dosezi 10/10 v eni igri',
+    description: 'Doseži 10/10 v eni igri',
     icon: 'crown',
     condition: (_progress: PersistedProgress, roundStats?: RoundStats) =>
       roundStats?.perfectRound === true,
@@ -30,13 +30,13 @@ export const badges: Badge[] = [
   {
     id: 'hundred-words',
     name: 'Besedni zaklad',
-    description: 'Pravilno crkuj 100 besed',
+    description: 'Pravilno črkuj 100 besed',
     icon: 'book',
     condition: (progress: PersistedProgress) => progress.wordsCompleted >= 100,
   },
   {
     id: 'streak-five',
-    name: 'Vroca roka',
+    name: 'Vroča roka',
     description: '5 pravilnih odgovorov zapored',
     icon: 'fire',
     condition: (progress: PersistedProgress, roundStats?: RoundStats) =>
@@ -44,8 +44,8 @@ export const badges: Badge[] = [
   },
   {
     id: 'five-hundred-words',
-    name: 'Mojster crkovanja',
-    description: 'Pravilno crkuj 500 besed',
+    name: 'Mojster črkovanja',
+    description: 'Pravilno črkuj 500 besed',
     icon: 'medal',
     condition: (progress: PersistedProgress) => progress.wordsCompleted >= 500,
   },
