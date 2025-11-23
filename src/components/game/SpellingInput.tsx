@@ -112,6 +112,7 @@ export const SpellingInput = forwardRef<HTMLInputElement, SpellingInputProps>(
           state={inputState}
           disabled={disabled}
           placeholder={placeholder}
+          autoComplete="off"
           autoCapitalize="none"
           autoCorrect="off"
           spellCheck={false}
