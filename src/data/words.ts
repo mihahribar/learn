@@ -9,7 +9,7 @@ export const words: Word[] = [
   {
     id: '1',
     english: 'cat',
-    slovenian: 'macka',
+    slovenian: 'mačka',
     difficulty: 'easy',
     wrongSpellings: ['kat', 'catt'],
   },
@@ -23,7 +23,7 @@ export const words: Word[] = [
   {
     id: '3',
     english: 'house',
-    slovenian: 'hisa',
+    slovenian: 'hiša',
     difficulty: 'easy',
     wrongSpellings: ['hause', 'howse'],
   },
@@ -37,7 +37,7 @@ export const words: Word[] = [
   {
     id: '5',
     english: 'school',
-    slovenian: 'sola',
+    slovenian: 'šola',
     difficulty: 'easy',
     wrongSpellings: ['scool', 'shool'],
   },
@@ -58,14 +58,14 @@ export const words: Word[] = [
   {
     id: '8',
     english: 'family',
-    slovenian: 'druzina',
+    slovenian: 'družina',
     difficulty: 'easy',
     wrongSpellings: ['famaly', 'familey'],
   },
   {
     id: '9',
     english: 'happy',
-    slovenian: 'srecan',
+    slovenian: 'srečen',
     difficulty: 'easy',
     wrongSpellings: ['hapy', 'happey'],
   },
@@ -123,7 +123,7 @@ export const words: Word[] = [
   {
     id: '17',
     english: 'computer',
-    slovenian: 'racunalnik',
+    slovenian: 'računalnik',
     difficulty: 'medium',
     wrongSpellings: ['computter', 'computor'],
   },
@@ -137,7 +137,7 @@ export const words: Word[] = [
   {
     id: '19',
     english: 'different',
-    slovenian: 'drugacen',
+    slovenian: 'drugačen',
     difficulty: 'medium',
     wrongSpellings: ['diferent', 'diffrent'],
   },
@@ -158,14 +158,14 @@ export const words: Word[] = [
   {
     id: '22',
     english: 'favourite',
-    slovenian: 'najljubsi',
+    slovenian: 'najljubši',
     difficulty: 'medium',
     wrongSpellings: ['favorit', 'favourit'],
   },
   {
     id: '23',
     english: 'chocolate',
-    slovenian: 'cokolada',
+    slovenian: 'čokolada',
     difficulty: 'medium',
     wrongSpellings: ['choclate', 'chocolat'],
   },
@@ -193,7 +193,7 @@ export const words: Word[] = [
   {
     id: '27',
     english: 'animal',
-    slovenian: 'zival',
+    slovenian: 'žival',
     difficulty: 'medium',
     wrongSpellings: ['animel', 'anmal'],
   },
@@ -207,7 +207,7 @@ export const words: Word[] = [
   {
     id: '29',
     english: 'already',
-    slovenian: 'ze',
+    slovenian: 'že',
     difficulty: 'medium',
     wrongSpellings: ['allready', 'alredy'],
   },
@@ -228,14 +228,14 @@ export const words: Word[] = [
   {
     id: '32',
     english: 'finally',
-    slovenian: 'koncno',
+    slovenian: 'končno',
     difficulty: 'medium',
     wrongSpellings: ['finaly', 'finely'],
   },
   {
     id: '33',
     english: 'usually',
-    slovenian: 'obicajno',
+    slovenian: 'običajno',
     difficulty: 'medium',
     wrongSpellings: ['usualy', 'usally'],
   },
@@ -258,7 +258,7 @@ export const words: Word[] = [
   {
     id: '36',
     english: 'beautiful',
-    slovenian: 'lep, cudovit',
+    slovenian: 'lep, čudovit',
     difficulty: 'hard',
     wrongSpellings: ['beautifull', 'beutiful'],
   },
@@ -286,7 +286,7 @@ export const words: Word[] = [
   {
     id: '40',
     english: 'experience',
-    slovenian: 'izkusnja',
+    slovenian: 'izkušnja',
     difficulty: 'hard',
     wrongSpellings: ['experiance', 'expirience'],
   },
@@ -342,14 +342,14 @@ export const words: Word[] = [
   {
     id: '48',
     english: 'separate',
-    slovenian: 'locen',
+    slovenian: 'ločen, ločiti',
     difficulty: 'hard',
     wrongSpellings: ['seperate', 'seperete'],
   },
   {
     id: '49',
     english: 'surprise',
-    slovenian: 'presenecenje',
+    slovenian: 'presenečenje',
     difficulty: 'hard',
     wrongSpellings: ['suprise', 'surprize'],
   },
@@ -363,14 +363,14 @@ export const words: Word[] = [
   {
     id: '51',
     english: 'achieve',
-    slovenian: 'doseci',
+    slovenian: 'doseči',
     difficulty: 'hard',
     wrongSpellings: ['acheive', 'achive'],
   },
   {
     id: '52',
     english: 'maintenance',
-    slovenian: 'vzdrzevanje',
+    slovenian: 'vzdrževanje',
     difficulty: 'hard',
     wrongSpellings: ['maintainance', 'maintenence'],
   },
@@ -391,7 +391,7 @@ export const words: Word[] = [
   {
     id: '55',
     english: 'successful',
-    slovenian: 'uspesan',
+    slovenian: 'uspešen',
     difficulty: 'hard',
     wrongSpellings: ['successfull', 'succesful'],
   },

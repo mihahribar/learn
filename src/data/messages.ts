@@ -7,7 +7,7 @@
  * Messages shown when the user answers correctly
  */
 export const correctMessages: string[] = [
-  'Odlicno!',
+  'Odlično!',
   'Super!',
   'Pravilno!',
   'Bravo!',
@@ -19,15 +19,15 @@ export const correctMessages: string[] = [
  */
 export const wrongMessages: string[] = [
   'Skoraj! Poskusi znova.',
-  'Ni cisto prav. Se enkrat!',
-  'Dobro si blizu!',
+  'Ni čisto prav. Še enkrat!',
+  'Čisto blizu si!',
 ];
 
 /**
  * Messages shown when revealing the correct answer
  */
 export const showCorrectMessages: string[] = [
-  'Pravilno se pise: ',
+  'Pravilno se piše: ',
   'Zapomni si: ',
 ];
 
@@ -35,10 +35,10 @@ export const showCorrectMessages: string[] = [
  * Round complete messages based on score
  */
 export const roundCompleteMessages = {
-  excellent: (score: number) => `Odlicno! Dosegla si ${score}/10!`,
-  good: (score: number) => `Dobro! Dosegla si ${score}/10. Se naprej tako!`,
+  excellent: (score: number) => `Odlično! Dosegla si ${score}/10!`,
+  good: (score: number) => `Dobro! Dosegla si ${score}/10. Še naprej tako!`,
   encouragement: (score: number) =>
-    `Dosegla si ${score}/10. Naslednjic bo se boljse!`,
+    `Dosegla si ${score}/10. Naslednjič bo še boljše!`,
 };
 
 /**
@@ -49,22 +49,22 @@ export const labels = {
   appTitle: 'SpellBee',
 
   // Home screen
-  homeSubtitle: 'Ucimo se crkovati angleske besede!',
-  listenSpellButton: 'Poslusaj in crkuj',
+  homeSubtitle: 'Učimo se črkovati angleške besede!',
+  listenSpellButton: 'Poslušaj in črkuj',
   pickSpellingButton: 'Izberi pravilno',
-  badgesButton: 'Znacke',
-  totalPoints: 'Skupne tocke',
-  badgesEarned: 'Znacke',
+  badgesButton: 'Značke',
+  totalPoints: 'Skupne točke',
+  badgesEarned: 'Značke',
 
   // Game screen
   wordProgress: (current: number, total: number) => `Beseda ${current}/${total}`,
-  listenButton: 'Poslusaj',
+  listenButton: 'Poslušaj',
   hintLabel: 'Namig',
   checkButton: 'Preveri',
   nextButton: 'Naprej',
-  spellingPrompt: (word: string) => `Kako se crkuje "${word}"?`,
+  spellingPrompt: (word: string) => `Kako se črkuje "${word}"?`,
   currentScore: 'Rezultat',
-  points: 'tocke',
+  points: 'točke',
 
   // Feedback
   emptyInputError: 'Vnesi odgovor',
@@ -73,14 +73,14 @@ export const labels = {
   // Round complete screen
   roundCompleteTitle: 'Bravo!',
   scoreDisplay: (score: number) => `Dosegla si ${score}/10`,
-  pointsEarned: (points: number) => `+${points} tock`,
+  pointsEarned: (points: number) => `+${points} točk`,
   perfectRoundBonus: '+20 bonus za popoln krog!',
-  newBadgeEarned: 'Nova znacka!',
+  newBadgeEarned: 'Nova značka!',
   playAgainButton: 'Igraj znova',
   homeButton: 'Domov',
 
   // Badges screen
-  badgesTitle: 'Moje znacke',
+  badgesTitle: 'Moje značke',
   badgeLocked: 'Zaklenjena',
   backButton: 'Nazaj',
 
@@ -88,7 +88,7 @@ export const labels = {
   soundOn: 'Zvok vklopljen',
   soundOff: 'Zvok izklopljen',
   speechNotSupported: 'Govor ni podprt v tem brskalniku',
-  storageNotAvailable: 'Napredek se ne bo shranil (localStorage ni na voljo)',
+  storageNotAvailable: 'Napredek se ne bo shranil',
 };
 
 /**
