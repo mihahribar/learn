@@ -1201,6 +1201,209 @@ export const words: Word[] = [
         "slovenian": "krokodil",
         "difficulty": "medium",
         "wrongSpellings": ["crocodial", "crocadile"]
+    },
+    {
+        "id": "172",
+        "english": "accommodation",
+        "slovenian": "nastanitev",
+        "difficulty": "hard",
+        "wrongSpellings": ["accomodation", "acommodation"]
+    },
+    {
+        "id": "173",
+        "english": "embarrass",
+        "slovenian": "osramotiti",
+        "difficulty": "hard",
+        "wrongSpellings": ["embarass", "embaress"]
+    },
+    {
+        "id": "174",
+        "english": "necessary",
+        "slovenian": "potreben",
+        "difficulty": "hard",
+        "wrongSpellings": ["neccessary", "neccesary"]
+    },
+    {
+        "id": "175",
+        "english": "definitely",
+        "slovenian": "določno",
+        "difficulty": "hard",
+        "wrongSpellings": ["definately", "definatly"]
+    },
+    {
+        "id": "176",
+        "english": "separate",
+        "slovenian": "ločen",
+        "difficulty": "hard",
+        "wrongSpellings": ["seperate", "seprate"]
+    },
+    {
+        "id": "177",
+        "english": "rhythm",
+        "slovenian": "ritem",
+        "difficulty": "hard",
+        "wrongSpellings": ["rythm", "rhythem"]
+    },
+    {
+        "id": "178",
+        "english": "conscience",
+        "slovenian": "vest",
+        "difficulty": "hard",
+        "wrongSpellings": ["concience", "consience"]
+    },
+    {
+        "id": "179",
+        "english": "occurrence",
+        "slovenian": "pojav",
+        "difficulty": "hard",
+        "wrongSpellings": ["occurence", "occurance"]
+    },
+    {
+        "id": "180",
+        "english": "Mediterranean",
+        "slovenian": "Sredozemlje",
+        "difficulty": "hard",
+        "wrongSpellings": ["Mediteranean", "Meditteranean"]
+    },
+    {
+        "id": "181",
+        "english": "archaeology",
+        "slovenian": "arheologija",
+        "difficulty": "hard",
+        "wrongSpellings": ["archeology", "arcaeology"]
+    },
+    {
+        "id": "182",
+        "english": "parallel",
+        "slovenian": "vzporeden",
+        "difficulty": "hard",
+        "wrongSpellings": ["paralel", "parrallel"]
+    },
+    {
+        "id": "183",
+        "english": "maintenance",
+        "slovenian": "vzdrževanje",
+        "difficulty": "hard",
+        "wrongSpellings": ["maintainance", "maintenence"]
+    },
+    {
+        "id": "184",
+        "english": "bureaucracy",
+        "slovenian": "birokracija",
+        "difficulty": "hard",
+        "wrongSpellings": ["beurocracy", "burocracy"]
+    },
+    {
+        "id": "185",
+        "english": "millennium",
+        "slovenian": "tisočletje",
+        "difficulty": "hard",
+        "wrongSpellings": ["millenium", "milenium"]
+    },
+    {
+        "id": "186",
+        "english": "accessible",
+        "slovenian": "dostopen",
+        "difficulty": "hard",
+        "wrongSpellings": ["accessable", "accesible"]
+    },
+    {
+        "id": "187",
+        "english": "committee",
+        "slovenian": "odbor",
+        "difficulty": "hard",
+        "wrongSpellings": ["comittee", "commitee"]
+    },
+    {
+        "id": "188",
+        "english": "convenient",
+        "slovenian": "primeren",
+        "difficulty": "hard",
+        "wrongSpellings": ["convienent", "conveniant"]
+    },
+    {
+        "id": "189",
+        "english": "environment",
+        "slovenian": "okolje",
+        "difficulty": "hard",
+        "wrongSpellings": ["enviroment", "enviornment"]
+    },
+    {
+        "id": "190",
+        "english": "government",
+        "slovenian": "vlada",
+        "difficulty": "hard",
+        "wrongSpellings": ["goverment", "govenment"]
+    },
+    {
+        "id": "191",
+        "english": "independent",
+        "slovenian": "neodvisen",
+        "difficulty": "hard",
+        "wrongSpellings": ["independant", "independet"]
+    },
+    {
+        "id": "192",
+        "english": "intelligence",
+        "slovenian": "inteligenca",
+        "difficulty": "hard",
+        "wrongSpellings": ["inteligence", "intellegence"]
+    },
+    {
+        "id": "193",
+        "english": "recommend",
+        "slovenian": "priporočiti",
+        "difficulty": "hard",
+        "wrongSpellings": ["reccomend", "recomend"]
+    },
+    {
+        "id": "194",
+        "english": "restaurant",
+        "slovenian": "restavracija",
+        "difficulty": "hard",
+        "wrongSpellings": ["restraunt", "resturant"]
+    },
+    {
+        "id": "195",
+        "english": "schedule",
+        "slovenian": "urnik",
+        "difficulty": "hard",
+        "wrongSpellings": ["schedual", "shedule"]
+    },
+    {
+        "id": "196",
+        "english": "secretary",
+        "slovenian": "tajnik",
+        "difficulty": "hard",
+        "wrongSpellings": ["secratary", "secretery"]
+    },
+    {
+        "id": "197",
+        "english": "temperature",
+        "slovenian": "temperatura",
+        "difficulty": "hard",
+        "wrongSpellings": ["temperture", "temprature"]
+    },
+    {
+        "id": "198",
+        "english": "throughout",
+        "slovenian": "skozi",
+        "difficulty": "hard",
+        "wrongSpellings": ["throuout", "thruout"]
+    },
+    {
+        "id": "199",
+        "english": "vacuum",
+        "slovenian": "vakuum",
+        "difficulty": "hard",
+        "wrongSpellings": ["vaccum", "vacum"]
+    },
+    {
+        "id": "200",
+        "english": "weird",
+        "slovenian": "čuden",
+        "difficulty": "hard",
+        "wrongSpellings": ["wierd", "weerd"]
     }
 ];
 
