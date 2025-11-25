@@ -52,6 +52,7 @@ export const labels = {
   homeSubtitle: 'Učimo se črkovati angleške besede!',
   listenSpellButton: 'Poslušaj in črkuj',
   pickSpellingButton: 'Izberi pravilno',
+  pluralFormsButton: 'Množina',
   badgesButton: 'Značke',
   totalPoints: 'Skupne točke',
   badgesEarned: 'Značke',
@@ -63,6 +64,8 @@ export const labels = {
   checkButton: 'Preveri',
   nextButton: 'Naprej',
   spellingPrompt: (word: string) => `Kako se črkuje "${word}"?`,
+  pluralPrompt: (singular: string, slovenian: string) =>
+    `Množina besede ${singular} (${slovenian})?`,
   currentScore: 'Rezultat',
   points: 'točke',
 

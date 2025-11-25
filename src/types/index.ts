@@ -1,7 +1,7 @@
 /**
  * Game mode types
  */
-export type GameMode = 'listen-spell' | 'pick-spelling';
+export type GameMode = 'listen-spell' | 'pick-spelling' | 'plural-forms';
 
 /**
  * Word difficulty levels
@@ -17,6 +17,8 @@ export interface Word {
   slovenian: string;
   difficulty: Difficulty;
   wrongSpellings: string[];
+  pluralForm?: string;
+  wrongPluralForms?: string[];
 }
 
 /**
@@ -88,7 +90,7 @@ export interface GameState {
 /**
  * Screen navigation types
  */
-export type Screen = 'home' | 'listen-spell' | 'pick-spelling' | 'round-complete' | 'badges';
+export type Screen = 'home' | 'listen-spell' | 'pick-spelling' | 'plural-forms' | 'round-complete' | 'badges';
 
 /**
  * Feedback state for answer submissions

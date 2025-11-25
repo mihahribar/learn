@@ -118,7 +118,16 @@ export function useGameState(): UseGameStateReturn {
    * Start a new game with the specified mode
    */
   const startGame = useCallback((mode: GameMode) => {
-    const roundWords = pickRandom(words, WORDS_PER_ROUND);
+    // Filter words based on game mode
+    let availableWords = words;
+    if (mode === 'plural-forms') {
+      // Only include words with plural form data
+      availableWords = words.filter(
+        (word) => word.pluralForm && word.wrongPluralForms && word.wrongPluralForms.length === 2
+      );
+    }
+
+    const roundWords = pickRandom(availableWords, WORDS_PER_ROUND);
 
     const newRound: CurrentRound = {
       words: roundWords,
@@ -151,7 +160,13 @@ export function useGameState(): UseGameStateReturn {
       }
 
       const attemptNumber = currentRound.attempts[currentRound.currentIndex] + 1;
-      const correct = isAnswerCorrect(answer, currentWord.english);
+
+      // For plural-forms mode, check against pluralForm, otherwise check against english
+      const correctAnswer = currentMode === 'plural-forms' && currentWord.pluralForm
+        ? currentWord.pluralForm
+        : currentWord.english;
+
+      const correct = isAnswerCorrect(answer, correctAnswer);
       let pointsEarned = 0;
 
       setCurrentRound((prev) => {
@@ -192,10 +207,10 @@ export function useGameState(): UseGameStateReturn {
         pointsEarned,
         attemptNumber,
         shouldAdvance,
-        correctAnswer: currentWord.english,
+        correctAnswer,
       };
     },
-    [currentRound, currentWord]
+    [currentRound, currentWord, currentMode]
   );
 
   /**
