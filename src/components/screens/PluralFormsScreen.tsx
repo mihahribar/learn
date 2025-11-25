@@ -104,13 +104,8 @@ export function PluralFormsScreen({
       setFeedbackMessage(null);
       setFeedbackType(null);
       setIsProcessing(false);
-
-      // Speak the singular word automatically
-      if (currentWord.english) {
-        speak(currentWord.english);
-      }
     }
-  }, [currentWord, speak]);
+  }, [currentWord]);
 
   // Cleanup timeout on unmount
   useEffect(() => {
