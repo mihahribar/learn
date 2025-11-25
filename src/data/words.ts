@@ -1,7 +1,7 @@
 import type { Word } from '../types';
 
 /**
- * Word list for the SpellBee game
+ * Word list for the WordGym game
  * Contains 50+ words with English, Slovenian translations, difficulty, and wrong spellings
  */
 export const words: Word[] = [
@@ -10,7 +10,9 @@ export const words: Word[] = [
         "english": "telephone",
         "slovenian": "telefon",
         "difficulty": "easy",
-        "wrongSpellings": ["telefone", "telphone"]
+        "wrongSpellings": ["telefone", "telphone"],
+        "pluralForm": "telephones",
+        "wrongPluralForms": ["telefones", "telephons"]
     },
     {
         "id": "2",
@@ -24,35 +26,45 @@ export const words: Word[] = [
         "english": "bike",
         "slovenian": "kolo",
         "difficulty": "easy",
-        "wrongSpellings": ["byke", "biek"]
+        "wrongSpellings": ["byke", "biek"],
+        "pluralForm": "bikes",
+        "wrongPluralForms": ["bykes", "bikees"]
     },
     {
         "id": "4",
         "english": "computer",
         "slovenian": "računalnik",
         "difficulty": "easy",
-        "wrongSpellings": ["computor", "compter"]
+        "wrongSpellings": ["computor", "compter"],
+        "pluralForm": "computers",
+        "wrongPluralForms": ["computors", "compters"]
     },
     {
         "id": "5",
         "english": "brother",
         "slovenian": "brat",
         "difficulty": "easy",
-        "wrongSpellings": ["brothor", "bruther"]
+        "wrongSpellings": ["brothor", "bruther"],
+        "pluralForm": "brothers",
+        "wrongPluralForms": ["brothors", "brotheres"]
     },
     {
         "id": "6",
         "english": "daughter",
         "slovenian": "hči",
         "difficulty": "easy",
-        "wrongSpellings": ["daugter", "daughtor"]
+        "wrongSpellings": ["daugter", "daughtor"],
+        "pluralForm": "daughters",
+        "wrongPluralForms": ["daughteres", "daugters"]
     },
     {
         "id": "7",
         "english": "sister",
         "slovenian": "sestra",
         "difficulty": "easy",
-        "wrongSpellings": ["sistter", "sistar"]
+        "wrongSpellings": ["sistter", "sistar"],
+        "pluralForm": "sisters",
+        "wrongPluralForms": ["sisteres", "sissters"]
     },
     {
         "id": "8",
@@ -73,14 +85,18 @@ export const words: Word[] = [
         "english": "skateboard",
         "slovenian": "rolka",
         "difficulty": "medium",
-        "wrongSpellings": ["skatebord", "scateboard"]
+        "wrongSpellings": ["skatebord", "scateboard"],
+        "pluralForm": "skateboards",
+        "wrongPluralForms": ["skatebords", "skateboardes"]
     },
     {
         "id": "11",
         "english": "camera",
         "slovenian": "fotoaparat",
         "difficulty": "easy",
-        "wrongSpellings": ["camra", "cammera"]
+        "wrongSpellings": ["camra", "cammera"],
+        "pluralForm": "cameras",
+        "wrongPluralForms": ["camras", "cammeras"]
     },
     {
         "id": "12",
@@ -94,28 +110,36 @@ export const words: Word[] = [
         "english": "home",
         "slovenian": "dom",
         "difficulty": "easy",
-        "wrongSpellings": ["hoam", "hom"]
+        "wrongSpellings": ["hoam", "hom"],
+        "pluralForm": "homes",
+        "wrongPluralForms": ["hoams", "homees"]
     },
     {
         "id": "14",
         "english": "classroom",
         "slovenian": "učilnica",
         "difficulty": "easy",
-        "wrongSpellings": ["classrom", "clasroom"]
+        "wrongSpellings": ["classrom", "clasroom"],
+        "pluralForm": "classrooms",
+        "wrongPluralForms": ["classroms", "clasrooms"]
     },
     {
         "id": "15",
         "english": "bag",
         "slovenian": "torba",
         "difficulty": "easy",
-        "wrongSpellings": ["beg", "bage"]
+        "wrongSpellings": ["beg", "bage"],
+        "pluralForm": "bags",
+        "wrongPluralForms": ["begs", "bages"]
     },
     {
         "id": "16",
         "english": "sentence",
         "slovenian": "stavek",
         "difficulty": "medium",
-        "wrongSpellings": ["sentance", "sentense"]
+        "wrongSpellings": ["sentance", "sentense"],
+        "pluralForm": "sentences",
+        "wrongPluralForms": ["sentances", "sentenses"]
     },
     {
         "id": "17",
@@ -157,28 +181,36 @@ export const words: Word[] = [
         "english": "classmate",
         "slovenian": "sošolec",
         "difficulty": "medium",
-        "wrongSpellings": ["classmat", "clasmate"]
+        "wrongSpellings": ["classmat", "clasmate"],
+        "pluralForm": "classmates",
+        "wrongPluralForms": ["classmats", "clasmates"]
     },
     {
         "id": "23",
         "english": "shop",
         "slovenian": "trgovina",
         "difficulty": "easy",
-        "wrongSpellings": ["shope", "shopp"]
+        "wrongSpellings": ["shope", "shopp"],
+        "pluralForm": "shops",
+        "wrongPluralForms": ["shopes", "shopps"]
     },
     {
         "id": "24",
         "english": "friend",
         "slovenian": "prijatelj",
         "difficulty": "easy",
-        "wrongSpellings": ["freind", "frend"]
+        "wrongSpellings": ["freind", "frend"],
+        "pluralForm": "friends",
+        "wrongPluralForms": ["freinds", "frends"]
     },
     {
         "id": "25",
         "english": "birthday",
         "slovenian": "rojstni dan",
         "difficulty": "easy",
-        "wrongSpellings": ["brithday", "bithday"]
+        "wrongSpellings": ["brithday", "bithday"],
+        "pluralForm": "birthdays",
+        "wrongPluralForms": ["brithdays", "birthdayes"]
     },
     {
         "id": "26",
@@ -255,7 +287,9 @@ export const words: Word[] = [
         "english": "question",
         "slovenian": "vprašanje",
         "difficulty": "medium",
-        "wrongSpellings": ["questoin", "queston"]
+        "wrongSpellings": ["questoin", "queston"],
+        "pluralForm": "questions",
+        "wrongPluralForms": ["questoins", "questons"]
     },
     {
         "id": "37",
@@ -269,7 +303,9 @@ export const words: Word[] = [
         "english": "student",
         "slovenian": "študent",
         "difficulty": "easy",
-        "wrongSpellings": ["studant", "studdent"]
+        "wrongSpellings": ["studant", "studdent"],
+        "pluralForm": "students",
+        "wrongPluralForms": ["studants", "studdents"]
     },
     {
         "id": "39",
@@ -297,28 +333,36 @@ export const words: Word[] = [
         "english": "uncle",
         "slovenian": "stric",
         "difficulty": "easy",
-        "wrongSpellings": ["unckle", "uncl"]
+        "wrongSpellings": ["unckle", "uncl"],
+        "pluralForm": "uncles",
+        "wrongPluralForms": ["unckles", "uncls"]
     },
     {
         "id": "43",
         "english": "cousin",
         "slovenian": "bratranec",
         "difficulty": "medium",
-        "wrongSpellings": ["cusin", "couzin"]
+        "wrongSpellings": ["cusin", "couzin"],
+        "pluralForm": "cousins",
+        "wrongPluralForms": ["cusins", "couzins"]
     },
     {
         "id": "44",
         "english": "aunt",
         "slovenian": "teta",
         "difficulty": "easy",
-        "wrongSpellings": ["ant", "anut"]
+        "wrongSpellings": ["ant", "anut"],
+        "pluralForm": "aunts",
+        "wrongPluralForms": ["ants", "auntes"]
     },
     {
         "id": "45",
         "english": "son",
         "slovenian": "sin",
         "difficulty": "easy",
-        "wrongSpellings": ["sunn", "sone"]
+        "wrongSpellings": ["sunn", "sone"],
+        "pluralForm": "sons",
+        "wrongPluralForms": ["sunns", "sones"]
     },
     {
         "id": "46",
@@ -430,84 +474,108 @@ export const words: Word[] = [
         "english": "apple",
         "slovenian": "jabolko",
         "difficulty": "easy",
-        "wrongSpellings": ["aple", "appel"]
+        "wrongSpellings": ["aple", "appel"],
+        "pluralForm": "apples",
+        "wrongPluralForms": ["aples", "appels"]
     },
     {
         "id": "62",
         "english": "window",
         "slovenian": "okno",
         "difficulty": "easy",
-        "wrongSpellings": ["windoe", "windo"]
+        "wrongSpellings": ["windoe", "windo"],
+        "pluralForm": "windows",
+        "wrongPluralForms": ["windoes", "windos"]
     },
     {
         "id": "63",
         "english": "house",
         "slovenian": "hiša",
         "difficulty": "easy",
-        "wrongSpellings": ["hous", "howse"]
+        "wrongSpellings": ["hous", "howse"],
+        "pluralForm": "houses",
+        "wrongPluralForms": ["hous", "howses"]
     },
     {
         "id": "64",
         "english": "watch",
         "slovenian": "ura",
         "difficulty": "easy",
-        "wrongSpellings": ["wach", "wotch"]
+        "wrongSpellings": ["wach", "wotch"],
+        "pluralForm": "watches",
+        "wrongPluralForms": ["watchs", "waches"]
     },
     {
         "id": "65",
         "english": "book",
         "slovenian": "knjiga",
         "difficulty": "easy",
-        "wrongSpellings": ["bouk", "buk"]
+        "wrongSpellings": ["bouk", "buk"],
+        "pluralForm": "books",
+        "wrongPluralForms": ["bouks", "buks"]
     },
     {
         "id": "66",
         "english": "umbrella",
         "slovenian": "dežnik",
         "difficulty": "easy",
-        "wrongSpellings": ["umbrlla", "umbrela"]
+        "wrongSpellings": ["umbrlla", "umbrela"],
+        "pluralForm": "umbrellas",
+        "wrongPluralForms": ["umbrllasumbrellas", "umbrelas"]
     },
     {
         "id": "67",
         "english": "chair",
         "slovenian": "stol",
         "difficulty": "easy",
-        "wrongSpellings": ["chare", "cher"]
+        "wrongSpellings": ["chare", "cher"],
+        "pluralForm": "chairs",
+        "wrongPluralForms": ["chares", "chers"]
     },
     {
         "id": "68",
         "english": "orange",
         "slovenian": "pomaranča",
         "difficulty": "easy",
-        "wrongSpellings": ["orang", "oringe"]
+        "wrongSpellings": ["orang", "oringe"],
+        "pluralForm": "oranges",
+        "wrongPluralForms": ["orangs", "oringes"]
     },
     {
         "id": "69",
         "english": "picture",
         "slovenian": "slika",
         "difficulty": "easy",
-        "wrongSpellings": ["pikture", "pictur"]
+        "wrongSpellings": ["pikture", "pictur"],
+        "pluralForm": "pictures",
+        "wrongPluralForms": ["piktures", "picturs"]
     },
     {
         "id": "70",
         "english": "table",
         "slovenian": "miza",
         "difficulty": "easy",
-        "wrongSpellings": ["tabel", "tabl"]
+        "wrongSpellings": ["tabel", "tabl"],
+        "pluralForm": "tables",
+        "wrongPluralForms": ["tabels", "tabls"]
     },
     {
         "id": "71",
         "english": "glass",
         "slovenian": "kozarec",
         "difficulty": "easy",
-        "wrongSpellings": ["glas", "glaass"]
+        "wrongSpellings": ["glas", "glaass"],
+        "pluralForm": "glasses",
+        "wrongPluralForms": ["glasss", "glaasses"]
     },
     {
         "id": "72",
         "english": "child",
         "slovenian": "otrok",
         "difficulty": "easy",
-        "wrongSpellings": ["childe", "chilld"]
+        "wrongSpellings": ["childe", "chilld"],
+        "pluralForm": "children",
+        "wrongPluralForms": ["childs", "childrens"]
     },
     {
         "id": "73",
@@ -549,35 +617,45 @@ export const words: Word[] = [
         "english": "morning",
         "slovenian": "jutro",
         "difficulty": "easy",
-        "wrongSpellings": ["mornin", "morming"]
+        "wrongSpellings": ["mornin", "morming"],
+        "pluralForm": "mornings",
+        "wrongPluralForms": ["mornins", "mormings"]
     },
     {
         "id": "79",
         "english": "afternoon",
         "slovenian": "popoldne",
         "difficulty": "easy",
-        "wrongSpellings": ["afternon", "aftrnoon"]
+        "wrongSpellings": ["afternon", "aftrnoon"],
+        "pluralForm": "afternoons",
+        "wrongPluralForms": ["afternons", "aftrnoons"]
     },
     {
         "id": "80",
         "english": "evening",
         "slovenian": "večer",
         "difficulty": "easy",
-        "wrongSpellings": ["evning", "evenin"]
+        "wrongSpellings": ["evning", "evenin"],
+        "pluralForm": "evenings",
+        "wrongPluralForms": ["evnings", "evenins"]
     },
     {
         "id": "81",
         "english": "night",
         "slovenian": "noč",
         "difficulty": "easy",
-        "wrongSpellings": ["nite", "nigth"]
+        "wrongSpellings": ["nite", "nigth"],
+        "pluralForm": "nights",
+        "wrongPluralForms": ["nites", "nigths"]
     },
     {
         "id": "82",
         "english": "knight",
         "slovenian": "vitez",
         "difficulty": "medium",
-        "wrongSpellings": ["night", "knite"]
+        "wrongSpellings": ["night", "knite"],
+        "pluralForm": "knights",
+        "wrongPluralForms": ["nights", "knites"]
     },
     {
         "id": "83",
@@ -654,7 +732,9 @@ export const words: Word[] = [
         "english": "dolphin",
         "slovenian": "delfin",
         "difficulty": "easy",
-        "wrongSpellings": ["dolfin", "dolphen"]
+        "wrongSpellings": ["dolfin", "dolphen"],
+        "pluralForm": "dolphins",
+        "wrongPluralForms": ["dolfins", "dolphens"]
     },
     {
         "id": "94",
@@ -668,21 +748,27 @@ export const words: Word[] = [
         "english": "eagle",
         "slovenian": "orel",
         "difficulty": "medium",
-        "wrongSpellings": ["eagel", "egle"]
+        "wrongSpellings": ["eagel", "egle"],
+        "pluralForm": "eagles",
+        "wrongPluralForms": ["eagels", "egles"]
     },
     {
         "id": "96",
         "english": "queen",
         "slovenian": "kraljica",
         "difficulty": "easy",
-        "wrongSpellings": ["quene", "kween"]
+        "wrongSpellings": ["quene", "kween"],
+        "pluralForm": "queens",
+        "wrongPluralForms": ["quenes", "kweens"]
     },
     {
         "id": "97",
         "english": "king",
         "slovenian": "kralj",
         "difficulty": "easy",
-        "wrongSpellings": ["knig", "keng"]
+        "wrongSpellings": ["knig", "keng"],
+        "pluralForm": "kings",
+        "wrongPluralForms": ["knigs", "kengs"]
     },
     {
         "id": "98",
@@ -696,14 +782,18 @@ export const words: Word[] = [
         "english": "vase",
         "slovenian": "vaza",
         "difficulty": "easy",
-        "wrongSpellings": ["vace", "vaes"]
+        "wrongSpellings": ["vace", "vaes"],
+        "pluralForm": "vases",
+        "wrongPluralForms": ["vaces", "vaeses"]
     },
     {
         "id": "100",
         "english": "fruit",
         "slovenian": "sadje",
         "difficulty": "easy",
-        "wrongSpellings": ["froot", "fruite"]
+        "wrongSpellings": ["froot", "fruite"],
+        "pluralForm": "fruits",
+        "wrongPluralForms": ["froots", "fruites"]
     },
     {
         "id": "101",
@@ -717,14 +807,18 @@ export const words: Word[] = [
         "english": "flower",
         "slovenian": "roža",
         "difficulty": "easy",
-        "wrongSpellings": ["flowr", "flour"]
+        "wrongSpellings": ["flowr", "flour"],
+        "pluralForm": "flowers",
+        "wrongPluralForms": ["flowrs", "flours"]
     },
     {
         "id": "103",
         "english": "mouse",
         "slovenian": "miš",
         "difficulty": "easy",
-        "wrongSpellings": ["mous", "mowse"]
+        "wrongSpellings": ["mous", "mowse"],
+        "pluralForm": "mice",
+        "wrongPluralForms": ["mouses", "mices"]
     },
     {
         "id": "104",
@@ -766,21 +860,27 @@ export const words: Word[] = [
         "english": "armchair",
         "slovenian": "naslanjač",
         "difficulty": "medium",
-        "wrongSpellings": ["armchare", "arm chair"]
+        "wrongSpellings": ["armchare", "arm chair"],
+        "pluralForm": "armchairs",
+        "wrongPluralForms": ["armchares", "armchaires"]
     },
     {
         "id": "110",
         "english": "pencil",
         "slovenian": "svinčnik",
         "difficulty": "easy",
-        "wrongSpellings": ["pensil", "pencl"]
+        "wrongSpellings": ["pensil", "pencl"],
+        "pluralForm": "pencils",
+        "wrongPluralForms": ["pensils", "pencls"]
     },
     {
         "id": "111",
         "english": "comic",
         "slovenian": "strip",
         "difficulty": "easy",
-        "wrongSpellings": ["commic", "comik"]
+        "wrongSpellings": ["commic", "comik"],
+        "pluralForm": "comics",
+        "wrongPluralForms": ["commics", "comiks"]
     },
     {
         "id": "112",
@@ -794,14 +894,18 @@ export const words: Word[] = [
         "english": "bedroom",
         "slovenian": "spalnica",
         "difficulty": "easy",
-        "wrongSpellings": ["bedrom", "bed room"]
+        "wrongSpellings": ["bedrom", "bed room"],
+        "pluralForm": "bedrooms",
+        "wrongPluralForms": ["bedroms", "bed rooms"]
     },
     {
         "id": "114",
         "english": "kitchen",
         "slovenian": "kuhinja",
         "difficulty": "easy",
-        "wrongSpellings": ["kichen", "kitchan"]
+        "wrongSpellings": ["kichen", "kitchan"],
+        "pluralForm": "kitchens",
+        "wrongPluralForms": ["kichens", "kitchans"]
     },
     {
         "id": "115",
@@ -815,84 +919,108 @@ export const words: Word[] = [
         "english": "bathroom",
         "slovenian": "kopalnica",
         "difficulty": "easy",
-        "wrongSpellings": ["bathrom", "bath room"]
+        "wrongSpellings": ["bathrom", "bath room"],
+        "pluralForm": "bathrooms",
+        "wrongPluralForms": ["bathroms", "bath rooms"]
     },
     {
         "id": "117",
         "english": "man",
         "slovenian": "moški",
         "difficulty": "easy",
-        "wrongSpellings": ["men", "maan"]
+        "wrongSpellings": ["men", "maan"],
+        "pluralForm": "men",
+        "wrongPluralForms": ["mans", "mens"]
     },
     {
         "id": "118",
         "english": "woman",
         "slovenian": "ženska",
         "difficulty": "easy",
-        "wrongSpellings": ["women", "wuman"]
+        "wrongSpellings": ["women", "wuman"],
+        "pluralForm": "women",
+        "wrongPluralForms": ["womans", "womens"]
     },
     {
         "id": "119",
         "english": "pen",
         "slovenian": "kemični svinčnik",
         "difficulty": "medium",
-        "wrongSpellings": ["penn", "peen"]
+        "wrongSpellings": ["penn", "peen"],
+        "pluralForm": "pens",
+        "wrongPluralForms": ["penns", "peens"]
     },
     {
         "id": "120",
         "english": "desk",
         "slovenian": "pisalna miza",
         "difficulty": "easy",
-        "wrongSpellings": ["desck", "deske"]
+        "wrongSpellings": ["desck", "deske"],
+        "pluralForm": "desks",
+        "wrongPluralForms": ["descks", "deskes"]
     },
     {
         "id": "121",
         "english": "boy",
         "slovenian": "deček",
         "difficulty": "easy",
-        "wrongSpellings": ["boi", "bouy"]
+        "wrongSpellings": ["boi", "bouy"],
+        "pluralForm": "boys",
+        "wrongPluralForms": ["bois", "bouys"]
     },
     {
         "id": "122",
         "english": "girl",
         "slovenian": "deklica",
         "difficulty": "easy",
-        "wrongSpellings": ["gurl", "gril"]
+        "wrongSpellings": ["gurl", "gril"],
+        "pluralForm": "girls",
+        "wrongPluralForms": ["gurls", "grils"]
     },
     {
         "id": "123",
         "english": "elephant",
         "slovenian": "slon",
         "difficulty": "easy",
-        "wrongSpellings": ["elefant", "elephent"]
+        "wrongSpellings": ["elefant", "elephent"],
+        "pluralForm": "elephants",
+        "wrongPluralForms": ["elefants", "elephents"]
     },
     {
         "id": "124",
         "english": "unicorn",
         "slovenian": "samorog",
         "difficulty": "medium",
-        "wrongSpellings": ["unicorne", "unikorn"]
+        "wrongSpellings": ["unicorne", "unikorn"],
+        "pluralForm": "unicorns",
+        "wrongPluralForms": ["unicornes", "unikorns"]
     },
     {
         "id": "125",
         "english": "octopus",
         "slovenian": "hobotnica",
         "difficulty": "medium",
-        "wrongSpellings": ["octapus", "octipus"]
+        "wrongSpellings": ["octapus", "octipus"],
+        "pluralForm": "octopuses",
+        "wrongPluralForms": ["octopi", "octapuses"]
     },
     {
         "id": "126",
         "english": "animal",
         "slovenian": "žival",
         "difficulty": "easy",
-        "wrongSpellings": ["animel", "anamal"]
+        "wrongSpellings": ["animel", "anamal"],
+        "pluralForm": "animals",
+        "wrongPluralForms": ["animels", "anamals"]
     },
     {
         "id": "127",
         "english": "horse",
         "slovenian": "konj",
         "difficulty": "easy",
-        "wrongSpellings": ["hors", "hoarse"]
+        "wrongSpellings": ["hors", "hoarse"],
+        "pluralForm": "horses",
+        "wrongPluralForms": ["horss", "hoarses"]
     },
     {
         "id": "128",
@@ -962,7 +1090,9 @@ export const words: Word[] = [
         "english": "potato",
         "slovenian": "krompir",
         "difficulty": "easy",
-        "wrongSpellings": ["patato", "potatto"]
+        "wrongSpellings": ["patato", "potatto"],
+        "pluralForm": "potatoes",
+        "wrongPluralForms": ["potatos", "potattos"]
     },
     {
         "id": "138",
@@ -983,7 +1113,9 @@ export const words: Word[] = [
         "english": "toothbrush",
         "slovenian": "zobna ščetka",
         "difficulty": "medium",
-        "wrongSpellings": ["toothbrus", "tothbrush"]
+        "wrongSpellings": ["toothbrus", "tothbrush"],
+        "pluralForm": "toothbrushes",
+        "wrongPluralForms": ["toothbrushs", "tothbrushes"]
     },
     {
         "id": "141",
@@ -997,7 +1129,9 @@ export const words: Word[] = [
         "english": "country",
         "slovenian": "država",
         "difficulty": "easy",
-        "wrongSpellings": ["contry", "cuntry"]
+        "wrongSpellings": ["contry", "cuntry"],
+        "pluralForm": "countries",
+        "wrongPluralForms": ["countrys", "contries"]
     },
     {
         "id": "143",
@@ -1018,14 +1152,18 @@ export const words: Word[] = [
         "english": "family",
         "slovenian": "družina",
         "difficulty": "easy",
-        "wrongSpellings": ["famly", "familey"]
+        "wrongSpellings": ["famly", "familey"],
+        "pluralForm": "families",
+        "wrongPluralForms": ["familys", "famlies"]
     },
     {
         "id": "146",
         "english": "address",
         "slovenian": "naslov",
         "difficulty": "easy",
-        "wrongSpellings": ["adress", "adres"]
+        "wrongSpellings": ["adress", "adres"],
+        "pluralForm": "addresses",
+        "wrongPluralForms": ["adresss", "adreses"]
     },
     {
         "id": "147",
@@ -1039,14 +1177,18 @@ export const words: Word[] = [
         "english": "mountain",
         "slovenian": "gora",
         "difficulty": "easy",
-        "wrongSpellings": ["mountian", "mountin"]
+        "wrongSpellings": ["mountian", "mountin"],
+        "pluralForm": "mountains",
+        "wrongPluralForms": ["mountians", "mountins"]
     },
     {
         "id": "149",
         "english": "river",
         "slovenian": "reka",
         "difficulty": "easy",
-        "wrongSpellings": ["rivor", "rivur"]
+        "wrongSpellings": ["rivor", "rivur"],
+        "pluralForm": "rivers",
+        "wrongPluralForms": ["rivors", "rivurs"]
     },
     {
         "id": "150",
@@ -1116,7 +1258,9 @@ export const words: Word[] = [
         "english": "flag",
         "slovenian": "zastava",
         "difficulty": "easy",
-        "wrongSpellings": ["fleg", "flage"]
+        "wrongSpellings": ["fleg", "flage"],
+        "pluralForm": "flags",
+        "wrongPluralForms": ["flegs", "flages"]
     },
     {
         "id": "160",
@@ -1137,49 +1281,63 @@ export const words: Word[] = [
         "english": "egg",
         "slovenian": "jajce",
         "difficulty": "easy",
-        "wrongSpellings": ["eg", "eggue"]
+        "wrongSpellings": ["eg", "eggue"],
+        "pluralForm": "eggs",
+        "wrongPluralForms": ["egs", "eggues"]
     },
     {
         "id": "163",
         "english": "hour",
         "slovenian": "ura",
         "difficulty": "easy",
-        "wrongSpellings": ["our", "howr"]
+        "wrongSpellings": ["our", "howr"],
+        "pluralForm": "hours",
+        "wrongPluralForms": ["ours", "howrs"]
     },
     {
         "id": "164",
         "english": "minute",
         "slovenian": "minuta",
         "difficulty": "easy",
-        "wrongSpellings": ["minit", "minuite"]
+        "wrongSpellings": ["minit", "minuite"],
+        "pluralForm": "minutes",
+        "wrongPluralForms": ["minits", "minuites"]
     },
     {
         "id": "165",
         "english": "second",
         "slovenian": "sekunda",
         "difficulty": "easy",
-        "wrongSpellings": ["secund", "sekond"]
+        "wrongSpellings": ["secund", "sekond"],
+        "pluralForm": "seconds",
+        "wrongPluralForms": ["secunds", "sekonds"]
     },
     {
         "id": "166",
         "english": "dictionary",
         "slovenian": "slovar",
         "difficulty": "medium",
-        "wrongSpellings": ["dictionnary", "dictionery"]
+        "wrongSpellings": ["dictionnary", "dictionery"],
+        "pluralForm": "dictionaries",
+        "wrongPluralForms": ["dictionarys", "dictionnaries"]
     },
     {
         "id": "167",
         "english": "goose",
         "slovenian": "gos",
         "difficulty": "easy",
-        "wrongSpellings": ["goos", "gouce"]
+        "wrongSpellings": ["goos", "gouce"],
+        "pluralForm": "geese",
+        "wrongPluralForms": ["gooses", "gooses"]
     },
     {
         "id": "168",
         "english": "knife",
         "slovenian": "nož",
         "difficulty": "easy",
-        "wrongSpellings": ["nife", "kniffe"]
+        "wrongSpellings": ["nife", "kniffe"],
+        "pluralForm": "knives",
+        "wrongPluralForms": ["knifes", "knifves"]
     },
     {
         "id": "169",
@@ -1193,14 +1351,18 @@ export const words: Word[] = [
         "english": "postman",
         "slovenian": "poštar",
         "difficulty": "easy",
-        "wrongSpellings": ["postmen", "post man"]
+        "wrongSpellings": ["postmen", "post man"],
+        "pluralForm": "postmen",
+        "wrongPluralForms": ["postmans", "postmens"]
     },
     {
         "id": "171",
         "english": "crocodile",
         "slovenian": "krokodil",
         "difficulty": "medium",
-        "wrongSpellings": ["crocodial", "crocadile"]
+        "wrongSpellings": ["crocodial", "crocadile"],
+        "pluralForm": "crocodiles",
+        "wrongPluralForms": ["crocodials", "crocadiles"]
     },
     {
         "id": "172",

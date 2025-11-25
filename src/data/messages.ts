@@ -1,5 +1,5 @@
 /**
- * Slovenian UI text and messages for the SpellBee game
+ * Slovenian UI text and messages for the WordGym game
  * All user-facing text is centralized here for consistency
  */
 
@@ -46,12 +46,13 @@ export const roundCompleteMessages = {
  */
 export const labels = {
   // App title
-  appTitle: 'SpellBee',
+  appTitle: 'WordGym',
 
   // Home screen
   homeSubtitle: 'Učimo se črkovati angleške besede!',
   listenSpellButton: 'Poslušaj in črkuj',
   pickSpellingButton: 'Izberi pravilno',
+  pluralFormsButton: 'Množina',
   badgesButton: 'Značke',
   totalPoints: 'Skupne točke',
   badgesEarned: 'Značke',
@@ -63,6 +64,8 @@ export const labels = {
   checkButton: 'Preveri',
   nextButton: 'Naprej',
   spellingPrompt: (word: string) => `Kako se črkuje "${word}"?`,
+  pluralPrompt: (singular: string, slovenian: string) =>
+    `Množina besede ${singular} (${slovenian})?`,
   currentScore: 'Rezultat',
   points: 'točke',
 
@@ -83,6 +86,12 @@ export const labels = {
   badgesTitle: 'Moje značke',
   badgeLocked: 'Zaklenjena',
   backButton: 'Nazaj',
+
+  // Confirmation dialog
+  quitGameTitle: 'Želiš zaključiti igro?',
+  quitGameMessage: 'Če se vrneš domov, boš izgubila ves napredek v tej igri.',
+  cancelButton: 'Prekliči',
+  confirmQuitButton: 'Zaključi igro',
 
   // Settings and misc
   soundOn: 'Zvok vklopljen',

@@ -16,7 +16,7 @@ import { ScoreDisplay } from '../game/ScoreDisplay';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { shuffle } from '../../utils/shuffle';
 
-export interface PickSpellingScreenProps {
+export interface PluralFormsScreenProps {
   currentWord: Word | null;
   roundProgress: {
     current: number;
@@ -73,7 +73,7 @@ const BackArrowIcon = () => (
   </svg>
 );
 
-export function PickSpellingScreen({
+export function PluralFormsScreen({
   currentWord,
   roundProgress,
   currentAttempts: _currentAttempts,
@@ -87,7 +87,7 @@ export function PickSpellingScreen({
   speechSupported,
   playCorrectSound,
   playWrongSound,
-}: PickSpellingScreenProps) {
+}: PluralFormsScreenProps) {
   const [optionStates, setOptionStates] = useState<Record<string, OptionState>>(
     {}
   );
@@ -103,14 +103,16 @@ export function PickSpellingScreen({
 
   // Generate shuffled options when word changes
   const shuffledOptions = useMemo((): ShuffledOption[] => {
-    if (!currentWord) return [];
+    if (!currentWord || !currentWord.pluralForm || !currentWord.wrongPluralForms) {
+      return [];
+    }
 
-    const allSpellings = [currentWord.english, ...currentWord.wrongSpellings];
-    const shuffledSpellings = shuffle(allSpellings);
+    const allPluralForms = [currentWord.pluralForm, ...currentWord.wrongPluralForms];
+    const shuffledPluralForms = shuffle(allPluralForms);
 
-    return shuffledSpellings.map((spelling, index) => ({
-      label: spelling,
-      value: spelling,
+    return shuffledPluralForms.map((plural, index) => ({
+      label: plural,
+      value: plural,
       prefix: OPTION_PREFIXES[index] || String(index + 1),
     }));
   }, [currentWord]);
@@ -160,7 +162,7 @@ export function PickSpellingScreen({
 
   const handleOptionSelect = useCallback(
     (optionValue: string) => {
-      if (isProcessing || !currentWord) return;
+      if (isProcessing || !currentWord || !currentWord.pluralForm) return;
 
       setIsProcessing(true);
 
@@ -229,7 +231,7 @@ export function PickSpellingScreen({
     return 'default';
   };
 
-  if (!currentWord) {
+  if (!currentWord || !currentWord.pluralForm || !currentWord.wrongPluralForms) {
     return null;
   }
 
@@ -266,13 +268,13 @@ export function PickSpellingScreen({
         className="w-full max-w-md mx-auto flex-grow flex flex-col"
       >
         <div className="flex-grow flex flex-col items-center justify-center space-y-4 sm:space-y-6">
-          {/* Slovenian prompt */}
+          {/* Singular word display with Slovenian translation */}
           <div className="text-center">
             <h2
               className="text-lg sm:text-xl font-semibold text-gray-800"
-              id="spelling-prompt"
+              id="plural-prompt"
             >
-              {labels.spellingPrompt(currentWord.slovenian)}
+              {labels.pluralPrompt(currentWord.english, currentWord.slovenian)}
             </h2>
           </div>
 
@@ -287,7 +289,7 @@ export function PickSpellingScreen({
           <div
             className="w-full space-y-3"
             role="group"
-            aria-labelledby="spelling-prompt"
+            aria-labelledby="plural-prompt"
           >
             {shuffledOptions.map((option) => (
               <OptionButton
@@ -306,7 +308,7 @@ export function PickSpellingScreen({
               type={feedbackType}
               message={feedbackMessage}
               correctAnswer={
-                feedbackType === 'show-answer' ? currentWord.english : undefined
+                feedbackType === 'show-answer' ? currentWord.pluralForm : undefined
               }
             />
           )}
@@ -338,4 +340,4 @@ export function PickSpellingScreen({
   );
 }
 
-export default PickSpellingScreen;
+export default PluralFormsScreen;

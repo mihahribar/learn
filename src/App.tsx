@@ -9,6 +9,7 @@ import { calculateRoundTotal } from './utils/scoring';
 import { HomeScreen } from './components/screens/HomeScreen';
 import { ListenSpellScreen } from './components/screens/ListenSpellScreen';
 import { PickSpellingScreen } from './components/screens/PickSpellingScreen';
+import { PluralFormsScreen } from './components/screens/PluralFormsScreen';
 import { RoundCompleteScreen } from './components/screens/RoundCompleteScreen';
 import { BadgesScreen } from './components/screens/BadgesScreen';
 
@@ -115,6 +116,7 @@ function App() {
             onAdvanceWord={gameState.advanceToNextWord}
             onRoundComplete={handleRoundComplete}
             onEndRound={gameState.endRound}
+            onGoBack={handleGoHome}
             speak={speech.speak}
             speaking={speech.speaking}
             speechSupported={speech.supported}
@@ -133,6 +135,26 @@ function App() {
             onAdvanceWord={gameState.advanceToNextWord}
             onRoundComplete={handleRoundComplete}
             onEndRound={gameState.endRound}
+            onGoBack={handleGoHome}
+            speak={speech.speak}
+            speaking={speech.speaking}
+            speechSupported={speech.supported}
+            playCorrectSound={sound.playCorrect}
+            playWrongSound={sound.playWrong}
+          />
+        );
+
+      case 'plural-forms':
+        return (
+          <PluralFormsScreen
+            currentWord={gameState.currentWord}
+            roundProgress={gameState.roundProgress}
+            currentAttempts={gameState.currentAttempts}
+            onSubmitAnswer={handleRecordWordAttempt}
+            onAdvanceWord={gameState.advanceToNextWord}
+            onRoundComplete={handleRoundComplete}
+            onEndRound={gameState.endRound}
+            onGoBack={handleGoHome}
             speak={speech.speak}
             speaking={speech.speaking}
             speechSupported={speech.supported}

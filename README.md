@@ -1,80 +1,96 @@
-# SpellBee
+# WordGym
 
-SpellBee je interaktivna spletna igra, ki pomaga osnovnošolcem vaditi črkovanje angleških besed skozi igrive runde, glasovno izgovorjavo in zbiranje značk. Aplikacija je zgrajena v Reactu s TypeScriptom in vsebina v celoti uporablja slovenske napise.
+WordGym is an interactive web game that helps elementary school students practice spelling English words through engaging gameplay, audio pronunciation, and achievements. Built with React and TypeScript, the application features a fully Slovenian user interface.
 
-## Ključne funkcionalnosti
-- **Dva načina igre** – *Poslušaj in črkuj* uporablja Web Speech API za izgovarjavo besed, *Izberi pravilno* pa ponuja tri možne zapise.
-- **Točke in napredek** – vsaka runda vsebuje 10 naključnih besed različnih težavnosti, pa tudi serije, popolne runde in skupne točke, ki se shranjujejo v `localStorage`.
-- **Značke in nagrade** – datoteka `src/data/badges.ts` definira pogoje (npr. popolna runda, 7 dni zapored); nove značke sprožijo posebne animacije in zvoke.
-- **Prijazen zvok in govor** – `useSpeech` in `useSound` skrbita za Web Speech in Web Audio, z možnostjo izklopa zvoka in odpornimi mehanizmi, ko brskalnik API-jev ne podpira.
-- **Dostopnost in i18n** – skip-linki, sr-only napotki, velike ciljne površine ter centralizirana sporočila v `src/data/messages.ts`.
+## Key Features
 
-## Tehnološki sklad
+- **Three Game Modes**
+  - *Listen & Spell*: Uses Web Speech API to pronounce words for spelling practice
+  - *Pick Spelling*: Choose the correct spelling from three options
+  - *Plural Forms*: Practice forming plural versions of words
+- **Points & Progress**: Each round includes 10 random words of varying difficulty. Progress tracking includes streaks, perfect rounds, and total points stored in `localStorage`
+- **Badges & Achievements**: Defined in `src/data/badges.ts` with conditions like perfect rounds and consecutive days. New badges trigger special animations and sounds
+- **Audio & Speech**: `useSpeech` and `useSound` hooks handle Web Speech and Web Audio APIs, with graceful fallbacks when browser APIs are unavailable
+- **Accessibility & i18n**: Skip links, sr-only hints, large touch targets, and centralized messages in `src/data/messages.ts`
+
+## Tech Stack
+
 - React 19 + TypeScript
-- Vite 7 kot razvojni strežnik in gradnik
-- Tailwind CSS za oblikovanje komponent
-- Vitest + Testing Library + jsdom za testiranje hookov in logike
-- ESLint 9 (typescript-eslint, React Hooks) za kakovost kode
+- Vite 7 for development server and build tooling
+- Tailwind CSS 4 for component styling
+- Vitest + Testing Library + jsdom for testing hooks and logic
+- ESLint 9 (typescript-eslint, React Hooks) for code quality
 
-## Predpogoji
-- Node.js 20 ali novejši (priporočeno)
-- npm 10 (nameščen z Node)
+## Prerequisites
 
-## Namestitev in zagon
+- Node.js 20 or newer (recommended)
+- npm 10 (included with Node)
+
+## Installation & Running
+
 ```bash
-npm install        # namesti odvisnosti
-npm run dev        # razvojni strežnik na http://localhost:5173
+npm install        # Install dependencies
+npm run dev        # Start development server at http://localhost:5173
 ```
-Vite omogoča HMR, zato spremembe v `src/` osvežijo zaslon brez ročnega ponovnega nalaganja.
+
+Vite enables HMR, so changes in `src/` will refresh automatically without manual reloading.
 
 ## Scripts
-- `npm run dev` – zažene razvojni strežnik z HMR.
-- `npm run build` – zaporedno poganja `tsc -b` za preverjanje tipov in `vite build` za optimiziran paket v `dist/`.
-- `npm run preview` – služi statični build za končni pregled.
-- `npm run lint` – preveri celoten projekt z ESLint konfiguracijo.
-- `npm run test` – poganja Vitest v načinu CI (brez watcherja).
-- `npm run test:watch` – Vitest v interaktivnem načinu z `--watch`.
 
-## Testiranje
-Vitest je nastavljen za okolje jsdom, zato lahko preizkuša logiko hookov (`src/hooks/*.test.ts`). Poleg osnovnih asercij Testing Library zagotavlja helperje za interakcije z DOM. Priporočena zaporedja:
+- `npm run dev` - Start development server with HMR
+- `npm run build` - Run `tsc -b` for type checking, then `vite build` for optimized production bundle in `dist/`
+- `npm run preview` - Serve static build for final preview
+- `npm run lint` - Check entire project with ESLint configuration
+- `npm run test` - Run Vitest in CI mode (no watcher)
+- `npm run test:watch` - Run Vitest in interactive mode with `--watch`
+
+## Testing
+
+Vitest is configured for jsdom environment, enabling testing of hook logic (`src/hooks/*.test.ts`). Testing Library provides helpers for DOM interactions. Recommended workflows:
+
 ```bash
-npm run test          # enkratno preverjanje (CI)
-npm run test:watch    # lokalni razvoj testov
+npm run test          # One-time check (CI)
+npm run test:watch    # Local test development
 ```
 
-## Struktura projekta
+## Project Structure
+
 ```
 learn/
-├─ public/                # statične datoteke in ikone
+├─ public/                # Static files and icons
 ├─ src/
-│  ├─ components/         # UI gradniki (screens, ui)
-│  ├─ data/               # besedni seznam, značke, sporočila
+│  ├─ components/         # UI components (screens, ui)
+│  ├─ data/               # Word list, badges, messages
 │  ├─ hooks/              # useGameState, useProgress, useSpeech, useSound
-│  ├─ types/              # tipovne definicije igre
-│  ├─ utils/              # točkovanje, shranjevanje, izbiranje besed
-│  ├─ App.tsx             # usmerjevalnik zaslonov
-│  └─ main.tsx            # React vstopna točka
-├─ index.html             # korenski dokument Vite
-├─ tailwind.config.js     # tema in barvna paleta
-├─ vite.config.ts         # konfiguracija razvojnega strežnika
+│  ├─ types/              # Game type definitions
+│  ├─ utils/              # Scoring, storage, word selection
+│  ├─ App.tsx             # Screen router
+│  └─ main.tsx            # React entry point
+├─ index.html             # Vite root document
+├─ tailwind.config.js     # Theme and color palette
+├─ vite.config.ts         # Development server configuration
 └─ package.json
 ```
 
-## Prilagajanje vsebine
-- **Besede** – dodajte ali posodobite zapise v `src/data/words.ts` (id, prevod, težavnost, napačni zapisi). `useGameState` vedno izbere 10 naključnih besed na rundo.
-- **Sporočila** – vsi teksti so v `src/data/messages.ts`; spremembe se samodejno odrazijo na zaslonih.
-- **Značke** – pogoje je mogoče razširiti v `src/data/badges.ts`. Vsaka značka vsebuje ID, ime, opis, ikono in funkcijo `condition`.
+## Customizing Content
 
-## Shramba in dovoljenja brskalnika
-Napredek se zapisuje v `localStorage`. Če brskalnik ne dovoli dostopa (npr. zasebno brskanje), se aplikacija obnaša degradirano in na začetnem zaslonu prikaže opozorilo. Web Speech in Web Audio API-ji so uporabljeni progresivno – če niso na voljo, se gumbi in napotki prilagodijo.
+- **Words** - Add or update entries in `src/data/words.ts` (id, translation, difficulty, incorrect spellings). `useGameState` always selects 10 random words per round
+- **Messages** - All text is in `src/data/messages.ts`; changes automatically reflect on screens
+- **Badges** - Extend conditions in `src/data/badges.ts`. Each badge includes ID, name, description, icon, and `condition` function
 
-## Gradnja in objava
-1. `npm run build` ustvari optimiziran `dist/` katalog.
-2. `npm run preview` lokalno preveri produkcijski paket.
-3. Vsebino `dist/` lahko nato objavite na poljubnem statičnem gostovanju (GitHub Pages, Netlify ...). Repo že vsebuje `CNAME`, zato pri GitHub Pages pustite obstoječo datoteko.
+## Storage & Browser Permissions
 
-## Koristni namigi
-- Ker igra uporablja zvok, brskalniki pogosto zahtevajo prvi klik, preden lahko Web Audio predvaja ton. `useSound` to obravnava, vendar vseeno svetujte uporabnikom interakcijo.
-- V inkognito načinu ali na starejših napravah brez Web Speech API bo način *Poslušaj in črkuj* prikazal opozorilo, zato načrtujte ročni vnos besed.
+Progress is saved in `localStorage`. If the browser doesn't allow access (e.g., private browsing), the app degrades gracefully and displays a warning on the home screen. Web Speech and Web Audio APIs are used progressively - if unavailable, buttons and hints adjust accordingly.
 
-Veselo črkovanje! 🐝
+## Build & Deployment
+
+1. `npm run build` creates an optimized `dist/` directory
+2. `npm run preview` locally verifies the production build
+3. Deploy `dist/` contents to any static hosting (GitHub Pages, Netlify, etc.). The repo includes a `CNAME` file for GitHub Pages
+
+## Helpful Tips
+
+- Since the game uses audio, browsers often require a first click before Web Audio can play tones. `useSound` handles this, but encourage user interaction first
+- In incognito mode or on older devices without Web Speech API, *Listen & Spell* mode will show a warning, so plan for manual word entry
+
+Happy spelling!

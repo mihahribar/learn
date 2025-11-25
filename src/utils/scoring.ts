@@ -1,5 +1,5 @@
 /**
- * Scoring utilities for the SpellBee game
+ * Scoring utilities for the WordGym game
  *
  * Points system:
  * - Correct on first try: 10 points
