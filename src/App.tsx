@@ -116,6 +116,7 @@ function App() {
             onAdvanceWord={gameState.advanceToNextWord}
             onRoundComplete={handleRoundComplete}
             onEndRound={gameState.endRound}
+            onGoBack={handleGoHome}
             speak={speech.speak}
             speaking={speech.speaking}
             speechSupported={speech.supported}
@@ -134,6 +135,7 @@ function App() {
             onAdvanceWord={gameState.advanceToNextWord}
             onRoundComplete={handleRoundComplete}
             onEndRound={gameState.endRound}
+            onGoBack={handleGoHome}
             speak={speech.speak}
             speaking={speech.speaking}
             speechSupported={speech.supported}
@@ -152,6 +154,7 @@ function App() {
             onAdvanceWord={gameState.advanceToNextWord}
             onRoundComplete={handleRoundComplete}
             onEndRound={gameState.endRound}
+            onGoBack={handleGoHome}
             speak={speech.speak}
             speaking={speech.speaking}
             speechSupported={speech.supported}

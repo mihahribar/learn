@@ -87,6 +87,12 @@ export const labels = {
   badgeLocked: 'Zaklenjena',
   backButton: 'Nazaj',
 
+  // Confirmation dialog
+  quitGameTitle: 'Želiš zaključiti igro?',
+  quitGameMessage: 'Če se vrneš domov, boš izgubila ves napredek v tej igri.',
+  cancelButton: 'Prekliči',
+  confirmQuitButton: 'Zaključi igro',
+
   // Settings and misc
   soundOn: 'Zvok vklopljen',
   soundOff: 'Zvok izklopljen',
