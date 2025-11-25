@@ -1,6 +1,6 @@
-# SpellBee
+# WordGym
 
-SpellBee je interaktivna spletna igra, ki pomaga osnovnošolcem vaditi črkovanje angleških besed skozi igrive runde, glasovno izgovorjavo in zbiranje značk. Aplikacija je zgrajena v Reactu s TypeScriptom in vsebina v celoti uporablja slovenske napise.
+WordGym je interaktivna spletna igra, ki pomaga osnovnošolcem vaditi črkovanje angleških besed skozi igrive runde, glasovno izgovorjavo in zbiranje značk. Aplikacija je zgrajena v Reactu s TypeScriptom in vsebina v celoti uporablja slovenske napise.
 
 ## Ključne funkcionalnosti
 - **Dva načina igre** – *Poslušaj in črkuj* uporablja Web Speech API za izgovarjavo besed, *Izberi pravilno* pa ponuja tri možne zapise.
@@ -77,4 +77,4 @@ Napredek se zapisuje v `localStorage`. Če brskalnik ne dovoli dostopa (npr. zas
 - Ker igra uporablja zvok, brskalniki pogosto zahtevajo prvi klik, preden lahko Web Audio predvaja ton. `useSound` to obravnava, vendar vseeno svetujte uporabnikom interakcijo.
 - V inkognito načinu ali na starejših napravah brez Web Speech API bo način *Poslušaj in črkuj* prikazal opozorilo, zato načrtujte ročni vnos besed.
 
-Veselo črkovanje! 🐝
+Veselo črkovanje! 💪

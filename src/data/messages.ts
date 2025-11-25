@@ -1,5 +1,5 @@
 /**
- * Slovenian UI text and messages for the SpellBee game
+ * Slovenian UI text and messages for the WordGym game
  * All user-facing text is centralized here for consistency
  */
 
@@ -46,7 +46,7 @@ export const roundCompleteMessages = {
  */
 export const labels = {
   // App title
-  appTitle: 'SpellBee',
+  appTitle: 'WordGym',
 
   // Home screen
   homeSubtitle: 'Učimo se črkovati angleške besede!',

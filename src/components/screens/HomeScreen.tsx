@@ -103,9 +103,9 @@ const WarningIcon = () => (
   </svg>
 );
 
-const BeeIcon = () => (
-  <span className="text-4xl sm:text-5xl" role="img" aria-label="bee">
-    {'\uD83D\uDC1D'}
+const GymIcon = () => (
+  <span className="text-4xl sm:text-5xl" role="img" aria-label="flexed biceps">
+    {'\uD83D\uDCAA'}
   </span>
 );
 
@@ -149,7 +149,7 @@ export function HomeScreen({
         {/* Title section */}
         <header className="text-center mb-6 sm:mb-8">
           <div className="mb-2 animate-bounce-in">
-            <BeeIcon />
+            <GymIcon />
           </div>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-700 mb-2">
             {labels.appTitle}

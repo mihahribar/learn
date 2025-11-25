@@ -1,5 +1,5 @@
 /**
- * Custom hooks for the SpellBee game
+ * Custom hooks for the WordGym game
  */
 
 export { useSpeech } from './useSpeech';

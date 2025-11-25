@@ -1,7 +1,7 @@
 import type { Badge, PersistedProgress, RoundStats } from '../types';
 
 /**
- * Badge definitions for the SpellBee game
+ * Badge definitions for the WordGym game
  * Each badge has a unique ID, Slovenian name/description, icon, and condition function
  */
 export const badges: Badge[] = [
