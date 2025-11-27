@@ -1,5 +1,5 @@
 /**
- * Custom hooks for the WordGym game
+ * Custom hooks for the EnglishGym game
  */
 
 export { useSpeech } from './useSpeech';

@@ -1,7 +1,7 @@
 import type { Word } from '../types';
 
 /**
- * Word list for the WordGym game
+ * Word list for the EnglishGym game
  * Contains 50+ words with English, Slovenian translations, difficulty, and wrong spellings
  */
 export const words: Word[] = [

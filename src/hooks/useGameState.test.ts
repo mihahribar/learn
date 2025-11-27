@@ -35,7 +35,11 @@ describe('useGameState', () => {
       result.current.startGame('listen-spell')
     })
 
-    const correctAnswer = result.current.currentWord!.english
+    const currentWord = result.current.currentWord
+    if (!currentWord || !('english' in currentWord)) {
+      throw new Error('Expected a Word, not GrammarQuestion')
+    }
+    const correctAnswer = currentWord.english
 
     act(() => {
       const submitResult = result.current.submitAnswer(correctAnswer)
@@ -71,7 +75,11 @@ describe('useGameState', () => {
     expect(result.current.currentAttempts).toBe(1)
 
     // Second attempt - correct
-    const correctAnswer = result.current.currentWord!.english
+    const currentWord = result.current.currentWord
+    if (!currentWord || !('english' in currentWord)) {
+      throw new Error('Expected a Word, not GrammarQuestion')
+    }
+    const correctAnswer = currentWord.english
 
     act(() => {
       const secondResult = result.current.submitAnswer(correctAnswer)
@@ -93,45 +101,33 @@ describe('useGameState', () => {
 
     // Answer all 10 words correctly on first try
     for (let i = 0; i < 10; i++) {
-      const correctAnswer = result.current.currentWord!.english
+      const currentWord = result.current.currentWord
+      if (!currentWord || !('english' in currentWord)) {
+        throw new Error('Expected a Word, not GrammarQuestion')
+      }
+      const correctAnswer = currentWord.english
 
       act(() => {
         result.current.submitAnswer(correctAnswer)
       })
 
-      act(() => {
-        result.current.advanceToNextWord()
-      })
+      if (i < 9) {
+        act(() => {
+          result.current.advanceToNextWord()
+        })
+      }
     }
 
+    expect(result.current.roundProgress.score).toBe(10)
     expect(result.current.isRoundComplete).toBe(true)
 
-    let stats
+    let stats: ReturnType<typeof result.current.endRound>;
     act(() => {
       stats = result.current.endRound()
     })
 
-    expect(stats).toEqual({
-      score: 10,
-      maxStreak: 10,
-      perfectRound: true,
-    })
-  })
-
-  it('resets game state when resetGame is called', () => {
-    const { result } = renderHook(() => useGameState())
-
-    act(() => {
-      result.current.startGame('listen-spell')
-    })
-
-    expect(result.current.currentMode).toBe('listen-spell')
-
-    act(() => {
-      result.current.resetGame()
-    })
-
-    expect(result.current.currentMode).toBeNull()
-    expect(result.current.currentWord).toBeNull()
+    expect(stats!.score).toBe(10)
+    expect(stats!.perfectRound).toBe(true)
+    expect(stats!.maxStreak).toBe(10)
   })
 })

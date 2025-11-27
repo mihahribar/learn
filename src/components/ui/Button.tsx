@@ -1,6 +1,6 @@
 import { type ButtonHTMLAttributes, type ReactNode } from 'react';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'warning';
+export type ButtonVariant = 'primary' | 'secondary' | 'success' | 'warning' | 'info';
 export type ButtonSize = 'small' | 'medium' | 'large';
 export type IconPosition = 'left' | 'right';
 
@@ -21,6 +21,8 @@ const variantStyles: Record<ButtonVariant, string> = {
     'bg-success hover:bg-success-dark active:bg-green-800 text-white focus:ring-success-light',
   warning:
     'bg-warning hover:bg-warning-dark active:bg-orange-800 text-white focus:ring-warning-light',
+  info:
+    'bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white focus:ring-cyan-400',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
