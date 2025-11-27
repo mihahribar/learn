@@ -1,5 +1,5 @@
 /**
- * Scoring utilities for the WordGym game
+ * Scoring utilities for the EnglishGym game
  *
  * Points system:
  * - Correct on first try: 10 points

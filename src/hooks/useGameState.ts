@@ -1,8 +1,9 @@
 import { useState, useCallback, useMemo } from 'react';
-import type { GameMode, Word, CurrentRound, RoundStats } from '../types';
+import type { GameMode, Word, GrammarQuestion, CurrentRound, RoundStats } from '../types';
 import { pickRandom } from '../utils/shuffle';
 import { isAnswerCorrect, calculateAttemptPoints } from '../utils/scoring';
 import { words } from '../data/words';
+import { grammarQuestions } from '../data/grammarQuestions';
 
 /**
  * Number of words per round
@@ -36,11 +37,18 @@ interface SubmitResult {
 }
 
 /**
+ * Extended current round that can hold either words or grammar questions
+ */
+interface ExtendedCurrentRound extends Omit<CurrentRound, 'words'> {
+  words: (Word | GrammarQuestion)[];
+}
+
+/**
  * Return type for the useGameState hook
  */
 interface UseGameStateReturn {
   currentMode: GameMode | null;
-  currentWord: Word | null;
+  currentWord: Word | GrammarQuestion | null;
   roundProgress: RoundProgress;
   isRoundComplete: boolean;
   currentAttempts: number;
@@ -59,12 +67,12 @@ interface UseGameStateReturn {
  */
 export function useGameState(): UseGameStateReturn {
   const [currentMode, setCurrentMode] = useState<GameMode | null>(null);
-  const [currentRound, setCurrentRound] = useState<CurrentRound | null>(null);
+  const [currentRound, setCurrentRound] = useState<ExtendedCurrentRound | null>(null);
 
   /**
    * Get the current word based on round state
    */
-  const currentWord = useMemo((): Word | null => {
+  const currentWord = useMemo((): Word | GrammarQuestion | null => {
     if (!currentRound) return null;
     return currentRound.words[currentRound.currentIndex] || null;
   }, [currentRound]);
@@ -118,18 +126,23 @@ export function useGameState(): UseGameStateReturn {
    * Start a new game with the specified mode
    */
   const startGame = useCallback((mode: GameMode) => {
-    // Filter words based on game mode
-    let availableWords = words;
-    if (mode === 'plural-forms') {
+    let roundWords: (Word | GrammarQuestion)[];
+
+    if (mode === 'grammar-forms') {
+      // Use grammar questions for grammar-forms mode
+      roundWords = pickRandom(grammarQuestions, WORDS_PER_ROUND);
+    } else if (mode === 'plural-forms') {
       // Only include words with plural form data
-      availableWords = words.filter(
+      const availableWords = words.filter(
         (word) => word.pluralForm && word.wrongPluralForms && word.wrongPluralForms.length === 2
       );
+      roundWords = pickRandom(availableWords, WORDS_PER_ROUND);
+    } else {
+      // Default: use all words
+      roundWords = pickRandom(words, WORDS_PER_ROUND);
     }
 
-    const roundWords = pickRandom(availableWords, WORDS_PER_ROUND);
-
-    const newRound: CurrentRound = {
+    const newRound: ExtendedCurrentRound = {
       words: roundWords,
       currentIndex: 0,
       score: 0,
@@ -161,13 +174,20 @@ export function useGameState(): UseGameStateReturn {
 
       const attemptNumber = currentRound.attempts[currentRound.currentIndex] + 1;
 
-      // For plural-forms mode, check against pluralForm, otherwise check against english
-      const correctAnswer = currentMode === 'plural-forms' && currentWord.pluralForm
-        ? currentWord.pluralForm
-        : currentWord.english;
+      // Determine correct answer based on mode and item type
+      let correctAnswer: string;
+      if (currentMode === 'grammar-forms' && 'correctAnswer' in currentWord) {
+        correctAnswer = currentWord.correctAnswer;
+      } else if (currentMode === 'plural-forms' && 'pluralForm' in currentWord && currentWord.pluralForm) {
+        correctAnswer = currentWord.pluralForm;
+      } else if ('english' in currentWord) {
+        correctAnswer = currentWord.english;
+      } else {
+        correctAnswer = '';
+      }
 
       const correct = isAnswerCorrect(answer, correctAnswer);
-      let pointsEarned = 0;
+      const pointsEarned = correct ? calculateAttemptPoints(attemptNumber) : 0;
 
       setCurrentRound((prev) => {
         if (!prev) return prev;
@@ -182,7 +202,6 @@ export function useGameState(): UseGameStateReturn {
 
         if (correct) {
           newScore += 1;
-          pointsEarned = calculateAttemptPoints(attemptNumber);
           newPoints += pointsEarned;
           newStreak += 1;
           newMaxStreak = Math.max(newMaxStreak, newStreak);

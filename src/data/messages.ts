@@ -1,5 +1,5 @@
 /**
- * Slovenian UI text and messages for the WordGym game
+ * Slovenian UI text and messages for the EnglishGym game
  * All user-facing text is centralized here for consistency
  */
 
@@ -46,19 +46,21 @@ export const roundCompleteMessages = {
  */
 export const labels = {
   // App title
-  appTitle: 'WordGym',
+  appTitle: 'EnglishGym',
 
   // Home screen
-  homeSubtitle: 'Učimo se črkovati angleške besede!',
+  homeSubtitle: 'Zabavni načini učenja angleščine!',
   listenSpellButton: 'Poslušaj in črkuj',
   pickSpellingButton: 'Izberi pravilno',
   pluralFormsButton: 'Množina',
+  grammarFormsButton: 'Dopolni stavke',
   badgesButton: 'Značke',
   totalPoints: 'Skupne točke',
   badgesEarned: 'Značke',
 
   // Game screen
   wordProgress: (current: number, total: number) => `Beseda ${current}/${total}`,
+  sentenceProgress: (current: number, total: number) => `Stavek ${current}/${total}`,
   listenButton: 'Poslušaj',
   hintLabel: 'Namig',
   checkButton: 'Preveri',
@@ -66,6 +68,7 @@ export const labels = {
   spellingPrompt: (word: string) => `Kako se črkuje "${word}"?`,
   pluralPrompt: (singular: string, slovenian: string) =>
     `Množina besede ${singular} (${slovenian})?`,
+  grammarPrompt: (sentence: string) => sentence,
   currentScore: 'Rezultat',
   points: 'točke',
 

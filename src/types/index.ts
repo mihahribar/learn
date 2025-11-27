@@ -1,7 +1,7 @@
 /**
  * Game mode types
  */
-export type GameMode = 'listen-spell' | 'pick-spelling' | 'plural-forms';
+export type GameMode = 'listen-spell' | 'pick-spelling' | 'plural-forms' | 'grammar-forms';
 
 /**
  * Word difficulty levels
@@ -19,6 +19,17 @@ export interface Word {
   wrongSpellings: string[];
   pluralForm?: string;
   wrongPluralForms?: string[];
+}
+
+/**
+ * Grammar question data structure for grammar exercises
+ */
+export interface GrammarQuestion {
+  id: string;
+  sentence: string;
+  correctAnswer: string;
+  wrongAnswers: string[];
+  subjectType: 'singular' | 'plural' | 'first-person';
 }
 
 /**
@@ -90,7 +101,7 @@ export interface GameState {
 /**
  * Screen navigation types
  */
-export type Screen = 'home' | 'listen-spell' | 'pick-spelling' | 'plural-forms' | 'round-complete' | 'badges';
+export type Screen = 'home' | 'listen-spell' | 'pick-spelling' | 'plural-forms' | 'grammar-forms' | 'round-complete' | 'badges';
 
 /**
  * Feedback state for answer submissions

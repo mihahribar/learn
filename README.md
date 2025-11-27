@@ -1,6 +1,6 @@
-# WordGym
+# EnglishGym
 
-WordGym is an interactive web game that helps elementary school students practice spelling English words through engaging gameplay, audio pronunciation, and achievements. Built with React and TypeScript, the application features a fully Slovenian user interface.
+EnglishGym is an interactive web game that helps elementary school students practice spelling English words through engaging gameplay, audio pronunciation, and achievements. Built with React and TypeScript, the application features a fully Slovenian user interface.
 
 ## Key Features
 
