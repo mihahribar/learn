@@ -17,7 +17,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '2',
     sentence: "I can't open the door. I _______ a key.",
     correctAnswer: "haven't got",
-    wrongAnswers: ["hasn't got", 'got'],
+    wrongAnswers: ["hasn't got", "doesn't got"],
     subjectType: 'first-person',
   },
   {
@@ -87,7 +87,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '12',
     sentence: "My uncle _______ a son or a daughter.",
     correctAnswer: "hasn't got",
-    wrongAnswers: ["haven't got", 'got'],
+    wrongAnswers: ["haven't got", "doesn't got"],
     subjectType: 'singular',
   },
   {
@@ -101,7 +101,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '14',
     sentence: 'We _______ a red sofa in our classroom.',
     correctAnswer: 'have got',
-    wrongAnswers: ['has got', 'got'],
+    wrongAnswers: ['has got', 'having got'],
     subjectType: 'plural',
   },
   {
@@ -115,7 +115,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '16',
     sentence: "She wants new jeans, but she _______ the money.",
     correctAnswer: "hasn't got",
-    wrongAnswers: ["haven't got", 'got'],
+    wrongAnswers: ["haven't got", "doesn't got"],
     subjectType: 'singular',
   },
   {
@@ -129,7 +129,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '18',
     sentence: 'I _______ a big flat screen in my room.',
     correctAnswer: 'have got',
-    wrongAnswers: ['has got', 'got'],
+    wrongAnswers: ['has got', 'having got'],
     subjectType: 'first-person',
   },
   {
@@ -143,7 +143,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '20',
     sentence: 'Me and my brother _______ a computer.',
     correctAnswer: 'have got',
-    wrongAnswers: ['has got', 'got'],
+    wrongAnswers: ['has got', 'having got'],
     subjectType: 'plural',
   },
   {
@@ -157,7 +157,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '22',
     sentence: 'The students _______ a lot of homework today.',
     correctAnswer: 'have got',
-    wrongAnswers: ['has got', 'got'],
+    wrongAnswers: ['has got', 'having got'],
     subjectType: 'plural',
   },
   {
@@ -171,7 +171,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '24',
     sentence: 'I _______ three pencils in my bag.',
     correctAnswer: 'have got',
-    wrongAnswers: ['has got', 'got'],
+    wrongAnswers: ['has got', 'having got'],
     subjectType: 'first-person',
   },
   {
@@ -185,7 +185,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '26',
     sentence: 'The cat _______ green eyes.',
     correctAnswer: 'has got',
-    wrongAnswers: ['have got', 'got'],
+    wrongAnswers: ['have got', 'having got'],
     subjectType: 'singular',
   },
   {
@@ -199,7 +199,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '28',
     sentence: 'Tom _______ a red bicycle.',
     correctAnswer: 'has got',
-    wrongAnswers: ['have got', 'got'],
+    wrongAnswers: ['have got', 'having got'],
     subjectType: 'singular',
   },
   {
@@ -213,7 +213,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '30',
     sentence: 'My friends _______ tickets for the concert.',
     correctAnswer: 'have got',
-    wrongAnswers: ['has got', 'got'],
+    wrongAnswers: ['has got', 'having got'],
     subjectType: 'plural',
   },
 ];
