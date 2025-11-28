@@ -1,9 +1,10 @@
 import type { GrammarQuestion } from '../types';
 
 /**
- * Grammar questions for "have got" vs "has got" subject-verb agreement practice
- * Contains 30 sentence completion questions with multiple choice answers
- * Based on examples from the grammar worksheet
+ * Grammar questions for subject-verb agreement practice
+ * Contains "have got/has got" and "TO BE" verb forms
+ * Total: 64 sentence completion questions with multiple choice answers
+ * Game picks 10 random questions per round
  */
 export const grammarQuestions: GrammarQuestion[] = [
   {
@@ -214,6 +215,260 @@ export const grammarQuestions: GrammarQuestion[] = [
     sentence: 'My friends _______ tickets for the concert.',
     correctAnswer: 'have got',
     wrongAnswers: ['has got', 'having got'],
+    subjectType: 'plural',
+  },
+
+  // ==========================================
+  // TO BE VERB QUESTIONS (IDs 31-64)
+  // ==========================================
+
+  // First-person (I) - "am"
+  {
+    id: '31',
+    sentence: 'I _______ hungry.',
+    correctAnswer: 'am',
+    wrongAnswers: ['is', 'are'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '32',
+    sentence: 'I _______ angry.',
+    correctAnswer: 'am',
+    wrongAnswers: ['is', 'are'],
+    subjectType: 'first-person',
+  },
+
+  // Singular (is)
+  {
+    id: '33',
+    sentence: 'He _______ a boy.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '34',
+    sentence: 'It _______ my dog, Rex.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '35',
+    sentence: 'He _______ very tall.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '36',
+    sentence: 'Anna _______ in the garden.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '37',
+    sentence: 'My cat _______ black and white.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '38',
+    sentence: 'The sun _______ yellow.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '39',
+    sentence: 'She _______ beautiful.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '40',
+    sentence: 'Tom _______ strong.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '41',
+    sentence: 'My mother _______ sad.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '42',
+    sentence: 'My car _______ new.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '43',
+    sentence: 'It _______ cold.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+
+  // Plural (are)
+  {
+    id: '44',
+    sentence: 'You _______ in my house.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '45',
+    sentence: 'They _______ from Germany.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '46',
+    sentence: 'We _______ happy.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '47',
+    sentence: 'We _______ good friends.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '48',
+    sentence: 'You _______ doctors.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '49',
+    sentence: 'We _______ at school.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '50',
+    sentence: 'They _______ tigers.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+
+  // Additional first-person questions
+  {
+    id: '51',
+    sentence: 'I _______ ten years old.',
+    correctAnswer: 'am',
+    wrongAnswers: ['is', 'are'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '52',
+    sentence: 'I _______ a student.',
+    correctAnswer: 'am',
+    wrongAnswers: ['is', 'are'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '53',
+    sentence: 'I _______ very tired today.',
+    correctAnswer: 'am',
+    wrongAnswers: ['is', 'are'],
+    subjectType: 'first-person',
+  },
+
+  // Additional singular questions
+  {
+    id: '54',
+    sentence: 'The book _______ on the table.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '55',
+    sentence: 'My sister _______ a teacher.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '56',
+    sentence: 'The weather _______ nice today.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+  {
+    id: '57',
+    sentence: 'Peter _______ from London.',
+    correctAnswer: 'is',
+    wrongAnswers: ['are', 'am'],
+    subjectType: 'singular',
+  },
+
+  // Additional plural questions
+  {
+    id: '58',
+    sentence: 'The children _______ in the park.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '59',
+    sentence: 'My parents _______ at work.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '60',
+    sentence: 'You _______ a good friend.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '61',
+    sentence: 'The books _______ very interesting.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '62',
+    sentence: 'They _______ ready for the test.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '63',
+    sentence: 'We _______ from Slovenia.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+  {
+    id: '64',
+    sentence: 'The dogs _______ in the garden.',
+    correctAnswer: 'are',
+    wrongAnswers: ['is', 'am'],
     subjectType: 'plural',
   },
 ];

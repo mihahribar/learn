@@ -2,8 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { grammarQuestions } from './grammarQuestions';
 
 describe('grammarQuestions data', () => {
-  it('should have exactly 30 questions', () => {
-    expect(grammarQuestions).toHaveLength(30);
+  it('should have exactly 64 questions', () => {
+    expect(grammarQuestions).toHaveLength(64);
   });
 
   it('should have all required fields for each question', () => {
@@ -40,21 +40,49 @@ describe('grammarQuestions data', () => {
     });
   });
 
-  it('should have singular subjects use "has got" or "hasn\'t got" as correct answer', () => {
+  it('should have singular subjects use correct verb form', () => {
     const singularQuestions = grammarQuestions.filter(
       (q) => q.subjectType === 'singular'
     );
     singularQuestions.forEach((question) => {
-      expect(['has got', "hasn't got"]).toContain(question.correctAnswer);
+      expect(['has got', "hasn't got", 'is']).toContain(question.correctAnswer);
     });
   });
 
-  it('should have plural and first-person subjects use "have got" or "haven\'t got" as correct answer', () => {
-    const pluralAndFirstPerson = grammarQuestions.filter(
-      (q) => q.subjectType === 'plural' || q.subjectType === 'first-person'
+  it('should have plural subjects use correct verb form', () => {
+    const pluralQuestions = grammarQuestions.filter(
+      (q) => q.subjectType === 'plural'
     );
-    pluralAndFirstPerson.forEach((question) => {
-      expect(['have got', "haven't got"]).toContain(question.correctAnswer);
+    pluralQuestions.forEach((question) => {
+      expect(['have got', "haven't got", 'are']).toContain(question.correctAnswer);
+    });
+  });
+
+  it('should have first-person subjects use correct verb form', () => {
+    const firstPersonQuestions = grammarQuestions.filter(
+      (q) => q.subjectType === 'first-person'
+    );
+    firstPersonQuestions.forEach((question) => {
+      expect(['have got', "haven't got", 'am']).toContain(question.correctAnswer);
+    });
+  });
+
+  it('should have correct TO BE verb forms for each subject type', () => {
+    const toBeQuestions = grammarQuestions.filter(
+      (q) => !q.correctAnswer.includes('got')
+    );
+
+    toBeQuestions.forEach((question) => {
+      if (question.subjectType === 'first-person') {
+        expect(question.correctAnswer).toBe('am');
+        expect(question.wrongAnswers).toEqual(expect.arrayContaining(['is', 'are']));
+      } else if (question.subjectType === 'singular') {
+        expect(question.correctAnswer).toBe('is');
+        expect(question.wrongAnswers).toEqual(expect.arrayContaining(['are', 'am']));
+      } else if (question.subjectType === 'plural') {
+        expect(question.correctAnswer).toBe('are');
+        expect(question.wrongAnswers).toEqual(expect.arrayContaining(['is', 'am']));
+      }
     });
   });
 });
