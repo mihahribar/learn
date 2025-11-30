@@ -18,7 +18,6 @@ describe('storage utilities', () => {
     it('should return true when localStorage is available', () => {
       expect(isStorageAvailable()).toBe(true);
     });
-
   });
 
   describe('getStorageItem', () => {
@@ -125,7 +124,6 @@ describe('storage utilities', () => {
 
       expect(result).toBe(true);
     });
-
   });
 
   describe('getProgress', () => {

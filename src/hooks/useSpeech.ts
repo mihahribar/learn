@@ -66,28 +66,34 @@ export function useSpeech(): UseSpeechReturn {
   /**
    * Load voices with retry mechanism
    */
-  const loadVoicesWithRetry = useCallback(function retry() {
-    if (typeof window === 'undefined' || !window.speechSynthesis) {
-      return;
-    }
+  const loadVoicesWithRetry = useCallback(
+    function retry() {
+      if (typeof window === 'undefined' || !window.speechSynthesis) {
+        return;
+      }
 
-    const voices = window.speechSynthesis.getVoices();
+      const voices = window.speechSynthesis.getVoices();
 
-    if (voices.length > 0) {
-      const englishVoice = findEnglishVoice(voices);
-      setVoice(englishVoice);
-      setVoiceLoaded(true);
-      retryCountRef.current = 0;
-    } else if (retryCountRef.current < VOICE_RETRY_CONFIG.maxRetries) {
-      // Retry after delay if voices not yet loaded
-      retryCountRef.current += 1;
-      retryTimeoutRef.current = setTimeout(retry, VOICE_RETRY_CONFIG.retryDelayMs * retryCountRef.current);
-    } else {
-      // Max retries reached - mark as loaded but without specific voice
-      // The speech synthesis will use the browser's default voice
-      setVoiceLoaded(true);
-    }
-  }, [findEnglishVoice]);
+      if (voices.length > 0) {
+        const englishVoice = findEnglishVoice(voices);
+        setVoice(englishVoice);
+        setVoiceLoaded(true);
+        retryCountRef.current = 0;
+      } else if (retryCountRef.current < VOICE_RETRY_CONFIG.maxRetries) {
+        // Retry after delay if voices not yet loaded
+        retryCountRef.current += 1;
+        retryTimeoutRef.current = setTimeout(
+          retry,
+          VOICE_RETRY_CONFIG.retryDelayMs * retryCountRef.current
+        );
+      } else {
+        // Max retries reached - mark as loaded but without specific voice
+        // The speech synthesis will use the browser's default voice
+        setVoiceLoaded(true);
+      }
+    },
+    [findEnglishVoice]
+  );
 
   /**
    * Initialize voices - handles async voice loading in some browsers
