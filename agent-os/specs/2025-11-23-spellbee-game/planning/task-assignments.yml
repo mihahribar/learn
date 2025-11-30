@@ -1,0 +1,33 @@
+task_assignments:
+  - task_group: "Task Group 1: Project Setup and Configuration"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 2: Game Data Layer"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 3: Reusable UI Components"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 4: Game-Specific Components"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 5: State Management Hooks"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 6: Home Screen"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 7: Listen & Spell Game Mode"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 8: Pick the Right Spelling Game Mode"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 9: Round Complete and Badges Screens"
+    assigned_subagent: "api-engineer"
+
+  - task_group: "Task Group 10: Visual Polish and Edge Cases"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 11: Test Review and Gap Analysis"
+    assigned_subagent: "testing-engineer"

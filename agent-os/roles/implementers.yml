@@ -1,0 +1,20 @@
+implementers:
+  - id: api-engineer
+    name: API Engineer
+    description: Handles API endpoints, controllers, business logic, request/response handling
+    verified_by: backend-verifier
+
+  - id: ui-designer
+    name: UI Designer
+    description: Handles UI components, views, layouts, styling, responsive design
+    verified_by: frontend-verifier
+
+  - id: database-engineer
+    name: Database Engineer
+    description: Handles migrations, models, schemas, database queries
+    verified_by: backend-verifier
+
+  - id: testing-engineer
+    name: Testing Engineer
+    description: Handles test files, test coverage, test fixtures
+    verified_by: null

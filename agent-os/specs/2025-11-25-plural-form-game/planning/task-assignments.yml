@@ -1,0 +1,12 @@
+task_assignments:
+  - task_group: "Task Group 1: Type Definitions and Data Model Extensions"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 2: Word Data and UI Labels"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 3: PluralFormsScreen Component and Home Integration"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 4: Integration Testing and Manual QA"
+    assigned_subagent: "testing-engineer"

@@ -1,0 +1,15 @@
+task_assignments:
+  - task_group: "Task Group 1: Grammar Questions Data"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 2: Type System and Game State Integration"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 3: GrammarFormsScreen Component"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 4: App Integration and Navigation"
+    assigned_subagent: "ui-designer"
+
+  - task_group: "Task Group 5: Test Review & Gap Analysis"
+    assigned_subagent: "testing-engineer"
