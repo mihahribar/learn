@@ -1,8 +1,10 @@
 import { type ButtonHTMLAttributes } from 'react';
 import { labels } from '../../data/messages';
 
-export interface ListenButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface ListenButtonProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'children'
+> {
   speaking?: boolean;
   supported?: boolean;
   onListen: () => void;
@@ -44,9 +46,7 @@ export function ListenButton({
 
   const disabledStyles = 'bg-gray-300 text-gray-500 cursor-not-allowed';
 
-  const speakingStyles = speaking
-    ? 'animate-pulse ring-4 ring-primary-300 ring-offset-2'
-    : '';
+  const speakingStyles = speaking ? 'animate-pulse ring-4 ring-primary-300 ring-offset-2' : '';
 
   const combinedClassName = [
     baseStyles,

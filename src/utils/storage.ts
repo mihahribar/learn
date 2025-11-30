@@ -1,12 +1,39 @@
 /**
  * localStorage helper utilities with JSON parsing
- * Provides safe access to localStorage with graceful error handling
+ *
+ * Provides safe access to browser localStorage with automatic JSON
+ * serialization/deserialization and graceful error handling for
+ * scenarios where localStorage might be unavailable (private browsing,
+ * quota exceeded, etc.)
+ *
+ * @module storage
  */
 
+/**
+ * The localStorage key used for storing game progress
+ * @constant
+ */
 const STORAGE_KEY = 'spellbee_progress';
 
 /**
- * Check if localStorage is available
+ * Checks if localStorage is available and functional
+ *
+ * Tests localStorage by attempting to write and remove a test value.
+ * This catches scenarios where localStorage exists but throws errors
+ * (e.g., private browsing mode, quota exceeded).
+ *
+ * @returns True if localStorage is available and working, false otherwise
+ *
+ * @example
+ * ```typescript
+ * if (isStorageAvailable()) {
+ *   // Safe to use storage functions
+ *   saveProgress(data)
+ * } else {
+ *   // Show warning to user about disabled storage
+ *   console.warn('Storage unavailable')
+ * }
+ * ```
  */
 export function isStorageAvailable(): boolean {
   try {
@@ -20,10 +47,28 @@ export function isStorageAvailable(): boolean {
 }
 
 /**
- * Get a value from localStorage with JSON parsing
+ * Retrieves and parses a value from localStorage
  *
- * @param key - The storage key
- * @returns The parsed value or null if not found/invalid
+ * Automatically handles JSON parsing and provides type safety through
+ * generics. Returns null for any error condition including missing keys,
+ * invalid JSON, or unavailable storage.
+ *
+ * @template T - The expected type of the stored value
+ * @param key - The localStorage key to retrieve
+ * @returns The parsed value of type T, or null if not found or invalid
+ *
+ * @example
+ * ```typescript
+ * interface UserSettings {
+ *   theme: string
+ *   volume: number
+ * }
+ *
+ * const settings = getStorageItem<UserSettings>('settings')
+ * if (settings) {
+ *   console.log(settings.theme) // Type-safe access
+ * }
+ * ```
  */
 export function getStorageItem<T>(key: string): T | null {
   if (!isStorageAvailable()) {
@@ -42,11 +87,23 @@ export function getStorageItem<T>(key: string): T | null {
 }
 
 /**
- * Set a value in localStorage with JSON stringification
+ * Stores a value in localStorage with automatic JSON stringification
  *
- * @param key - The storage key
- * @param value - The value to store
- * @returns true if successful, false otherwise
+ * Safely stores any JSON-serializable value with automatic error handling.
+ * Returns a boolean to indicate success or failure.
+ *
+ * @template T - The type of value being stored
+ * @param key - The localStorage key to use
+ * @param value - The value to store (must be JSON-serializable)
+ * @returns True if successfully stored, false on any error
+ *
+ * @example
+ * ```typescript
+ * const success = setStorageItem('user', { name: 'John', age: 30 })
+ * if (!success) {
+ *   console.error('Failed to save user data')
+ * }
+ * ```
  */
 export function setStorageItem<T>(key: string, value: T): boolean {
   if (!isStorageAvailable()) {
@@ -62,10 +119,20 @@ export function setStorageItem<T>(key: string, value: T): boolean {
 }
 
 /**
- * Remove a value from localStorage
+ * Removes a value from localStorage
  *
- * @param key - The storage key
- * @returns true if successful, false otherwise
+ * Safely removes an item from localStorage with error handling.
+ * Returns true even if the key doesn't exist (idempotent operation).
+ *
+ * @param key - The localStorage key to remove
+ * @returns True if operation succeeded, false if storage unavailable
+ *
+ * @example
+ * ```typescript
+ * if (removeStorageItem('temp-data')) {
+ *   console.log('Temporary data cleared')
+ * }
+ * ```
  */
 export function removeStorageItem(key: string): boolean {
   if (!isStorageAvailable()) {
@@ -81,21 +148,68 @@ export function removeStorageItem(key: string): boolean {
 }
 
 /**
- * Get the game progress from localStorage
+ * Retrieves the saved game progress from localStorage
+ *
+ * Convenience wrapper for getStorageItem using the standard progress key.
+ * Use with PersistedProgress type for full type safety.
+ *
+ * @template T - The progress data type (typically PersistedProgress)
+ * @returns The progress data or null if not found
+ *
+ * @example
+ * ```typescript
+ * import type { PersistedProgress } from '../types'
+ *
+ * const progress = getProgress<PersistedProgress>()
+ * if (progress) {
+ *   console.log(`Total points: ${progress.totalPoints}`)
+ * }
+ * ```
  */
 export function getProgress<T>(): T | null {
   return getStorageItem<T>(STORAGE_KEY);
 }
 
 /**
- * Save the game progress to localStorage
+ * Saves game progress to localStorage
+ *
+ * Convenience wrapper for setStorageItem using the standard progress key.
+ *
+ * @template T - The progress data type (typically PersistedProgress)
+ * @param progress - The progress data to save
+ * @returns True if successfully saved, false otherwise
+ *
+ * @example
+ * ```typescript
+ * const newProgress: PersistedProgress = {
+ *   version: 1,
+ *   totalPoints: 500,
+ *   // ... other fields
+ * }
+ *
+ * if (saveProgress(newProgress)) {
+ *   console.log('Progress saved successfully')
+ * }
+ * ```
  */
 export function saveProgress<T>(progress: T): boolean {
   return setStorageItem(STORAGE_KEY, progress);
 }
 
 /**
- * Clear the game progress from localStorage
+ * Clears all saved game progress from localStorage
+ *
+ * Convenience wrapper for removeStorageItem using the standard progress key.
+ * Use this for logout, reset, or data clearing operations.
+ *
+ * @returns True if successfully cleared, false if storage unavailable
+ *
+ * @example
+ * ```typescript
+ * if (clearProgress()) {
+ *   console.log('Game progress reset')
+ * }
+ * ```
  */
 export function clearProgress(): boolean {
   return removeStorageItem(STORAGE_KEY);

@@ -87,12 +87,7 @@ export function FeedbackMessage({
   // Add success pulse animation for correct answers
   const successAnimation = type === 'correct' ? 'animate-success-pulse' : '';
 
-  const combinedClassName = [
-    baseStyles,
-    typeStyles[type],
-    successAnimation,
-    className,
-  ]
+  const combinedClassName = [baseStyles, typeStyles[type], successAnimation, className]
     .filter(Boolean)
     .join(' ');
 

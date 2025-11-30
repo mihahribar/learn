@@ -15,14 +15,12 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const variantStyles: Record<ButtonVariant, string> = {
   primary:
     'bg-primary-600 hover:bg-primary-700 active:bg-primary-800 text-white focus:ring-primary-400',
-  secondary:
-    'bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-800 focus:ring-gray-400',
+  secondary: 'bg-gray-200 hover:bg-gray-300 active:bg-gray-400 text-gray-800 focus:ring-gray-400',
   success:
     'bg-success hover:bg-success-dark active:bg-green-800 text-white focus:ring-success-light',
   warning:
     'bg-warning hover:bg-warning-dark active:bg-orange-800 text-white focus:ring-warning-light',
-  info:
-    'bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white focus:ring-cyan-400',
+  info: 'bg-cyan-500 hover:bg-cyan-600 active:bg-cyan-700 text-white focus:ring-cyan-400',
 };
 
 const sizeStyles: Record<ButtonSize, string> = {
@@ -59,19 +57,10 @@ export function Button({
     .join(' ');
 
   return (
-    <button
-      type="button"
-      disabled={disabled}
-      className={combinedClassName}
-      {...props}
-    >
-      {icon && iconPosition === 'left' && (
-        <span className="flex-shrink-0">{icon}</span>
-      )}
+    <button type="button" disabled={disabled} className={combinedClassName} {...props}>
+      {icon && iconPosition === 'left' && <span className="flex-shrink-0">{icon}</span>}
       <span>{children}</span>
-      {icon && iconPosition === 'right' && (
-        <span className="flex-shrink-0">{icon}</span>
-      )}
+      {icon && iconPosition === 'right' && <span className="flex-shrink-0">{icon}</span>}
     </button>
   );
 }

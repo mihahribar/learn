@@ -6,13 +6,7 @@
 /**
  * Messages shown when the user answers correctly
  */
-export const correctMessages: string[] = [
-  'Odlično!',
-  'Super!',
-  'Pravilno!',
-  'Bravo!',
-  'Tako je!',
-];
+export const correctMessages: string[] = ['Odlično!', 'Super!', 'Pravilno!', 'Bravo!', 'Tako je!'];
 
 /**
  * Messages shown when the user answers incorrectly (first attempt)
@@ -26,10 +20,7 @@ export const wrongMessages: string[] = [
 /**
  * Messages shown when revealing the correct answer
  */
-export const showCorrectMessages: string[] = [
-  'Pravilno se piše: ',
-  'Zapomni si: ',
-];
+export const showCorrectMessages: string[] = ['Pravilno se piše: ', 'Zapomni si: '];
 
 /**
  * Round complete messages based on score
@@ -37,8 +28,7 @@ export const showCorrectMessages: string[] = [
 export const roundCompleteMessages = {
   excellent: (score: number) => `Odlično! Dosegla si ${score}/10!`,
   good: (score: number) => `Dobro! Dosegla si ${score}/10. Še naprej tako!`,
-  encouragement: (score: number) =>
-    `Dosegla si ${score}/10. Naslednjič bo še boljše!`,
+  encouragement: (score: number) => `Dosegla si ${score}/10. Naslednjič bo še boljše!`,
 };
 
 /**

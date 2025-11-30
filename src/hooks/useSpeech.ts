@@ -127,10 +127,7 @@ export function useSpeech(): UseSpeechReturn {
     window.speechSynthesis.addEventListener('voiceschanged', handleVoicesChanged);
 
     return () => {
-      window.speechSynthesis.removeEventListener(
-        'voiceschanged',
-        handleVoicesChanged
-      );
+      window.speechSynthesis.removeEventListener('voiceschanged', handleVoicesChanged);
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }

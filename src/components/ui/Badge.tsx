@@ -18,14 +18,7 @@ const iconMap: Record<string, string> = {
   lock: '\uD83D\uDD12',
 };
 
-export function Badge({
-  name,
-  description,
-  icon,
-  earned,
-  className = '',
-  ...props
-}: BadgeProps) {
+export function Badge({ name, description, icon, earned, className = '', ...props }: BadgeProps) {
   const displayIcon = earned ? iconMap[icon] || icon : iconMap.lock;
 
   const baseStyles =
@@ -35,17 +28,11 @@ export function Badge({
     ? 'bg-primary-50 hover:bg-primary-100 hover:scale-105 cursor-default'
     : 'bg-gray-100 grayscale opacity-60';
 
-  const combinedClassName = [baseStyles, earnedStyles, className]
-    .filter(Boolean)
-    .join(' ');
+  const combinedClassName = [baseStyles, earnedStyles, className].filter(Boolean).join(' ');
 
   return (
     <div className={combinedClassName} {...props}>
-      <span
-        className="text-4xl mb-3"
-        role="img"
-        aria-label={earned ? icon : 'locked'}
-      >
+      <span className="text-4xl mb-3" role="img" aria-label={earned ? icon : 'locked'}>
         {displayIcon}
       </span>
       <h3 className="font-bold text-base text-gray-800 mb-1">{name}</h3>

@@ -88,13 +88,11 @@ export function PluralFormsScreen({
   playCorrectSound,
   playWrongSound,
 }: PluralFormsScreenProps) {
-  const [optionStates, setOptionStates] = useState<Record<string, OptionState>>(
-    {}
-  );
+  const [optionStates, setOptionStates] = useState<Record<string, OptionState>>({});
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
-  const [feedbackType, setFeedbackType] = useState<
-    'correct' | 'wrong' | 'show-answer' | null
-  >(null);
+  const [feedbackType, setFeedbackType] = useState<'correct' | 'wrong' | 'show-answer' | null>(
+    null
+  );
   const [isProcessing, setIsProcessing] = useState(false);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -210,14 +208,7 @@ export function PluralFormsScreen({
         }
       }
     },
-    [
-      currentWord,
-      isProcessing,
-      onSubmitAnswer,
-      handleAdvance,
-      playCorrectSound,
-      playWrongSound,
-    ]
+    [currentWord, isProcessing, onSubmitAnswer, handleAdvance, playCorrectSound, playWrongSound]
   );
 
   const getOptionState = (optionValue: string): OptionState => {
@@ -262,35 +253,20 @@ export function PluralFormsScreen({
       </header>
 
       {/* Main game card */}
-      <Card
-        padding="lg"
-        shadow="lg"
-        className="w-full max-w-md mx-auto flex-grow flex flex-col"
-      >
+      <Card padding="lg" shadow="lg" className="w-full max-w-md mx-auto flex-grow flex flex-col">
         <div className="flex-grow flex flex-col items-center justify-center space-y-4 sm:space-y-6">
           {/* Singular word display with Slovenian translation */}
           <div className="text-center">
-            <h2
-              className="text-lg sm:text-xl font-semibold text-gray-800"
-              id="plural-prompt"
-            >
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800" id="plural-prompt">
               {labels.pluralPrompt(currentWord.english, currentWord.slovenian)}
             </h2>
           </div>
 
           {/* Listen button */}
-          <ListenButton
-            speaking={speaking}
-            supported={speechSupported}
-            onListen={handleListen}
-          />
+          <ListenButton speaking={speaking} supported={speechSupported} onListen={handleListen} />
 
           {/* Option buttons */}
-          <div
-            className="w-full space-y-3"
-            role="group"
-            aria-labelledby="plural-prompt"
-          >
+          <div className="w-full space-y-3" role="group" aria-labelledby="plural-prompt">
             {shuffledOptions.map((option) => (
               <OptionButton
                 key={option.value}
@@ -307,9 +283,7 @@ export function PluralFormsScreen({
             <FeedbackMessage
               type={feedbackType}
               message={feedbackMessage}
-              correctAnswer={
-                feedbackType === 'show-answer' ? currentWord.pluralForm : undefined
-              }
+              correctAnswer={feedbackType === 'show-answer' ? currentWord.pluralForm : undefined}
             />
           )}
         </div>

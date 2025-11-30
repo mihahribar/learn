@@ -178,7 +178,11 @@ export function useGameState(): UseGameStateReturn {
       let correctAnswer: string;
       if (currentMode === 'grammar-forms' && 'correctAnswer' in currentWord) {
         correctAnswer = currentWord.correctAnswer;
-      } else if (currentMode === 'plural-forms' && 'pluralForm' in currentWord && currentWord.pluralForm) {
+      } else if (
+        currentMode === 'plural-forms' &&
+        'pluralForm' in currentWord &&
+        currentWord.pluralForm
+      ) {
         correctAnswer = currentWord.pluralForm;
       } else if ('english' in currentWord) {
         correctAnswer = currentWord.english;

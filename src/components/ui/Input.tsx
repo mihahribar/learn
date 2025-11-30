@@ -1,14 +1,8 @@
-import {
-  forwardRef,
-  type InputHTMLAttributes,
-  type ReactNode,
-  useId,
-} from 'react';
+import { forwardRef, type InputHTMLAttributes, type ReactNode, useId } from 'react';
 
 export type InputState = 'default' | 'error' | 'success';
 
-export interface InputProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string;
   state?: InputState;
   helperText?: ReactNode;
@@ -35,17 +29,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     'placeholder:text-gray-400 ' +
     'disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed';
 
-  const combinedClassName = [baseStyles, stateStyles[state], className]
-    .filter(Boolean)
-    .join(' ');
+  const combinedClassName = [baseStyles, stateStyles[state], className].filter(Boolean).join(' ');
 
   return (
     <div className="w-full">
       {label && (
-        <label
-          htmlFor={inputId}
-          className="block mb-2 text-base font-medium text-gray-700"
-        >
+        <label htmlFor={inputId} className="block mb-2 text-base font-medium text-gray-700">
           {label}
         </label>
       )}

@@ -41,36 +41,28 @@ describe('grammarQuestions data', () => {
   });
 
   it('should have singular subjects use correct verb form', () => {
-    const singularQuestions = grammarQuestions.filter(
-      (q) => q.subjectType === 'singular'
-    );
+    const singularQuestions = grammarQuestions.filter((q) => q.subjectType === 'singular');
     singularQuestions.forEach((question) => {
       expect(['has got', "hasn't got", 'is']).toContain(question.correctAnswer);
     });
   });
 
   it('should have plural subjects use correct verb form', () => {
-    const pluralQuestions = grammarQuestions.filter(
-      (q) => q.subjectType === 'plural'
-    );
+    const pluralQuestions = grammarQuestions.filter((q) => q.subjectType === 'plural');
     pluralQuestions.forEach((question) => {
       expect(['have got', "haven't got", 'are']).toContain(question.correctAnswer);
     });
   });
 
   it('should have first-person subjects use correct verb form', () => {
-    const firstPersonQuestions = grammarQuestions.filter(
-      (q) => q.subjectType === 'first-person'
-    );
+    const firstPersonQuestions = grammarQuestions.filter((q) => q.subjectType === 'first-person');
     firstPersonQuestions.forEach((question) => {
       expect(['have got', "haven't got", 'am']).toContain(question.correctAnswer);
     });
   });
 
   it('should have correct TO BE verb forms for each subject type', () => {
-    const toBeQuestions = grammarQuestions.filter(
-      (q) => !q.correctAnswer.includes('got')
-    );
+    const toBeQuestions = grammarQuestions.filter((q) => !q.correctAnswer.includes('got'));
 
     toBeQuestions.forEach((question) => {
       if (question.subjectType === 'first-person') {

@@ -122,7 +122,11 @@ function App() {
       case 'listen-spell':
         return (
           <ListenSpellScreen
-            currentWord={gameState.currentWord && 'english' in gameState.currentWord ? gameState.currentWord : null}
+            currentWord={
+              gameState.currentWord && 'english' in gameState.currentWord
+                ? gameState.currentWord
+                : null
+            }
             roundProgress={gameState.roundProgress}
             currentAttempts={gameState.currentAttempts}
             onSubmitAnswer={handleRecordWordAttempt}
@@ -141,7 +145,11 @@ function App() {
       case 'pick-spelling':
         return (
           <PickSpellingScreen
-            currentWord={gameState.currentWord && 'english' in gameState.currentWord ? gameState.currentWord : null}
+            currentWord={
+              gameState.currentWord && 'english' in gameState.currentWord
+                ? gameState.currentWord
+                : null
+            }
             roundProgress={gameState.roundProgress}
             currentAttempts={gameState.currentAttempts}
             onSubmitAnswer={handleRecordWordAttempt}
@@ -160,7 +168,11 @@ function App() {
       case 'plural-forms':
         return (
           <PluralFormsScreen
-            currentWord={gameState.currentWord && 'english' in gameState.currentWord ? gameState.currentWord : null}
+            currentWord={
+              gameState.currentWord && 'english' in gameState.currentWord
+                ? gameState.currentWord
+                : null
+            }
             roundProgress={gameState.roundProgress}
             currentAttempts={gameState.currentAttempts}
             onSubmitAnswer={handleRecordWordAttempt}
@@ -179,7 +191,11 @@ function App() {
       case 'grammar-forms':
         return (
           <GrammarFormsScreen
-            currentQuestion={gameState.currentWord && 'correctAnswer' in gameState.currentWord ? gameState.currentWord : null}
+            currentQuestion={
+              gameState.currentWord && 'correctAnswer' in gameState.currentWord
+                ? gameState.currentWord
+                : null
+            }
             roundProgress={gameState.roundProgress}
             currentAttempts={gameState.currentAttempts}
             onSubmitAnswer={handleGrammarAttempt}
@@ -206,12 +222,7 @@ function App() {
         );
 
       case 'badges':
-        return (
-          <BadgesScreen
-            progress={progressHook.progress}
-            onGoBack={handleGoHome}
-          />
-        );
+        return <BadgesScreen progress={progressHook.progress} onGoBack={handleGoHome} />;
 
       default:
         return (

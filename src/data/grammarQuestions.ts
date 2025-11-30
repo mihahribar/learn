@@ -86,7 +86,7 @@ export const grammarQuestions: GrammarQuestion[] = [
   },
   {
     id: '12',
-    sentence: "My uncle _______ a son or a daughter.",
+    sentence: 'My uncle _______ a son or a daughter.',
     correctAnswer: "hasn't got",
     wrongAnswers: ["haven't got", "doesn't got"],
     subjectType: 'singular',
@@ -114,7 +114,7 @@ export const grammarQuestions: GrammarQuestion[] = [
   },
   {
     id: '16',
-    sentence: "She wants new jeans, but she _______ the money.",
+    sentence: 'She wants new jeans, but she _______ the money.',
     correctAnswer: "hasn't got",
     wrongAnswers: ["haven't got", "doesn't got"],
     subjectType: 'singular',

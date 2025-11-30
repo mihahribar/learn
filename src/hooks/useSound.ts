@@ -32,6 +32,14 @@ const SOUND_CONFIG = {
 
 /**
  * Return type for the useSound hook
+ *
+ * @property playCorrect - Plays a short, cheerful chime for correct answers
+ * @property playWrong - Plays a gentle, low tone for wrong answers
+ * @property playCelebration - Plays an ascending arpeggio for round completion
+ * @property playBadge - Plays a triumphant chord for badge unlocks
+ * @property muted - Current mute state (true if sounds are disabled)
+ * @property toggleMute - Function to toggle mute on/off
+ * @property supported - Whether Web Audio API is available in this browser
  */
 interface UseSoundReturn {
   playCorrect: () => void;
@@ -44,8 +52,43 @@ interface UseSoundReturn {
 }
 
 /**
- * Custom hook for playing game sound effects
- * Uses Web Audio API to generate simple tones
+ * Custom React hook for playing game sound effects using Web Audio API
+ *
+ * Provides simple, cheerful sound effects for game events (correct/wrong answers,
+ * celebrations, badge unlocks) using synthesized tones. Automatically handles
+ * browser compatibility, muting, and AudioContext lifecycle.
+ *
+ * Features:
+ * - Lazy AudioContext initialization (only created on first use)
+ * - Automatic AudioContext resume for browsers that suspend it
+ * - Graceful degradation when Web Audio API is unavailable
+ * - Mute/unmute functionality
+ * - No external audio files required
+ *
+ * @returns Object with sound playback functions and state
+ *
+ * @example
+ * ```tsx
+ * function GameScreen() {
+ *   const sound = useSound()
+ *
+ *   const handleCorrectAnswer = () => {
+ *     sound.playCorrect()
+ *     // ... update score
+ *   }
+ *
+ *   return (
+ *     <div>
+ *       <button onClick={sound.toggleMute}>
+ *         {sound.muted ? 'Unmute' : 'Mute'}
+ *       </button>
+ *       {!sound.supported && (
+ *         <p>Sound effects not available in this browser</p>
+ *       )}
+ *     </div>
+ *   )
+ * }
+ * ```
  */
 export function useSound(): UseSoundReturn {
   const [muted, setMuted] = useState(false);
@@ -56,8 +99,10 @@ export function useSound(): UseSoundReturn {
    * Initialize AudioContext on first user interaction
    */
   useEffect(() => {
-    const hasAudioContext = typeof window !== 'undefined' &&
-      (window.AudioContext || (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext);
+    const hasAudioContext =
+      typeof window !== 'undefined' &&
+      (window.AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext);
     setSupported(!!hasAudioContext);
 
     return () => {
@@ -74,7 +119,8 @@ export function useSound(): UseSoundReturn {
     if (typeof window === 'undefined') return null;
 
     if (!audioContextRef.current) {
-      const AudioContextClass = window.AudioContext ||
+      const AudioContextClass =
+        window.AudioContext ||
         (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
       if (AudioContextClass) {
         audioContextRef.current = new AudioContextClass();
@@ -92,7 +138,13 @@ export function useSound(): UseSoundReturn {
    * Play a single tone at specified frequency
    */
   const playTone = useCallback(
-    (frequency: number, duration: number, type: OscillatorType, gain: number, startTime?: number) => {
+    (
+      frequency: number,
+      duration: number,
+      type: OscillatorType,
+      gain: number,
+      startTime?: number
+    ) => {
       if (muted || !supported) return;
 
       const ctx = getAudioContext();

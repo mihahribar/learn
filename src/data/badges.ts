@@ -83,14 +83,9 @@ export function getLockedBadges(progress: PersistedProgress): Badge[] {
  * Check which new badges have been earned
  * Returns badges that pass their condition but are not yet in the earned list
  */
-export function checkNewBadges(
-  progress: PersistedProgress,
-  roundStats?: RoundStats
-): Badge[] {
+export function checkNewBadges(progress: PersistedProgress, roundStats?: RoundStats): Badge[] {
   return badges.filter(
-    (badge) =>
-      !progress.badges.includes(badge.id) &&
-      badge.condition(progress, roundStats)
+    (badge) => !progress.badges.includes(badge.id) && badge.condition(progress, roundStats)
   );
 }
 

@@ -75,16 +75,10 @@ export function ConfirmDialog({
 
       {/* Dialog */}
       <div className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 sm:p-8 animate-scale-in">
-        <h2
-          id="dialog-title"
-          className="text-xl sm:text-2xl font-bold text-gray-900 mb-3"
-        >
+        <h2 id="dialog-title" className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">
           {title}
         </h2>
-        <p
-          id="dialog-message"
-          className="text-base sm:text-lg text-gray-700 mb-6"
-        >
+        <p id="dialog-message" className="text-base sm:text-lg text-gray-700 mb-6">
           {message}
         </p>
 

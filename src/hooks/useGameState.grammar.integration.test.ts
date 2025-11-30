@@ -56,9 +56,7 @@ describe('useGameState - Grammar Forms Integration', () => {
     expect(secondRoundQuestions).toHaveLength(10);
 
     // At least some questions should be different between rounds
-    const matchingQuestions = firstRoundQuestions.filter((q) =>
-      secondRoundQuestions.includes(q)
-    );
+    const matchingQuestions = firstRoundQuestions.filter((q) => secondRoundQuestions.includes(q));
     expect(matchingQuestions.length).toBeLessThan(10);
   });
 

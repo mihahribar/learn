@@ -94,34 +94,23 @@ export function BadgesScreen({ progress, onGoBack }: BadgesScreenProps) {
       </main>
 
       {/* Stats summary at bottom */}
-      <footer
-        className="w-full max-w-2xl mx-auto mt-4 sm:mt-6"
-        aria-label="Statistika"
-      >
+      <footer className="w-full max-w-2xl mx-auto mt-4 sm:mt-6" aria-label="Statistika">
         <div className="bg-white rounded-2xl shadow-md p-3 sm:p-4">
           <div className="flex justify-around flex-wrap gap-2">
             <div className="text-center min-w-[80px]">
               <p className="text-xl sm:text-2xl font-bold text-primary-700">
                 {progress.totalPoints}
               </p>
-              <p className="text-xs sm:text-sm text-gray-600">
-                {labels.totalPoints}
-              </p>
+              <p className="text-xs sm:text-sm text-gray-600">{labels.totalPoints}</p>
             </div>
-            <div
-              className="hidden sm:block h-12 w-px bg-gray-200"
-              aria-hidden="true"
-            />
+            <div className="hidden sm:block h-12 w-px bg-gray-200" aria-hidden="true" />
             <div className="text-center min-w-[80px]">
               <p className="text-xl sm:text-2xl font-bold text-primary-700">
                 {progress.roundsPlayed}
               </p>
               <p className="text-xs sm:text-sm text-gray-600">Odigrane igre</p>
             </div>
-            <div
-              className="hidden sm:block h-12 w-px bg-gray-200"
-              aria-hidden="true"
-            />
+            <div className="hidden sm:block h-12 w-px bg-gray-200" aria-hidden="true" />
             <div className="text-center min-w-[80px]">
               <p className="text-xl sm:text-2xl font-bold text-primary-700">
                 {progress.wordsCompleted}

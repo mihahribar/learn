@@ -74,9 +74,8 @@ describe('useGameState - grammar-forms mode', () => {
       throw new Error('Current question is invalid');
     }
 
-    const wrongAnswer = 'correctAnswer' in currentQuestion
-      ? currentQuestion.wrongAnswers[0]
-      : 'wrong';
+    const wrongAnswer =
+      'correctAnswer' in currentQuestion ? currentQuestion.wrongAnswers[0] : 'wrong';
 
     act(() => {
       result.current.submitAnswer(wrongAnswer);
@@ -105,9 +104,8 @@ describe('useGameState - grammar-forms mode', () => {
       throw new Error('Current question is invalid');
     }
 
-    const wrongAnswer = 'correctAnswer' in currentQuestion
-      ? currentQuestion.wrongAnswers[0]
-      : 'wrong';
+    const wrongAnswer =
+      'correctAnswer' in currentQuestion ? currentQuestion.wrongAnswers[0] : 'wrong';
 
     let submitResult: ReturnType<typeof result.current.submitAnswer>;
     act(() => {
@@ -132,12 +130,10 @@ describe('useGameState - grammar-forms mode', () => {
       throw new Error('Current question is invalid');
     }
 
-    const wrongAnswer1 = 'correctAnswer' in currentQuestion
-      ? currentQuestion.wrongAnswers[0]
-      : 'wrong1';
-    const wrongAnswer2 = 'correctAnswer' in currentQuestion
-      ? currentQuestion.wrongAnswers[1]
-      : 'wrong2';
+    const wrongAnswer1 =
+      'correctAnswer' in currentQuestion ? currentQuestion.wrongAnswers[0] : 'wrong1';
+    const wrongAnswer2 =
+      'correctAnswer' in currentQuestion ? currentQuestion.wrongAnswers[1] : 'wrong2';
 
     act(() => {
       result.current.submitAnswer(wrongAnswer1);

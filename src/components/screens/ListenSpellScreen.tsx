@@ -244,11 +244,7 @@ export function ListenSpellScreen({
       </header>
 
       {/* Main game card */}
-      <Card
-        padding="lg"
-        shadow="lg"
-        className="w-full max-w-md mx-auto flex-grow flex flex-col"
-      >
+      <Card padding="lg" shadow="lg" className="w-full max-w-md mx-auto flex-grow flex flex-col">
         <div className="flex-grow flex flex-col items-center justify-center space-y-4 sm:space-y-6">
           {/* Listen button */}
           <ListenButton

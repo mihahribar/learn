@@ -133,9 +133,7 @@ export function RoundCompleteScreen({
           <div className="mb-4 animate-bounce-in">
             {roundStats.perfectRound ? <CrownIcon /> : <StarIcon />}
           </div>
-          <h1 className="text-4xl font-bold text-primary-700 mb-2">
-            {labels.roundCompleteTitle}
-          </h1>
+          <h1 className="text-4xl font-bold text-primary-700 mb-2">{labels.roundCompleteTitle}</h1>
         </header>
 
         {/* Score display */}
@@ -164,9 +162,7 @@ export function RoundCompleteScreen({
         {/* New badges section with glow animation */}
         {newBadges.length > 0 && showBadges && (
           <section className="mb-6 animate-[fadeSlideIn_0.5s_ease-out]" aria-label="Nove znacke">
-            <p className="text-lg font-semibold text-primary-700 mb-3">
-              {labels.newBadgeEarned}
-            </p>
+            <p className="text-lg font-semibold text-primary-700 mb-3">{labels.newBadgeEarned}</p>
             <div className="flex flex-wrap justify-center gap-4">
               {newBadges.map((badge, index) => (
                 <div
@@ -187,20 +183,10 @@ export function RoundCompleteScreen({
 
         {/* Action buttons */}
         <nav className="space-y-3" aria-label="Dejanja">
-          <Button
-            variant="primary"
-            size="large"
-            onClick={onPlayAgain}
-            className="w-full"
-          >
+          <Button variant="primary" size="large" onClick={onPlayAgain} className="w-full">
             {labels.playAgainButton}
           </Button>
-          <Button
-            variant="secondary"
-            size="medium"
-            onClick={onGoHome}
-            className="w-full"
-          >
+          <Button variant="secondary" size="medium" onClick={onGoHome} className="w-full">
             {labels.homeButton}
           </Button>
         </nav>

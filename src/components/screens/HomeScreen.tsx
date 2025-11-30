@@ -172,32 +172,22 @@ export function HomeScreen({
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary-700 mb-2">
             {labels.appTitle}
           </h1>
-          <p className="text-base sm:text-lg text-gray-600">
-            {labels.homeSubtitle}
-          </p>
+          <p className="text-base sm:text-lg text-gray-600">{labels.homeSubtitle}</p>
         </header>
 
         {/* Warning banners for edge cases */}
         {(!storageAvailable || !speechSupported) && (
-          <div
-            className="w-full max-w-md mb-4 sm:mb-6 space-y-2"
-            role="alert"
-            aria-live="polite"
-          >
+          <div className="w-full max-w-md mb-4 sm:mb-6 space-y-2" role="alert" aria-live="polite">
             {!storageAvailable && (
               <div className="flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 bg-warning-light border-2 border-warning rounded-xl text-warning-dark">
                 <WarningIcon />
-                <p className="text-xs sm:text-sm font-medium">
-                  {labels.storageNotAvailable}
-                </p>
+                <p className="text-xs sm:text-sm font-medium">{labels.storageNotAvailable}</p>
               </div>
             )}
             {!speechSupported && (
               <div className="flex items-center gap-3 px-3 sm:px-4 py-2.5 sm:py-3 bg-primary-100 border-2 border-primary-400 rounded-xl text-primary-800">
                 <WarningIcon />
-                <p className="text-xs sm:text-sm font-medium">
-                  {labels.speechNotSupported}
-                </p>
+                <p className="text-xs sm:text-sm font-medium">{labels.speechNotSupported}</p>
               </div>
             )}
           </div>
@@ -280,9 +270,7 @@ export function HomeScreen({
               >
                 {totalPoints}
               </p>
-              <p className="text-xs sm:text-sm text-gray-600">
-                {labels.totalPoints}
-              </p>
+              <p className="text-xs sm:text-sm text-gray-600">{labels.totalPoints}</p>
             </div>
             <div className="h-10 sm:h-12 w-px bg-gray-200" aria-hidden="true" />
             <div className="text-center">
@@ -292,9 +280,7 @@ export function HomeScreen({
               >
                 {badgesCount}
               </p>
-              <p className="text-xs sm:text-sm text-gray-600">
-                {labels.badgesEarned}
-              </p>
+              <p className="text-xs sm:text-sm text-gray-600">{labels.badgesEarned}</p>
             </div>
           </div>
         </Card>

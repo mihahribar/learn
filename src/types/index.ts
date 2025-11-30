@@ -101,7 +101,14 @@ export interface GameState {
 /**
  * Screen navigation types
  */
-export type Screen = 'home' | 'listen-spell' | 'pick-spelling' | 'plural-forms' | 'grammar-forms' | 'round-complete' | 'badges';
+export type Screen =
+  | 'home'
+  | 'listen-spell'
+  | 'pick-spelling'
+  | 'plural-forms'
+  | 'grammar-forms'
+  | 'round-complete'
+  | 'badges';
 
 /**
  * Feedback state for answer submissions

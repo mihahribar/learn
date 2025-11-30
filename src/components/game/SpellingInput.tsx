@@ -1,10 +1,4 @@
-import {
-  forwardRef,
-  useEffect,
-  useRef,
-  type ChangeEvent,
-  type KeyboardEvent,
-} from 'react';
+import { forwardRef, useEffect, useRef, type ChangeEvent, type KeyboardEvent } from 'react';
 import { Input, type InputState } from '../ui/Input';
 import type { FeedbackType } from '../../types';
 
@@ -44,8 +38,7 @@ export const SpellingInput = forwardRef<HTMLInputElement, SpellingInputProps>(
     forwardedRef
   ) {
     const internalRef = useRef<HTMLInputElement>(null);
-    const inputRef =
-      (forwardedRef as React.RefObject<HTMLInputElement>) || internalRef;
+    const inputRef = (forwardedRef as React.RefObject<HTMLInputElement>) || internalRef;
     const containerRef = useRef<HTMLDivElement>(null);
     const prevFeedbackRef = useRef<FeedbackType>(null);
 

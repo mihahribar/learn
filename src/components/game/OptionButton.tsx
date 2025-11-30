@@ -2,8 +2,10 @@ import { type ButtonHTMLAttributes, useRef, useEffect } from 'react';
 
 export type OptionState = 'default' | 'correct' | 'incorrect' | 'disabled';
 
-export interface OptionButtonProps
-  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
+export interface OptionButtonProps extends Omit<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  'children'
+> {
   label: string;
   prefix: string;
   state?: OptionState;
@@ -15,15 +17,9 @@ const stateStyles: Record<OptionState, string> = {
     'bg-white border-gray-300 text-gray-800 ' +
     'hover:bg-primary-50 hover:border-primary-400 ' +
     'active:bg-primary-100',
-  correct:
-    'bg-success-light border-success text-success-dark ' +
-    'cursor-default',
-  incorrect:
-    'bg-warning-light border-warning text-warning-dark ' +
-    'cursor-default',
-  disabled:
-    'bg-gray-100 border-gray-200 text-gray-400 ' +
-    'cursor-not-allowed',
+  correct: 'bg-success-light border-success text-success-dark ' + 'cursor-default',
+  incorrect: 'bg-warning-light border-warning text-warning-dark ' + 'cursor-default',
+  disabled: 'bg-gray-100 border-gray-200 text-gray-400 ' + 'cursor-not-allowed',
 };
 
 export function OptionButton({
@@ -67,13 +63,7 @@ export function OptionButton({
     'transition-all duration-200 ' +
     'focus:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-primary-400';
 
-  const combinedClassName = [
-    baseStyles,
-    stateStyles[state],
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+  const combinedClassName = [baseStyles, stateStyles[state], className].filter(Boolean).join(' ');
 
   const handleClick = () => {
     if (isInteractive) {
@@ -84,20 +74,14 @@ export function OptionButton({
   const stateIcon = () => {
     if (state === 'correct') {
       return (
-        <span
-          className="text-success text-xl animate-bounce-in"
-          aria-hidden="true"
-        >
+        <span className="text-success text-xl animate-bounce-in" aria-hidden="true">
           {'\u2714'}
         </span>
       );
     }
     if (state === 'incorrect') {
       return (
-        <span
-          className="text-warning text-xl"
-          aria-hidden="true"
-        >
+        <span className="text-warning text-xl" aria-hidden="true">
           {'\u2718'}
         </span>
       );
