@@ -111,11 +111,9 @@ describe('useGameState', () => {
         result.current.submitAnswer(correctAnswer);
       });
 
-      if (i < 9) {
-        act(() => {
-          result.current.advanceToNextWord();
-        });
-      }
+      act(() => {
+        result.current.advanceToNextWord();
+      });
     }
 
     expect(result.current.roundProgress.score).toBe(10);

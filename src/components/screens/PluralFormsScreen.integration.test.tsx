@@ -33,7 +33,7 @@ describe('PluralFormsScreen Integration Tests', () => {
         btn.textContent &&
         btn.textContent.length > 0 &&
         !btn.textContent.includes('Poslušaj') &&
-        !btn.textContent.includes('Domov')
+        !btn.textContent.includes('Nazaj')
     );
     expect(optionButtons.length).toBe(3);
   });
@@ -141,7 +141,10 @@ describe('PluralFormsScreen Integration Tests', () => {
     const buttons = screen.getAllByRole('button');
     const optionButtons = buttons.filter(
       (btn) =>
-        btn.textContent && btn.textContent.length > 0 && !btn.textContent.includes('Poslušaj')
+        btn.textContent &&
+        btn.textContent.length > 0 &&
+        !btn.textContent.includes('Poslušaj') &&
+        !btn.textContent.includes('Nazaj')
     );
 
     // Verify exactly 3 options
