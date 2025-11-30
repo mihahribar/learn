@@ -1,9 +1,10 @@
 import { useState, useCallback } from 'react';
 import type { Screen, GameMode, RoundStats, Badge } from './types';
-import { useGameState } from './hooks/useGameState';
-import { useProgress } from './hooks/useProgress';
-import { useSpeech } from './hooks/useSpeech';
-import { useSound } from './hooks/useSound';
+import { GameProvider, ProgressProvider, SpeechProvider, SoundProvider } from './contexts';
+import { useGame } from './contexts/GameContext';
+import { useProgressContext } from './contexts/ProgressContext';
+import { useSpeechContext } from './contexts/SpeechContext';
+import { useSoundContext } from './contexts/SoundContext';
 import { calculateRoundTotal } from './utils/scoring';
 
 import { HomeScreen } from './components/screens/HomeScreen';
@@ -14,16 +15,16 @@ import { GrammarFormsScreen } from './components/screens/GrammarFormsScreen';
 import { RoundCompleteScreen } from './components/screens/RoundCompleteScreen';
 import { BadgesScreen } from './components/screens/BadgesScreen';
 
-function App() {
+function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [lastRoundStats, setLastRoundStats] = useState<RoundStats | null>(null);
   const [lastRoundPoints, setLastRoundPoints] = useState(0);
   const [newlyEarnedBadges, setNewlyEarnedBadges] = useState<Badge[]>([]);
 
-  const gameState = useGameState();
-  const progressHook = useProgress();
-  const speech = useSpeech();
-  const sound = useSound();
+  const gameState = useGame();
+  const progressHook = useProgressContext();
+  const speech = useSpeechContext();
+  const sound = useSoundContext();
 
   const handleStartGame = useCallback(
     (mode: GameMode) => {
@@ -251,6 +252,23 @@ function App() {
         {renderScreen()}
       </main>
     </div>
+  );
+}
+
+/**
+ * Main App component with context providers
+ */
+function App() {
+  return (
+    <GameProvider>
+      <ProgressProvider>
+        <SpeechProvider>
+          <SoundProvider>
+            <AppContent />
+          </SoundProvider>
+        </SpeechProvider>
+      </ProgressProvider>
+    </GameProvider>
   );
 }
 

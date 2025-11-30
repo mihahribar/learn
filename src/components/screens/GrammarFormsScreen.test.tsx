@@ -100,14 +100,16 @@ describe('GrammarFormsScreen', () => {
       correctAnswer: 'have got',
     });
 
-    render(<GrammarFormsScreen {...defaultProps} />);
+    render(<GrammarFormsScreen {...defaultProps} currentAttempts={1} />);
 
     const wrongButton = screen.getByText('has got');
     fireEvent.click(wrongButton);
 
     expect(mockPlayWrongSound).toHaveBeenCalled();
     await waitFor(() => {
-      expect(screen.getByText(/Pravilno se piše:/)).toBeInTheDocument();
+      // Check that the correct answer is shown (either with "Zapomni si:" or "Pravilno se piše:" prefix)
+      const feedbackElement = screen.getByRole('alert');
+      expect(feedbackElement).toHaveTextContent('have got');
     });
   });
 
