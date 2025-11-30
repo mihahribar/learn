@@ -9,6 +9,9 @@
  * @module storage
  */
 
+import { validatePersistedProgress } from './schemas';
+import type { ValidatedPersistedProgress } from './schemas';
+
 /**
  * The localStorage key used for storing game progress
  * @constant
@@ -213,4 +216,34 @@ export function saveProgress<T>(progress: T): boolean {
  */
 export function clearProgress(): boolean {
   return removeStorageItem(STORAGE_KEY);
+}
+
+/**
+ * Retrieves and validates game progress from localStorage
+ *
+ * Uses Zod schema validation to ensure data integrity.
+ * If validation fails, returns null and the corrupted data is ignored.
+ * This protects against malformed or corrupted localStorage data.
+ *
+ * @returns Validated progress data or null if not found/invalid
+ *
+ * @example
+ * ```typescript
+ * const progress = getValidatedProgress()
+ * if (progress) {
+ *   // Guaranteed to have correct structure
+ *   console.log(`Points: ${progress.totalPoints}`)
+ * } else {
+ *   // Data was missing or corrupted, use defaults
+ *   console.log('Starting fresh')
+ * }
+ * ```
+ */
+export function getValidatedProgress(): ValidatedPersistedProgress | null {
+  const rawData = getStorageItem<unknown>(STORAGE_KEY);
+  if (rawData === null) {
+    return null;
+  }
+
+  return validatePersistedProgress(rawData);
 }

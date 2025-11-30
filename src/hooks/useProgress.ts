@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { PersistedProgress, RoundStats, Badge } from '../types';
-import { getProgress, saveProgress, isStorageAvailable } from '../utils/storage';
+import { getValidatedProgress, saveProgress, isStorageAvailable } from '../utils/storage';
 import { checkNewBadges } from '../data/badges';
 
 /**
@@ -78,8 +78,8 @@ export function useProgress(): UseProgressReturn {
       return;
     }
 
-    const savedProgress = getProgress<PersistedProgress>();
-    if (savedProgress && savedProgress.version === 1) {
+    const savedProgress = getValidatedProgress();
+    if (savedProgress) {
       const today = getTodayDate();
       const lastPlayed = savedProgress.lastPlayedDate;
 
