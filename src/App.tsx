@@ -3,17 +3,8 @@ import type { Screen, GameMode, RoundStats, Badge } from './types';
 import { GameProvider, ProgressProvider, SpeechProvider, SoundProvider } from './contexts';
 import { useGame } from './contexts/GameContext';
 import { useProgressContext } from './contexts/ProgressContext';
-import { useSpeechContext } from './contexts/SpeechContext';
-import { useSoundContext } from './contexts/SoundContext';
 import { calculateRoundTotal } from './utils/scoring';
-
-import { HomeScreen } from './components/screens/HomeScreen';
-import { ListenSpellScreen } from './components/screens/ListenSpellScreen';
-import { PickSpellingScreen } from './components/screens/PickSpellingScreen';
-import { PluralFormsScreen } from './components/screens/PluralFormsScreen';
-import { GrammarFormsScreen } from './components/screens/GrammarFormsScreen';
-import { RoundCompleteScreen } from './components/screens/RoundCompleteScreen';
-import { BadgesScreen } from './components/screens/BadgesScreen';
+import { ScreenRouter } from './components/ScreenRouter';
 
 function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
@@ -23,8 +14,6 @@ function AppContent() {
 
   const gameState = useGame();
   const progressHook = useProgressContext();
-  const speech = useSpeechContext();
-  const sound = useSoundContext();
 
   const handleStartGame = useCallback(
     (mode: GameMode) => {
@@ -102,146 +91,6 @@ function AppContent() {
     setCurrentScreen('home');
   }, [gameState]);
 
-  // Render appropriate screen based on current state
-  const renderScreen = () => {
-    switch (currentScreen) {
-      case 'home':
-        return (
-          <HomeScreen
-            totalPoints={progressHook.progress.totalPoints}
-            badgesCount={progressHook.progress.badges.length}
-            onStartGame={handleStartGame}
-            onNavigate={handleNavigate}
-            muted={sound.muted}
-            onToggleMute={sound.toggleMute}
-            soundSupported={sound.supported}
-            storageAvailable={progressHook.storageAvailable}
-            speechSupported={speech.supported}
-          />
-        );
-
-      case 'listen-spell':
-        return (
-          <ListenSpellScreen
-            currentWord={
-              gameState.currentWord && 'english' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleRecordWordAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            speak={speech.speak}
-            speaking={speech.speaking}
-            speechSupported={speech.supported}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'pick-spelling':
-        return (
-          <PickSpellingScreen
-            currentWord={
-              gameState.currentWord && 'english' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleRecordWordAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            speak={speech.speak}
-            speaking={speech.speaking}
-            speechSupported={speech.supported}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'plural-forms':
-        return (
-          <PluralFormsScreen
-            currentWord={
-              gameState.currentWord && 'english' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleRecordWordAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            speak={speech.speak}
-            speaking={speech.speaking}
-            speechSupported={speech.supported}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'grammar-forms':
-        return (
-          <GrammarFormsScreen
-            currentQuestion={
-              gameState.currentWord && 'correctAnswer' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleGrammarAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'round-complete':
-        return (
-          <RoundCompleteScreen
-            roundStats={lastRoundStats || { score: 0, maxStreak: 0, perfectRound: false }}
-            roundPoints={lastRoundPoints}
-            newBadges={newlyEarnedBadges}
-            onPlayAgain={handlePlayAgain}
-            onGoHome={handleGoHome}
-            playCelebration={sound.playCelebration}
-            playBadgeSound={sound.playBadge}
-          />
-        );
-
-      case 'badges':
-        return <BadgesScreen progress={progressHook.progress} onGoBack={handleGoHome} />;
-
-      default:
-        return (
-          <HomeScreen
-            totalPoints={progressHook.progress.totalPoints}
-            badgesCount={progressHook.progress.badges.length}
-            onStartGame={handleStartGame}
-            onNavigate={handleNavigate}
-            muted={sound.muted}
-            onToggleMute={sound.toggleMute}
-            soundSupported={sound.supported}
-            storageAvailable={progressHook.storageAvailable}
-            speechSupported={speech.supported}
-          />
-        );
-    }
-  };
-
   return (
     <div className="w-full min-h-screen">
       {/* Skip link for keyboard accessibility */}
@@ -249,7 +98,19 @@ function AppContent() {
         Preskoči na vsebino
       </a>
       <main id="main-content" className="animate-screen-enter" key={currentScreen}>
-        {renderScreen()}
+        <ScreenRouter
+          currentScreen={currentScreen}
+          lastRoundStats={lastRoundStats}
+          lastRoundPoints={lastRoundPoints}
+          newlyEarnedBadges={newlyEarnedBadges}
+          onStartGame={handleStartGame}
+          onNavigate={handleNavigate}
+          onRoundComplete={handleRoundComplete}
+          onRecordWordAttempt={handleRecordWordAttempt}
+          onGrammarAttempt={handleGrammarAttempt}
+          onPlayAgain={handlePlayAgain}
+          onGoHome={handleGoHome}
+        />
       </main>
     </div>
   );
