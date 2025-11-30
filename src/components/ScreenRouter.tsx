@@ -1,4 +1,5 @@
 import type { Screen, GameMode, RoundStats, Badge } from '../types';
+import { isWord, isGrammarQuestion } from '../types';
 import { useGame } from '../contexts/GameContext';
 import { useProgressContext } from '../contexts/ProgressContext';
 import { useSpeechContext } from '../contexts/SpeechContext';
@@ -80,9 +81,7 @@ export function ScreenRouter({
       return (
         <ListenSpellScreen
           currentWord={
-            gameState.currentWord && 'english' in gameState.currentWord
-              ? gameState.currentWord
-              : null
+            gameState.currentWord && isWord(gameState.currentWord) ? gameState.currentWord : null
           }
           roundProgress={gameState.roundProgress}
           currentAttempts={gameState.currentAttempts}
@@ -103,9 +102,7 @@ export function ScreenRouter({
       return (
         <PickSpellingScreen
           currentWord={
-            gameState.currentWord && 'english' in gameState.currentWord
-              ? gameState.currentWord
-              : null
+            gameState.currentWord && isWord(gameState.currentWord) ? gameState.currentWord : null
           }
           roundProgress={gameState.roundProgress}
           currentAttempts={gameState.currentAttempts}
@@ -126,9 +123,7 @@ export function ScreenRouter({
       return (
         <PluralFormsScreen
           currentWord={
-            gameState.currentWord && 'english' in gameState.currentWord
-              ? gameState.currentWord
-              : null
+            gameState.currentWord && isWord(gameState.currentWord) ? gameState.currentWord : null
           }
           roundProgress={gameState.roundProgress}
           currentAttempts={gameState.currentAttempts}
@@ -149,7 +144,7 @@ export function ScreenRouter({
       return (
         <GrammarFormsScreen
           currentQuestion={
-            gameState.currentWord && 'correctAnswer' in gameState.currentWord
+            gameState.currentWord && isGrammarQuestion(gameState.currentWord)
               ? gameState.currentWord
               : null
           }

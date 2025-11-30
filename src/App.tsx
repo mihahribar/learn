@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import type { Screen, GameMode, RoundStats, Badge } from './types';
+import { isWord } from './types';
 import { GameProvider, ProgressProvider, SpeechProvider, SoundProvider } from './contexts';
 import { useGame } from './contexts/GameContext';
 import { useProgressContext } from './contexts/ProgressContext';
@@ -56,7 +57,7 @@ function AppContent() {
       const result = gameState.submitAnswer(answer);
 
       // Record the attempt for progress tracking (only for word-based modes)
-      if (gameState.currentWord && 'english' in gameState.currentWord) {
+      if (gameState.currentWord && isWord(gameState.currentWord)) {
         progressHook.recordWordAttempt(gameState.currentWord.id, result.correct);
         progressHook.updateStreak(result.correct);
       }
