@@ -92,19 +92,19 @@ interface UseSoundReturn {
  */
 export function useSound(): UseSoundReturn {
   const [muted, setMuted] = useState(false);
-  const [supported, setSupported] = useState(false);
+  const [supported] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return !!(
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext
+    );
+  });
   const audioContextRef = useRef<AudioContext | null>(null);
 
   /**
-   * Initialize AudioContext on first user interaction
+   * Cleanup AudioContext on unmount
    */
   useEffect(() => {
-    const hasAudioContext =
-      typeof window !== 'undefined' &&
-      (window.AudioContext ||
-        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext);
-    setSupported(!!hasAudioContext);
-
     return () => {
       if (audioContextRef.current) {
         audioContextRef.current.close();

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import type { Badge, RoundStats } from '../../types';
 import { labels, getRoundCompleteMessage } from '../../data/messages';
 import { Button } from '../ui/Button';
@@ -39,12 +39,20 @@ const iconMap: Record<string, string> = {
 /**
  * Simple confetti particle component
  */
-function ConfettiParticle({ delay, color }: { delay: number; color: string }) {
+function ConfettiParticle({
+  delay,
+  color,
+  position,
+}: {
+  delay: number;
+  color: string;
+  position: number;
+}) {
   return (
     <div
       className="absolute animate-confetti pointer-events-none"
       style={{
-        left: `${Math.random() * 100}%`,
+        left: `${position}%`,
         animationDelay: `${delay}ms`,
         fontSize: '1.5rem',
       }}
@@ -112,6 +120,11 @@ export function RoundCompleteScreen({
   const encouragingMessage = getRoundCompleteMessage(roundStats.score);
   const confettiColors = ['#a855f7', '#22c55e', '#fbbf24', '#ec4899'];
 
+  // Generate random positions for confetti particles (stable across renders)
+  const confettiPositions = useMemo(() => {
+    return Array.from({ length: 20 }, () => Math.random() * 100);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-primary-50 to-primary-100 flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Confetti effect */}
@@ -122,6 +135,7 @@ export function RoundCompleteScreen({
               key={i}
               delay={i * 50}
               color={confettiColors[i % confettiColors.length]}
+              position={confettiPositions[i]}
             />
           ))}
         </div>

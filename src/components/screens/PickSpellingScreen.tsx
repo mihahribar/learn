@@ -76,7 +76,6 @@ const BackArrowIcon = () => (
 export function PickSpellingScreen({
   currentWord,
   roundProgress,
-  currentAttempts: _currentAttempts,
   onSubmitAnswer,
   onAdvanceWord,
   onRoundComplete,
@@ -87,7 +86,7 @@ export function PickSpellingScreen({
   speechSupported,
   playCorrectSound,
   playWrongSound,
-}: PickSpellingScreenProps) {
+}: Omit<PickSpellingScreenProps, 'currentAttempts'>) {
   const [optionStates, setOptionStates] = useState<Record<string, OptionState>>({});
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [feedbackType, setFeedbackType] = useState<'correct' | 'wrong' | 'show-answer' | null>(
@@ -122,7 +121,8 @@ export function PickSpellingScreen({
       setFeedbackType(null);
       setIsProcessing(false);
     }
-  }, [currentWord]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWord?.id]);
 
   // Cleanup timeout on unmount
   useEffect(() => {

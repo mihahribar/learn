@@ -67,16 +67,14 @@ function isSameDay(date1: string, date2: string): boolean {
  */
 export function useProgress(): UseProgressReturn {
   const [progress, setProgress] = useState<PersistedProgress>(DEFAULT_PROGRESS);
-  const [storageAvailable, setStorageAvailable] = useState(true);
+  const [storageAvailable] = useState(() => isStorageAvailable());
 
   /**
    * Load progress from localStorage on mount
+   * This effect initializes state from external storage on mount only
    */
   useEffect(() => {
-    const available = isStorageAvailable();
-    setStorageAvailable(available);
-
-    if (!available) {
+    if (!storageAvailable) {
       return;
     }
 
@@ -121,6 +119,7 @@ export function useProgress(): UseProgressReturn {
       saveProgress(initialProgress);
       setProgress(initialProgress);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /**

@@ -69,7 +69,6 @@ const BackArrowIcon = () => (
 export function ListenSpellScreen({
   currentWord,
   roundProgress,
-  currentAttempts: _currentAttempts,
   onSubmitAnswer,
   onAdvanceWord,
   onRoundComplete,
@@ -80,7 +79,7 @@ export function ListenSpellScreen({
   speechSupported,
   playCorrectSound,
   playWrongSound,
-}: ListenSpellScreenProps) {
+}: Omit<ListenSpellScreenProps, 'currentAttempts'>) {
   const [inputValue, setInputValue] = useState('');
   const [feedback, setFeedback] = useState<FeedbackState>({
     type: null,
@@ -99,7 +98,8 @@ export function ListenSpellScreen({
       setInputValue('');
       setFeedback({ type: null, message: '' });
     }
-  }, [currentWord]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentWord?.id]);
 
   // Cleanup timeout on unmount
   useEffect(() => {

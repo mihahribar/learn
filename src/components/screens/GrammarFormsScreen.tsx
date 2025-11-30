@@ -72,7 +72,6 @@ const BackArrowIcon = () => (
 export function GrammarFormsScreen({
   currentQuestion,
   roundProgress,
-  currentAttempts: _currentAttempts,
   onSubmitAnswer,
   onAdvanceWord,
   onRoundComplete,
@@ -80,7 +79,7 @@ export function GrammarFormsScreen({
   onGoBack,
   playCorrectSound,
   playWrongSound,
-}: GrammarFormsScreenProps) {
+}: Omit<GrammarFormsScreenProps, 'currentAttempts'>) {
   const [optionStates, setOptionStates] = useState<Record<string, OptionState>>({});
   const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
   const [feedbackType, setFeedbackType] = useState<'correct' | 'wrong' | 'show-answer' | null>(
@@ -92,7 +91,6 @@ export function GrammarFormsScreen({
   const lastQuestionIdRef = useRef<string | null>(null);
   const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
 
-  // Generate shuffled options when question changes
   const shuffledOptions = useMemo((): ShuffledOption[] => {
     if (!currentQuestion || !currentQuestion.correctAnswer || !currentQuestion.wrongAnswers) {
       return [];
@@ -117,7 +115,8 @@ export function GrammarFormsScreen({
       setFeedbackType(null);
       setIsProcessing(false);
     }
-  }, [currentQuestion]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestion?.id]);
 
   // Cleanup timeout on unmount
   useEffect(() => {

@@ -34,16 +34,10 @@ describe('GrammarFormsScreen - Integration Tests', () => {
     );
 
     let currentQuestionIndex = 0;
-    let score = 0;
-    let points = 0;
 
     mockOnSubmitAnswer.mockImplementation((answer: string) => {
       const currentQuestion = questions[currentQuestionIndex];
       const correct = answer === currentQuestion.correctAnswer;
-      if (correct) {
-        score++;
-        points += 10;
-      }
       return {
         correct,
         pointsEarned: correct ? 10 : 0,

@@ -56,8 +56,8 @@ const speechSynthesisMock = {
   resume: function () {
     this.paused = false;
   },
-  addEventListener: function (_event: string, _handler: () => void) {},
-  removeEventListener: function (_event: string, _handler: () => void) {},
+  addEventListener: function () {},
+  removeEventListener: function () {},
 };
 
 Object.defineProperty(window, 'speechSynthesis', {

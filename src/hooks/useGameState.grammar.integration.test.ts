@@ -103,7 +103,7 @@ describe('useGameState - Grammar Forms Integration', () => {
     }
 
     // Get final stats
-    let stats: any;
+    let stats: ReturnType<typeof result.current.endRound>;
     act(() => {
       stats = result.current.endRound();
     });
@@ -173,7 +173,7 @@ describe('useGameState - Grammar Forms Integration', () => {
     }
 
     // Get stats and verify max streak
-    let stats: any;
+    let stats: ReturnType<typeof result.current.endRound>;
     act(() => {
       stats = result.current.endRound();
     });
@@ -203,7 +203,7 @@ describe('useGameState - Grammar Forms Integration', () => {
     }
 
     // Get final stats
-    let stats: any;
+    let stats: ReturnType<typeof result.current.endRound>;
     act(() => {
       stats = result.current.endRound();
     });

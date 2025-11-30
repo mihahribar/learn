@@ -1,5 +1,4 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import * as storage from './storage';
 import {
   isStorageAvailable,
   getStorageItem,
