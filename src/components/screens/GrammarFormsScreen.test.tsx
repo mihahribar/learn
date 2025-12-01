@@ -107,7 +107,9 @@ describe('GrammarFormsScreen', () => {
 
     expect(mockPlayWrongSound).toHaveBeenCalled();
     await waitFor(() => {
-      expect(screen.getByText(/Pravilno se piše:/)).toBeInTheDocument();
+      // Check that the correct answer is shown (either with "Zapomni si:" or "Pravilno se piše:" prefix)
+      const feedbackElement = screen.getByRole('alert');
+      expect(feedbackElement).toHaveTextContent('have got');
     });
   });
 

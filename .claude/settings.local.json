@@ -15,7 +15,9 @@
       "Bash(npm run:*)",
       "Bash(git add:*)",
       "Bash(find:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(git stash:*)",
+      "Bash(wc:*)"
     ],
     "deny": [],
     "ask": []

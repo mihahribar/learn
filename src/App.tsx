@@ -1,29 +1,20 @@
 import { useState, useCallback } from 'react';
 import type { Screen, GameMode, RoundStats, Badge } from './types';
-import { useGameState } from './hooks/useGameState';
-import { useProgress } from './hooks/useProgress';
-import { useSpeech } from './hooks/useSpeech';
-import { useSound } from './hooks/useSound';
+import { isWord } from './types';
+import { GameProvider, ProgressProvider, SpeechProvider, SoundProvider } from './contexts';
+import { useGame } from './contexts/GameContext';
+import { useProgressContext } from './contexts/ProgressContext';
 import { calculateRoundTotal } from './utils/scoring';
+import { ScreenRouter } from './components/ScreenRouter';
 
-import { HomeScreen } from './components/screens/HomeScreen';
-import { ListenSpellScreen } from './components/screens/ListenSpellScreen';
-import { PickSpellingScreen } from './components/screens/PickSpellingScreen';
-import { PluralFormsScreen } from './components/screens/PluralFormsScreen';
-import { GrammarFormsScreen } from './components/screens/GrammarFormsScreen';
-import { RoundCompleteScreen } from './components/screens/RoundCompleteScreen';
-import { BadgesScreen } from './components/screens/BadgesScreen';
-
-function App() {
+function AppContent() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home');
   const [lastRoundStats, setLastRoundStats] = useState<RoundStats | null>(null);
   const [lastRoundPoints, setLastRoundPoints] = useState(0);
   const [newlyEarnedBadges, setNewlyEarnedBadges] = useState<Badge[]>([]);
 
-  const gameState = useGameState();
-  const progressHook = useProgress();
-  const speech = useSpeech();
-  const sound = useSound();
+  const gameState = useGame();
+  const progressHook = useProgressContext();
 
   const handleStartGame = useCallback(
     (mode: GameMode) => {
@@ -66,7 +57,7 @@ function App() {
       const result = gameState.submitAnswer(answer);
 
       // Record the attempt for progress tracking (only for word-based modes)
-      if (gameState.currentWord && 'english' in gameState.currentWord) {
+      if (gameState.currentWord && isWord(gameState.currentWord)) {
         progressHook.recordWordAttempt(gameState.currentWord.id, result.correct);
         progressHook.updateStreak(result.correct);
       }
@@ -101,146 +92,6 @@ function App() {
     setCurrentScreen('home');
   }, [gameState]);
 
-  // Render appropriate screen based on current state
-  const renderScreen = () => {
-    switch (currentScreen) {
-      case 'home':
-        return (
-          <HomeScreen
-            totalPoints={progressHook.progress.totalPoints}
-            badgesCount={progressHook.progress.badges.length}
-            onStartGame={handleStartGame}
-            onNavigate={handleNavigate}
-            muted={sound.muted}
-            onToggleMute={sound.toggleMute}
-            soundSupported={sound.supported}
-            storageAvailable={progressHook.storageAvailable}
-            speechSupported={speech.supported}
-          />
-        );
-
-      case 'listen-spell':
-        return (
-          <ListenSpellScreen
-            currentWord={
-              gameState.currentWord && 'english' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleRecordWordAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            speak={speech.speak}
-            speaking={speech.speaking}
-            speechSupported={speech.supported}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'pick-spelling':
-        return (
-          <PickSpellingScreen
-            currentWord={
-              gameState.currentWord && 'english' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleRecordWordAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            speak={speech.speak}
-            speaking={speech.speaking}
-            speechSupported={speech.supported}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'plural-forms':
-        return (
-          <PluralFormsScreen
-            currentWord={
-              gameState.currentWord && 'english' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleRecordWordAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            speak={speech.speak}
-            speaking={speech.speaking}
-            speechSupported={speech.supported}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'grammar-forms':
-        return (
-          <GrammarFormsScreen
-            currentQuestion={
-              gameState.currentWord && 'correctAnswer' in gameState.currentWord
-                ? gameState.currentWord
-                : null
-            }
-            roundProgress={gameState.roundProgress}
-            currentAttempts={gameState.currentAttempts}
-            onSubmitAnswer={handleGrammarAttempt}
-            onAdvanceWord={gameState.advanceToNextWord}
-            onRoundComplete={handleRoundComplete}
-            onEndRound={gameState.endRound}
-            onGoBack={handleGoHome}
-            playCorrectSound={sound.playCorrect}
-            playWrongSound={sound.playWrong}
-          />
-        );
-
-      case 'round-complete':
-        return (
-          <RoundCompleteScreen
-            roundStats={lastRoundStats || { score: 0, maxStreak: 0, perfectRound: false }}
-            roundPoints={lastRoundPoints}
-            newBadges={newlyEarnedBadges}
-            onPlayAgain={handlePlayAgain}
-            onGoHome={handleGoHome}
-            playCelebration={sound.playCelebration}
-            playBadgeSound={sound.playBadge}
-          />
-        );
-
-      case 'badges':
-        return <BadgesScreen progress={progressHook.progress} onGoBack={handleGoHome} />;
-
-      default:
-        return (
-          <HomeScreen
-            totalPoints={progressHook.progress.totalPoints}
-            badgesCount={progressHook.progress.badges.length}
-            onStartGame={handleStartGame}
-            onNavigate={handleNavigate}
-            muted={sound.muted}
-            onToggleMute={sound.toggleMute}
-            soundSupported={sound.supported}
-            storageAvailable={progressHook.storageAvailable}
-            speechSupported={speech.supported}
-          />
-        );
-    }
-  };
-
   return (
     <div className="w-full min-h-screen">
       {/* Skip link for keyboard accessibility */}
@@ -248,9 +99,38 @@ function App() {
         Preskoči na vsebino
       </a>
       <main id="main-content" className="animate-screen-enter" key={currentScreen}>
-        {renderScreen()}
+        <ScreenRouter
+          currentScreen={currentScreen}
+          lastRoundStats={lastRoundStats}
+          lastRoundPoints={lastRoundPoints}
+          newlyEarnedBadges={newlyEarnedBadges}
+          onStartGame={handleStartGame}
+          onNavigate={handleNavigate}
+          onRoundComplete={handleRoundComplete}
+          onRecordWordAttempt={handleRecordWordAttempt}
+          onGrammarAttempt={handleGrammarAttempt}
+          onPlayAgain={handlePlayAgain}
+          onGoHome={handleGoHome}
+        />
       </main>
     </div>
+  );
+}
+
+/**
+ * Main App component with context providers
+ */
+function App() {
+  return (
+    <GameProvider>
+      <ProgressProvider>
+        <SpeechProvider>
+          <SoundProvider>
+            <AppContent />
+          </SoundProvider>
+        </SpeechProvider>
+      </ProgressProvider>
+    </GameProvider>
   );
 }
 

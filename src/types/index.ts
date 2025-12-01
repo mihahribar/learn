@@ -33,6 +33,40 @@ export interface GrammarQuestion {
 }
 
 /**
+ * Discriminated union for game items
+ * Provides type-safe access to either Word or GrammarQuestion
+ */
+export type GameItem = { type: 'word'; data: Word } | { type: 'grammar'; data: GrammarQuestion };
+
+/**
+ * Type guard to check if an item is a Word
+ */
+export function isWord(item: Word | GrammarQuestion): item is Word {
+  return 'english' in item;
+}
+
+/**
+ * Type guard to check if an item is a GrammarQuestion
+ */
+export function isGrammarQuestion(item: Word | GrammarQuestion): item is GrammarQuestion {
+  return 'correctAnswer' in item && 'sentence' in item;
+}
+
+/**
+ * Helper to create a word game item
+ */
+export function createWordItem(word: Word): GameItem {
+  return { type: 'word', data: word };
+}
+
+/**
+ * Helper to create a grammar game item
+ */
+export function createGrammarItem(question: GrammarQuestion): GameItem {
+  return { type: 'grammar', data: question };
+}
+
+/**
  * Statistics for an individual word
  */
 export interface WordStats {

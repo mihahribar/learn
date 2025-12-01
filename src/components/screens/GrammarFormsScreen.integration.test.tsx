@@ -55,7 +55,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
       <GrammarFormsScreen
         currentQuestion={questions[0]}
         roundProgress={{ current: 1, total: 10, score: 0, points: 0 }}
-        currentAttempts={0}
         onSubmitAnswer={mockOnSubmitAnswer}
         onAdvanceWord={mockOnAdvanceWord}
         onRoundComplete={mockOnRoundComplete}
@@ -87,7 +86,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
             score: currentQuestionIndex,
             points: currentQuestionIndex * 10,
           }}
-          currentAttempts={0}
           onSubmitAnswer={mockOnSubmitAnswer}
           onAdvanceWord={mockOnAdvanceWord}
           onRoundComplete={mockOnRoundComplete}
@@ -141,7 +139,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
       <GrammarFormsScreen
         currentQuestion={question1}
         roundProgress={{ current: 1, total: 10, score: 0, points: 0 }}
-        currentAttempts={0}
         onSubmitAnswer={mockOnSubmitAnswer}
         onAdvanceWord={mockOnAdvanceWord}
         onRoundComplete={vi.fn()}
@@ -166,7 +163,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
       <GrammarFormsScreen
         currentQuestion={question2}
         roundProgress={{ current: 2, total: 10, score: 1, points: 10 }}
-        currentAttempts={0}
         onSubmitAnswer={mockOnSubmitAnswer}
         onAdvanceWord={mockOnAdvanceWord}
         onRoundComplete={vi.fn()}
@@ -198,7 +194,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
       <GrammarFormsScreen
         currentQuestion={question2}
         roundProgress={{ current: 2, total: 10, score: 1, points: 10 }}
-        currentAttempts={1}
         onSubmitAnswer={mockOnSubmitAnswer}
         onAdvanceWord={mockOnAdvanceWord}
         onRoundComplete={vi.fn()}
@@ -237,7 +232,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
       <GrammarFormsScreen
         currentQuestion={question}
         roundProgress={{ current: 1, total: 10, score: 0, points: 0 }}
-        currentAttempts={0}
         onSubmitAnswer={mockOnSubmitAnswer}
         onAdvanceWord={mockOnAdvanceWord}
         onRoundComplete={vi.fn()}
@@ -269,7 +263,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
       <GrammarFormsScreen
         currentQuestion={question}
         roundProgress={{ current: 1, total: 10, score: 0, points: 0 }}
-        currentAttempts={1}
         onSubmitAnswer={mockOnSubmitAnswer}
         onAdvanceWord={mockOnAdvanceWord}
         onRoundComplete={vi.fn()}
@@ -320,7 +313,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
         <GrammarFormsScreen
           currentQuestion={createMockQuestion('q1', 'have got')}
           roundProgress={{ current, total, score: 0, points: 0 }}
-          currentAttempts={0}
           onSubmitAnswer={vi.fn()}
           onAdvanceWord={vi.fn()}
           onRoundComplete={vi.fn()}
@@ -349,7 +341,6 @@ describe('GrammarFormsScreen - Integration Tests', () => {
         <GrammarFormsScreen
           currentQuestion={createMockQuestion('q1', 'have got')}
           roundProgress={{ current: 1, total: 10, score, points }}
-          currentAttempts={0}
           onSubmitAnswer={vi.fn()}
           onAdvanceWord={vi.fn()}
           onRoundComplete={vi.fn()}

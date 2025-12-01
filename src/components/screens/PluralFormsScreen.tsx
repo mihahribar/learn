@@ -6,15 +6,11 @@ import {
   getWrongFeedback,
   getShowCorrectMessage,
 } from '../../data/messages';
-import { Button } from '../ui/Button';
-import { Card } from '../ui/Card';
-import { ProgressBar } from '../ui/ProgressBar';
 import { ListenButton } from '../game/ListenButton';
 import { OptionButton, type OptionState } from '../game/OptionButton';
 import { FeedbackMessage } from '../game/FeedbackMessage';
-import { ScoreDisplay } from '../game/ScoreDisplay';
-import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { shuffle } from '../../utils/shuffle';
+import { BaseGameScreen } from './BaseGameScreen';
 
 export interface PluralFormsScreenProps {
   currentWord: Word | null;
@@ -57,22 +53,6 @@ interface LastSubmitResult {
   pointsEarned: number;
 }
 
-const BackArrowIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className="w-5 h-5"
-    aria-hidden="true"
-  >
-    <path
-      fillRule="evenodd"
-      d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
-      clipRule="evenodd"
-    />
-  </svg>
-);
-
 export function PluralFormsScreen({
   currentWord,
   roundProgress,
@@ -93,7 +73,6 @@ export function PluralFormsScreen({
     null
   );
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showQuitDialog, setShowQuitDialog] = useState(false);
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastWordIdRef = useRef<string | null>(null);
   const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
@@ -227,90 +206,39 @@ export function PluralFormsScreen({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-primary-100 flex flex-col p-4 sm:p-6 lg:p-8">
-      {/* Progress section */}
-      <header className="w-full max-w-md mx-auto mb-4 sm:mb-6">
-        <Button
-          variant="secondary"
-          size="small"
-          icon={<BackArrowIcon />}
-          onClick={() => setShowQuitDialog(true)}
-          className="mb-4"
-          aria-label={labels.backButton}
-        >
-          {labels.backButton}
-        </Button>
-        <ProgressBar
-          current={roundProgress.current}
-          total={roundProgress.total}
-          labelPrefix=""
-          showLabel={true}
-          aria-label={`Napredek: ${roundProgress.current} od ${roundProgress.total}`}
+    <BaseGameScreen roundProgress={roundProgress} onGoBack={onGoBack}>
+      {/* Singular word display with Slovenian translation */}
+      <div className="text-center">
+        <h2 className="text-lg sm:text-xl font-semibold text-gray-800" id="plural-prompt">
+          {labels.pluralPrompt(currentWord.english, currentWord.slovenian)}
+        </h2>
+      </div>
+
+      {/* Listen button */}
+      <ListenButton speaking={speaking} supported={speechSupported} onListen={handleListen} />
+
+      {/* Option buttons */}
+      <div className="w-full space-y-3" role="group" aria-labelledby="plural-prompt">
+        {shuffledOptions.map((option) => (
+          <OptionButton
+            key={option.value}
+            label={option.label}
+            prefix={option.prefix}
+            state={getOptionState(option.value)}
+            onSelect={() => handleOptionSelect(option.value)}
+          />
+        ))}
+      </div>
+
+      {/* Feedback message */}
+      {feedbackType && feedbackMessage && (
+        <FeedbackMessage
+          type={feedbackType}
+          message={feedbackMessage}
+          correctAnswer={feedbackType === 'show-answer' ? currentWord.pluralForm : undefined}
         />
-        <p className="text-center text-base sm:text-lg font-medium text-gray-700 mt-2">
-          {labels.wordProgress(roundProgress.current, roundProgress.total)}
-        </p>
-      </header>
-
-      {/* Main game card */}
-      <Card padding="lg" shadow="lg" className="w-full max-w-md mx-auto flex-grow flex flex-col">
-        <div className="flex-grow flex flex-col items-center justify-center space-y-4 sm:space-y-6">
-          {/* Singular word display with Slovenian translation */}
-          <div className="text-center">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-800" id="plural-prompt">
-              {labels.pluralPrompt(currentWord.english, currentWord.slovenian)}
-            </h2>
-          </div>
-
-          {/* Listen button */}
-          <ListenButton speaking={speaking} supported={speechSupported} onListen={handleListen} />
-
-          {/* Option buttons */}
-          <div className="w-full space-y-3" role="group" aria-labelledby="plural-prompt">
-            {shuffledOptions.map((option) => (
-              <OptionButton
-                key={option.value}
-                label={option.label}
-                prefix={option.prefix}
-                state={getOptionState(option.value)}
-                onSelect={() => handleOptionSelect(option.value)}
-              />
-            ))}
-          </div>
-
-          {/* Feedback message */}
-          {feedbackType && feedbackMessage && (
-            <FeedbackMessage
-              type={feedbackType}
-              message={feedbackMessage}
-              correctAnswer={feedbackType === 'show-answer' ? currentWord.pluralForm : undefined}
-            />
-          )}
-        </div>
-      </Card>
-
-      {/* Score display */}
-      <footer className="w-full max-w-md mx-auto mt-4 sm:mt-6" aria-label="Rezultat">
-        <ScoreDisplay
-          current={roundProgress.score}
-          total={roundProgress.total}
-          points={roundProgress.points}
-          showPoints={true}
-        />
-      </footer>
-
-      {/* Quit confirmation dialog */}
-      <ConfirmDialog
-        isOpen={showQuitDialog}
-        title={labels.quitGameTitle}
-        message={labels.quitGameMessage}
-        confirmLabel={labels.confirmQuitButton}
-        cancelLabel={labels.cancelButton}
-        onConfirm={onGoBack}
-        onCancel={() => setShowQuitDialog(false)}
-        variant="warning"
-      />
-    </div>
+      )}
+    </BaseGameScreen>
   );
 }
 
