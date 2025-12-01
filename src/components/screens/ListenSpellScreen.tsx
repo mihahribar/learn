@@ -1,6 +1,11 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import type { Word, FeedbackType, FeedbackState, RoundStats } from '../../types';
-import { labels, getCorrectFeedback, getWrongFeedback, getShowCorrectMessage } from '../../data/messages';
+import {
+  labels,
+  getCorrectFeedback,
+  getWrongFeedback,
+  getShowCorrectMessage,
+} from '../../data/messages';
 import { Button } from '../ui/Button';
 import { ListenButton } from '../game/ListenButton';
 import { SpellingInput } from '../game/SpellingInput';

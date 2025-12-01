@@ -36,9 +36,7 @@ export interface GrammarQuestion {
  * Discriminated union for game items
  * Provides type-safe access to either Word or GrammarQuestion
  */
-export type GameItem =
-  | { type: 'word'; data: Word }
-  | { type: 'grammar'; data: GrammarQuestion };
+export type GameItem = { type: 'word'; data: Word } | { type: 'grammar'; data: GrammarQuestion };
 
 /**
  * Type guard to check if an item is a Word

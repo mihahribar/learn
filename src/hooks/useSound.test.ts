@@ -112,10 +112,7 @@ describe('useSound', () => {
 
     expect(mockAudioContext.createOscillator).toHaveBeenCalled();
     expect(mockAudioContext.createGain).toHaveBeenCalled();
-    expect(mockOscillator.frequency.setValueAtTime).toHaveBeenCalledWith(
-      880,
-      expect.any(Number)
-    );
+    expect(mockOscillator.frequency.setValueAtTime).toHaveBeenCalledWith(880, expect.any(Number));
     expect(mockOscillator.start).toHaveBeenCalled();
     expect(mockOscillator.stop).toHaveBeenCalled();
   });
