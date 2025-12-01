@@ -1,4 +1,4 @@
-import { createContext, useContext, ReactNode } from 'react';
+import { createContext, useContext, type ReactNode } from 'react';
 import { useSound } from '../hooks/useSound';
 
 /**

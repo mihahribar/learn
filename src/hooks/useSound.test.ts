@@ -58,7 +58,7 @@ describe('useSound', () => {
     };
 
     // Mock AudioContext constructor as a class
-    global.AudioContext = class {
+    globalThis.AudioContext = class {
       createOscillator = mockAudioContext.createOscillator;
       createGain = mockAudioContext.createGain;
       close = mockAudioContext.close;
@@ -191,7 +191,7 @@ describe('useSound', () => {
 
   it('should handle missing AudioContext gracefully', () => {
     // Remove AudioContext
-    delete (global as { AudioContext?: typeof AudioContext }).AudioContext;
+    delete (globalThis as { AudioContext?: typeof AudioContext }).AudioContext;
 
     const { result } = renderHook(() => useSound());
 

@@ -108,7 +108,7 @@ describe('useGameState - Grammar Forms Integration', () => {
       stats = result.current.endRound();
     });
 
-    expect(stats.score).toBe(correctCount);
+    expect(stats!.score).toBe(correctCount);
     expect(result.current.roundProgress.points).toBe(totalPoints);
   });
 
@@ -179,7 +179,7 @@ describe('useGameState - Grammar Forms Integration', () => {
     });
 
     // Max streak should be 3 (the first correct answers before the wrong one)
-    expect(stats.maxStreak).toBeGreaterThanOrEqual(2);
+    expect(stats!.maxStreak).toBeGreaterThanOrEqual(2);
   });
 
   it('should correctly handle perfect round scenario', () => {
@@ -208,8 +208,8 @@ describe('useGameState - Grammar Forms Integration', () => {
       stats = result.current.endRound();
     });
 
-    expect(stats.score).toBe(10);
-    expect(stats.perfectRound).toBe(true);
+    expect(stats!.score).toBe(10);
+    expect(stats!.perfectRound).toBe(true);
     expect(result.current.roundProgress.points).toBe(100); // 10 * 10 points
   });
 

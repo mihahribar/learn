@@ -84,7 +84,6 @@ export function ScreenRouter({
             gameState.currentWord && isWord(gameState.currentWord) ? gameState.currentWord : null
           }
           roundProgress={gameState.roundProgress}
-          currentAttempts={gameState.currentAttempts}
           onSubmitAnswer={onRecordWordAttempt}
           onAdvanceWord={gameState.advanceToNextWord}
           onRoundComplete={onRoundComplete}
@@ -105,7 +104,6 @@ export function ScreenRouter({
             gameState.currentWord && isWord(gameState.currentWord) ? gameState.currentWord : null
           }
           roundProgress={gameState.roundProgress}
-          currentAttempts={gameState.currentAttempts}
           onSubmitAnswer={onRecordWordAttempt}
           onAdvanceWord={gameState.advanceToNextWord}
           onRoundComplete={onRoundComplete}
@@ -126,7 +124,6 @@ export function ScreenRouter({
             gameState.currentWord && isWord(gameState.currentWord) ? gameState.currentWord : null
           }
           roundProgress={gameState.roundProgress}
-          currentAttempts={gameState.currentAttempts}
           onSubmitAnswer={onRecordWordAttempt}
           onAdvanceWord={gameState.advanceToNextWord}
           onRoundComplete={onRoundComplete}
@@ -149,7 +146,6 @@ export function ScreenRouter({
               : null
           }
           roundProgress={gameState.roundProgress}
-          currentAttempts={gameState.currentAttempts}
           onSubmitAnswer={onGrammarAttempt}
           onAdvanceWord={gameState.advanceToNextWord}
           onRoundComplete={onRoundComplete}

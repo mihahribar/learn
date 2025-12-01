@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import { labels } from '../../data/messages';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';

@@ -100,7 +100,7 @@ describe('GrammarFormsScreen', () => {
       correctAnswer: 'have got',
     });
 
-    render(<GrammarFormsScreen {...defaultProps} currentAttempts={1} />);
+    render(<GrammarFormsScreen {...defaultProps} />);
 
     const wrongButton = screen.getByText('has got');
     fireEvent.click(wrongButton);
