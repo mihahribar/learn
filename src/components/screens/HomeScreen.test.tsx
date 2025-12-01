@@ -97,7 +97,9 @@ describe('HomeScreen', () => {
 
     // Get the badges button - there are multiple "Značke" texts, so we need to be specific
     const badgesButtons = screen.getAllByText('Značke');
-    const badgesButton = badgesButtons.find(el => el.tagName === 'BUTTON' || el.closest('button'));
+    const badgesButton = badgesButtons.find(
+      (el) => el.tagName === 'BUTTON' || el.closest('button')
+    );
     expect(badgesButton).toBeDefined();
     fireEvent.click(badgesButton!);
     expect(onNavigate).toHaveBeenCalledWith('badges');
@@ -106,39 +108,27 @@ describe('HomeScreen', () => {
   it('should show storage warning when storage is not available', () => {
     render(<HomeScreen {...defaultProps} storageAvailable={false} />);
 
-    expect(
-      screen.getByText('Napredek se ne bo shranil')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Napredek se ne bo shranil')).toBeInTheDocument();
   });
 
   it('should show speech warning when speech is not supported', () => {
     render(<HomeScreen {...defaultProps} speechSupported={false} />);
 
-    expect(
-      screen.getByText('Govor ni podprt v tem brskalniku')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Govor ni podprt v tem brskalniku')).toBeInTheDocument();
   });
 
   it('should show both warnings when neither storage nor speech is available', () => {
     render(<HomeScreen {...defaultProps} storageAvailable={false} speechSupported={false} />);
 
-    expect(
-      screen.getByText('Napredek se ne bo shranil')
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText('Govor ni podprt v tem brskalniku')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Napredek se ne bo shranil')).toBeInTheDocument();
+    expect(screen.getByText('Govor ni podprt v tem brskalniku')).toBeInTheDocument();
   });
 
   it('should not show warnings when both storage and speech are available', () => {
     render(<HomeScreen {...defaultProps} />);
 
-    expect(
-      screen.queryByText('Napredek se ne bo shranil')
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText('Govor ni podprt v tem brskalniku')
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Napredek se ne bo shranil')).not.toBeInTheDocument();
+    expect(screen.queryByText('Govor ni podprt v tem brskalniku')).not.toBeInTheDocument();
   });
 
   it('should display zero points when no points earned', () => {

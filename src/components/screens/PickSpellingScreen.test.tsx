@@ -304,14 +304,20 @@ describe('PickSpellingScreen', () => {
     render(<PickSpellingScreen {...defaultProps} />);
 
     // Verify all options are present (correct + wrong spellings)
-    expect(screen.getByText((content, element) => {
-      return element?.tagName === 'SPAN' && content === 'apple';
-    })).toBeInTheDocument();
-    expect(screen.getByText((content, element) => {
-      return element?.tagName === 'SPAN' && content === 'aple';
-    })).toBeInTheDocument();
-    expect(screen.getByText((content, element) => {
-      return element?.tagName === 'SPAN' && content === 'appel';
-    })).toBeInTheDocument();
+    expect(
+      screen.getByText((content, element) => {
+        return element?.tagName === 'SPAN' && content === 'apple';
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((content, element) => {
+        return element?.tagName === 'SPAN' && content === 'aple';
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText((content, element) => {
+        return element?.tagName === 'SPAN' && content === 'appel';
+      })
+    ).toBeInTheDocument();
   });
 });
