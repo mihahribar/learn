@@ -17,7 +17,12 @@
       "Bash(find:*)",
       "Bash(tree:*)",
       "Bash(git stash:*)",
-      "Bash(wc:*)"
+      "Bash(wc:*)",
+      "Bash(git -C /Users/miha/Projects/me/learn status:*)",
+      "Bash(git -C /Users/miha/Projects/me/learn diff --cached)",
+      "Bash(git -C /Users/miha/Projects/me/learn diff)",
+      "Bash(git -C /Users/miha/Projects/me/learn log --oneline -5)",
+      "Bash(ls:*)"
     ],
     "deny": [],
     "ask": []
