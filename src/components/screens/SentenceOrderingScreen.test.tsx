@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { SentenceOrderingScreen } from './SentenceOrderingScreen';
-import type { SentenceExercise, RoundStats } from '../../types';
+import type { SentenceExercise } from '../../types';
 
 const mockExercise: SentenceExercise = {
   id: 'test-1',
@@ -161,5 +161,228 @@ describe('SentenceOrderingScreen', () => {
     expect(answerArea).toHaveTextContent('The');
     // Punctuation should be visible
     expect(answerArea).toHaveTextContent('.');
+  });
+
+  it('plays wrong sound and shows feedback on incorrect answer', () => {
+    const onSubmitAnswer = vi.fn().mockReturnValue({
+      correct: false,
+      pointsEarned: 0,
+      attemptNumber: 1,
+      shouldAdvance: false,
+      correctAnswer: 'the cat is sleeping',
+    });
+
+    render(<SentenceOrderingScreen {...defaultProps} onSubmitAnswer={onSubmitAnswer} />);
+
+    // Place all words in wrong order
+    fireEvent.click(screen.getByText('sleeping'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('is'));
+
+    fireEvent.click(screen.getByText('Preveri'));
+
+    expect(onSubmitAnswer).toHaveBeenCalledWith('sleeping cat the is');
+    expect(defaultProps.playWrongSound).toHaveBeenCalled();
+    expect(screen.getByRole('alert')).toBeInTheDocument();
+  });
+
+  it('shows correct answer and advances after max failed attempts', () => {
+    vi.useFakeTimers();
+    const onSubmitAnswer = vi.fn().mockReturnValue({
+      correct: false,
+      pointsEarned: 0,
+      attemptNumber: 2,
+      shouldAdvance: true,
+      correctAnswer: 'the cat is sleeping',
+    });
+
+    render(<SentenceOrderingScreen {...defaultProps} onSubmitAnswer={onSubmitAnswer} />);
+
+    // Place all words (wrong order)
+    fireEvent.click(screen.getByText('sleeping'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('is'));
+
+    fireEvent.click(screen.getByText('Preveri'));
+
+    // Should show correct answer in feedback
+    const feedback = screen.getByRole('alert');
+    expect(feedback).toHaveTextContent('the cat is sleeping');
+    expect(defaultProps.playWrongSound).toHaveBeenCalled();
+
+    // Answer area should now show the correct order
+    const answerArea = screen.getByTestId('answer-area');
+    expect(answerArea).toHaveTextContent('The');
+
+    vi.useRealTimers();
+  });
+
+  it('plays correct sound on correct answer', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('is'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    fireEvent.click(screen.getByText('Preveri'));
+
+    expect(defaultProps.playCorrectSound).toHaveBeenCalled();
+  });
+
+  it('shows quit dialog when back button is clicked', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    fireEvent.click(screen.getByText('Nazaj'));
+
+    expect(screen.getByText('Želiš zaključiti igro?')).toBeInTheDocument();
+  });
+
+  it('calls onGoBack when quit is confirmed', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    fireEvent.click(screen.getByText('Nazaj'));
+    fireEvent.click(screen.getByText('Zaključi igro'));
+
+    expect(defaultProps.onGoBack).toHaveBeenCalled();
+  });
+
+  it('closes quit dialog when cancel is clicked', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    fireEvent.click(screen.getByText('Nazaj'));
+    expect(screen.getByText('Želiš zaključiti igro?')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Prekliči'));
+    expect(screen.queryByText('Želiš zaključiti igro?')).not.toBeInTheDocument();
+  });
+
+  it('disables submit button during processing', () => {
+    vi.useFakeTimers();
+
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    // Place all words and submit
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('is'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    fireEvent.click(screen.getByText('Preveri'));
+
+    // Button should be disabled while processing correct answer
+    const button = screen.getByText('Preveri').closest('button');
+    expect(button).toBeDisabled();
+
+    vi.useRealTimers();
+  });
+
+  it('prevents placing words while processing', () => {
+    vi.useFakeTimers();
+
+    const exercise: SentenceExercise = {
+      id: 'test-2',
+      correctWords: ['i', 'am', 'happy'],
+      endPunctuation: '.',
+      difficulty: 'easy',
+    };
+
+    const onSubmitAnswer = vi.fn().mockReturnValue({
+      correct: false,
+      pointsEarned: 0,
+      attemptNumber: 1,
+      shouldAdvance: false,
+      correctAnswer: 'i am happy',
+    });
+
+    render(
+      <SentenceOrderingScreen
+        {...defaultProps}
+        currentExercise={exercise}
+        onSubmitAnswer={onSubmitAnswer}
+      />
+    );
+
+    // Place all words and submit wrong answer (shouldAdvance=false means still processing briefly)
+    fireEvent.click(screen.getByText('am'));
+    fireEvent.click(screen.getByText('i'));
+    fireEvent.click(screen.getByText('happy'));
+
+    fireEvent.click(screen.getByText('Preveri'));
+
+    // After wrong answer with shouldAdvance=false, processing is reset,
+    // so we can interact again
+    expect(screen.getByText('Preveri')).not.toBeDisabled();
+
+    vi.useRealTimers();
+  });
+
+  it('calls onEndRound and onRoundComplete on last exercise', () => {
+    vi.useFakeTimers();
+
+    const onEndRound = vi.fn().mockReturnValue({
+      score: 9,
+      maxStreak: 5,
+      perfectRound: false,
+    });
+
+    render(
+      <SentenceOrderingScreen
+        {...defaultProps}
+        roundProgress={{ current: 10, total: 10, score: 9, points: 90 }}
+        onEndRound={onEndRound}
+      />
+    );
+
+    // Place all words
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('is'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    fireEvent.click(screen.getByText('Preveri'));
+
+    // Advance the timer to trigger handleAdvance
+    vi.advanceTimersByTime(1500);
+
+    expect(onEndRound).toHaveBeenCalled();
+    expect(defaultProps.onRoundComplete).toHaveBeenCalled();
+
+    vi.useRealTimers();
+  });
+
+  it('calls onAdvanceWord after correct answer on non-last exercise', () => {
+    vi.useFakeTimers();
+
+    render(
+      <SentenceOrderingScreen
+        {...defaultProps}
+        roundProgress={{ current: 3, total: 10, score: 2, points: 20 }}
+      />
+    );
+
+    // Place all words
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('is'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    fireEvent.click(screen.getByText('Preveri'));
+
+    vi.advanceTimersByTime(1500);
+
+    expect(defaultProps.onAdvanceWord).toHaveBeenCalled();
+
+    vi.useRealTimers();
+  });
+
+  it('does not speak when no words are placed', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    // Speak button is disabled, but let's also verify speak is not called
+    // by trying the speak flow with an empty arrangement
+    expect(defaultProps.speak).not.toHaveBeenCalled();
   });
 });

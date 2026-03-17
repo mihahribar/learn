@@ -22,7 +22,10 @@
       "Bash(git -C /Users/miha/Projects/me/learn diff --cached)",
       "Bash(git -C /Users/miha/Projects/me/learn diff)",
       "Bash(git -C /Users/miha/Projects/me/learn log --oneline -5)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npx vitest:*)",
+      "Bash(gh pr:*)",
+      "Bash(git status:*)"
     ],
     "deny": [],
     "ask": []
