@@ -1,7 +1,12 @@
 /**
  * Game mode types
  */
-export type GameMode = 'listen-spell' | 'pick-spelling' | 'plural-forms' | 'grammar-forms';
+export type GameMode =
+  | 'listen-spell'
+  | 'pick-spelling'
+  | 'plural-forms'
+  | 'grammar-forms'
+  | 'sentence-ordering';
 
 /**
  * Word difficulty levels
@@ -33,23 +38,47 @@ export interface GrammarQuestion {
 }
 
 /**
- * Discriminated union for game items
- * Provides type-safe access to either Word or GrammarQuestion
+ * Sentence exercise data structure for sentence ordering game
  */
-export type GameItem = { type: 'word'; data: Word } | { type: 'grammar'; data: GrammarQuestion };
+export interface SentenceExercise {
+  id: string;
+  correctWords: string[];
+  endPunctuation: string;
+  difficulty: Difficulty;
+}
+
+/**
+ * Discriminated union for game items
+ * Provides type-safe access to either Word, GrammarQuestion, or SentenceExercise
+ */
+export type GameItem =
+  | { type: 'word'; data: Word }
+  | { type: 'grammar'; data: GrammarQuestion }
+  | { type: 'sentence'; data: SentenceExercise };
 
 /**
  * Type guard to check if an item is a Word
  */
-export function isWord(item: Word | GrammarQuestion): item is Word {
+export function isWord(item: Word | GrammarQuestion | SentenceExercise): item is Word {
   return 'english' in item;
 }
 
 /**
  * Type guard to check if an item is a GrammarQuestion
  */
-export function isGrammarQuestion(item: Word | GrammarQuestion): item is GrammarQuestion {
+export function isGrammarQuestion(
+  item: Word | GrammarQuestion | SentenceExercise
+): item is GrammarQuestion {
   return 'correctAnswer' in item && 'sentence' in item;
+}
+
+/**
+ * Type guard to check if an item is a SentenceExercise
+ */
+export function isSentenceExercise(
+  item: Word | GrammarQuestion | SentenceExercise
+): item is SentenceExercise {
+  return 'correctWords' in item && 'endPunctuation' in item;
 }
 
 /**
@@ -64,6 +93,13 @@ export function createWordItem(word: Word): GameItem {
  */
 export function createGrammarItem(question: GrammarQuestion): GameItem {
   return { type: 'grammar', data: question };
+}
+
+/**
+ * Helper to create a sentence game item
+ */
+export function createSentenceItem(exercise: SentenceExercise): GameItem {
+  return { type: 'sentence', data: exercise };
 }
 
 /**
@@ -89,6 +125,7 @@ export interface PersistedProgress {
   currentStreak: number;
   longestStreak: number;
   consecutiveDays: number;
+  sentenceRoundsPlayed?: number;
 }
 
 /**
@@ -109,6 +146,7 @@ export interface RoundStats {
   score: number;
   maxStreak: number;
   perfectRound: boolean;
+  mode?: GameMode;
 }
 
 /**
@@ -141,6 +179,7 @@ export type Screen =
   | 'pick-spelling'
   | 'plural-forms'
   | 'grammar-forms'
+  | 'sentence-ordering'
   | 'round-complete'
   | 'badges';
 

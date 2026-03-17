@@ -28,6 +28,7 @@ interface UseProgressReturn {
   addPoints: (points: number) => void;
   recordWordAttempt: (wordId: string, correct: boolean) => void;
   incrementRoundsPlayed: () => void;
+  incrementSentenceRoundsPlayed: () => void;
   checkAndAwardBadges: (roundStats?: RoundStats) => Badge[];
   updateStreak: (correct: boolean) => void;
   resetCurrentStreak: () => void;
@@ -208,6 +209,22 @@ export function useProgress(): UseProgressReturn {
   }, [storageAvailable]);
 
   /**
+   * Increment sentence-ordering rounds played
+   */
+  const incrementSentenceRoundsPlayed = useCallback(() => {
+    setProgress((prev) => {
+      const newProgress = {
+        ...prev,
+        sentenceRoundsPlayed: (prev.sentenceRoundsPlayed ?? 0) + 1,
+      };
+      if (storageAvailable) {
+        saveProgress(newProgress);
+      }
+      return newProgress;
+    });
+  }, [storageAvailable]);
+
+  /**
    * Update streak tracking (for "Hot Hand" badge)
    */
   const updateStreak = useCallback(
@@ -286,6 +303,7 @@ export function useProgress(): UseProgressReturn {
     addPoints,
     recordWordAttempt,
     incrementRoundsPlayed,
+    incrementSentenceRoundsPlayed,
     checkAndAwardBadges,
     updateStreak,
     resetCurrentStreak,

@@ -1,5 +1,5 @@
 import type { Screen, GameMode, RoundStats, Badge } from '../types';
-import { isWord, isGrammarQuestion } from '../types';
+import { isWord, isGrammarQuestion, isSentenceExercise } from '../types';
 import { useGame } from '../contexts/GameContext';
 import { useProgressContext } from '../contexts/ProgressContext';
 import { useSpeechContext } from '../contexts/SpeechContext';
@@ -10,6 +10,7 @@ import { ListenSpellScreen } from './screens/ListenSpellScreen';
 import { PickSpellingScreen } from './screens/PickSpellingScreen';
 import { PluralFormsScreen } from './screens/PluralFormsScreen';
 import { GrammarFormsScreen } from './screens/GrammarFormsScreen';
+import { SentenceOrderingScreen } from './screens/SentenceOrderingScreen';
 import { RoundCompleteScreen } from './screens/RoundCompleteScreen';
 import { BadgesScreen } from './screens/BadgesScreen';
 
@@ -35,6 +36,13 @@ interface ScreenRouterProps {
     shouldAdvance: boolean;
     correctAnswer: string;
   };
+  onSentenceAttempt: (answer: string) => {
+    correct: boolean;
+    pointsEarned: number;
+    attemptNumber: number;
+    shouldAdvance: boolean;
+    correctAnswer: string;
+  };
   onPlayAgain: () => void;
   onGoHome: () => void;
 }
@@ -53,6 +61,7 @@ export function ScreenRouter({
   onRoundComplete,
   onRecordWordAttempt,
   onGrammarAttempt,
+  onSentenceAttempt,
   onPlayAgain,
   onGoHome,
 }: ScreenRouterProps) {
@@ -151,6 +160,28 @@ export function ScreenRouter({
           onRoundComplete={onRoundComplete}
           onEndRound={gameState.endRound}
           onGoBack={onGoHome}
+          playCorrectSound={sound.playCorrect}
+          playWrongSound={sound.playWrong}
+        />
+      );
+
+    case 'sentence-ordering':
+      return (
+        <SentenceOrderingScreen
+          currentExercise={
+            gameState.currentWord && isSentenceExercise(gameState.currentWord)
+              ? gameState.currentWord
+              : null
+          }
+          roundProgress={gameState.roundProgress}
+          onSubmitAnswer={onSentenceAttempt}
+          onAdvanceWord={gameState.advanceToNextWord}
+          onRoundComplete={onRoundComplete}
+          onEndRound={gameState.endRound}
+          onGoBack={onGoHome}
+          speak={speech.speak}
+          speaking={speech.speaking}
+          speechSupported={speech.supported}
           playCorrectSound={sound.playCorrect}
           playWrongSound={sound.playWrong}
         />

@@ -44,6 +44,7 @@ export const labels = {
   pickSpellingButton: 'Izberi pravilno',
   pluralFormsButton: 'Množina',
   grammarFormsButton: 'Dopolni stavke',
+  sentenceOrderingButton: 'Razvrsti besede',
   badgesButton: 'Značke',
   totalPoints: 'Skupne točke',
   badgesEarned: 'Značke',
@@ -61,6 +62,11 @@ export const labels = {
   grammarPrompt: (sentence: string) => sentence,
   currentScore: 'Rezultat',
   points: 'točke',
+
+  // Sentence ordering
+  sentenceOrderingPrompt: 'Razvrsti besede v pravilen vrstni red:',
+  placeAllWordsPrompt: 'Najprej razvrsti vse besede!',
+  speakSentenceButton: 'Poslušaj stavek',
 
   // Feedback
   emptyInputError: 'Vnesi odgovor',

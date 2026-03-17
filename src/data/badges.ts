@@ -56,6 +56,21 @@ export const badges: Badge[] = [
     icon: 'calendar',
     condition: (progress: PersistedProgress) => progress.consecutiveDays >= 7,
   },
+  {
+    id: 'sentence-builder',
+    name: 'Graditelj stavkov',
+    description: 'Zaključi svojo prvo igro razvrščanja stavkov',
+    icon: 'puzzle',
+    condition: (progress: PersistedProgress) => (progress.sentenceRoundsPlayed ?? 0) >= 1,
+  },
+  {
+    id: 'sentence-master',
+    name: 'Mojster stavkov',
+    description: 'Doseži 10/10 pri razvrščanju stavkov',
+    icon: 'sparkles',
+    condition: (_progress: PersistedProgress, roundStats?: RoundStats) =>
+      roundStats?.perfectRound === true && roundStats?.mode === 'sentence-ordering',
+  },
 ];
 
 /**

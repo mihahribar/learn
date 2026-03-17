@@ -197,6 +197,33 @@ body {
   }
 }
 
+/* Tile settle animation for sentence ordering */
+@keyframes tileSettle {
+  0% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Tile pop out animation when returning to bank */
+@keyframes tilePopOut {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 /* ====================================
    ANIMATION UTILITY CLASSES
    ==================================== */
@@ -231,6 +258,14 @@ body {
 
 .animate-count-up {
   animation: countUp 0.3s ease-out;
+}
+
+.animate-tile-settle {
+  animation: tileSettle 0.25s ease-out;
+}
+
+.animate-tile-pop {
+  animation: tilePopOut 0.2s ease-out;
 }
 
 /* Sparkle container for success feedback */
@@ -308,7 +343,9 @@ body {
   .animate-badge-glow,
   .animate-bounce-in,
   .animate-confetti,
-  .animate-count-up {
+  .animate-count-up,
+  .animate-tile-settle,
+  .animate-tile-pop {
     animation: none !important;
   }
 }

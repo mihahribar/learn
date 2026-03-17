@@ -34,12 +34,20 @@ function AppContent() {
       // Calculate total points for the round
       const totalRoundPoints = calculateRoundTotal(stats.score, gameState.roundProgress.points);
 
+      // Tag stats with current mode for badge checking
+      const taggedStats = { ...stats, mode: gameState.currentMode ?? undefined };
+
       // Update progress
       progressHook.addPoints(totalRoundPoints);
       progressHook.incrementRoundsPlayed();
 
+      // Track sentence-ordering specific rounds
+      if (gameState.currentMode === 'sentence-ordering') {
+        progressHook.incrementSentenceRoundsPlayed();
+      }
+
       // Check for new badges
-      const newBadges = progressHook.checkAndAwardBadges(stats);
+      const newBadges = progressHook.checkAndAwardBadges(taggedStats);
 
       // Store data for round complete screen
       setLastRoundStats(stats);
@@ -79,6 +87,18 @@ function AppContent() {
     [gameState, progressHook]
   );
 
+  const handleSentenceAttempt = useCallback(
+    (answer: string) => {
+      const result = gameState.submitAnswer(answer);
+
+      // Update streak for sentence ordering attempts
+      progressHook.updateStreak(result.correct);
+
+      return result;
+    },
+    [gameState, progressHook]
+  );
+
   const handlePlayAgain = useCallback(() => {
     if (gameState.currentMode) {
       handleStartGame(gameState.currentMode);
@@ -109,6 +129,7 @@ function AppContent() {
           onRoundComplete={handleRoundComplete}
           onRecordWordAttempt={handleRecordWordAttempt}
           onGrammarAttempt={handleGrammarAttempt}
+          onSentenceAttempt={handleSentenceAttempt}
           onPlayAgain={handlePlayAgain}
           onGoHome={handleGoHome}
         />

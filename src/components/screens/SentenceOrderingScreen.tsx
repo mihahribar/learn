@@ -1,0 +1,499 @@
+import { useState, useCallback, useRef, useEffect } from 'react';
+import type { SentenceExercise, RoundStats } from '../../types';
+import {
+  labels,
+  getCorrectFeedback,
+  getWrongFeedback,
+  getShowCorrectMessage,
+} from '../../data/messages';
+import { Button } from '../ui/Button';
+import { Card } from '../ui/Card';
+import { ProgressBar } from '../ui/ProgressBar';
+import { FeedbackMessage } from '../game/FeedbackMessage';
+import { ScoreDisplay } from '../game/ScoreDisplay';
+import { ConfirmDialog } from '../ui/ConfirmDialog';
+import { shuffle } from '../../utils/shuffle';
+
+export interface SentenceOrderingScreenProps {
+  currentExercise: SentenceExercise | null;
+  roundProgress: {
+    current: number;
+    total: number;
+    score: number;
+    points: number;
+  };
+  onSubmitAnswer: (answer: string) => {
+    correct: boolean;
+    pointsEarned: number;
+    attemptNumber: number;
+    shouldAdvance: boolean;
+    correctAnswer: string;
+  };
+  onAdvanceWord: () => void;
+  onRoundComplete: (stats: RoundStats) => void;
+  onEndRound: () => RoundStats;
+  onGoBack: () => void;
+  speak: (text: string) => void;
+  speaking: boolean;
+  speechSupported: boolean;
+  playCorrectSound: () => void;
+  playWrongSound: () => void;
+}
+
+interface WordTile {
+  word: string;
+  originalIndex: number;
+}
+
+const ADVANCE_DELAY_MS = 1500;
+
+const BackArrowIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-5 h-5"
+    aria-hidden="true"
+  >
+    <path
+      fillRule="evenodd"
+      d="M7.72 12.53a.75.75 0 010-1.06l7.5-7.5a.75.75 0 111.06 1.06L9.31 12l6.97 6.97a.75.75 0 11-1.06 1.06l-7.5-7.5z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
+const SpeakerIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className="w-5 h-5"
+    aria-hidden="true"
+  >
+    <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 001.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06z" />
+    <path d="M18.584 5.106a.75.75 0 011.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 11-1.06-1.06 8.25 8.25 0 000-11.668.75.75 0 010-1.06z" />
+  </svg>
+);
+
+interface LastSubmitResult {
+  correct: boolean;
+  pointsEarned: number;
+}
+
+export function SentenceOrderingScreen({
+  currentExercise,
+  roundProgress,
+  onSubmitAnswer,
+  onAdvanceWord,
+  onRoundComplete,
+  onEndRound,
+  onGoBack,
+  speak,
+  speaking,
+  speechSupported,
+  playCorrectSound,
+  playWrongSound,
+}: SentenceOrderingScreenProps) {
+  const [bankTiles, setBankTiles] = useState<WordTile[]>([]);
+  const [placedTiles, setPlacedTiles] = useState<WordTile[]>([]);
+  const [feedbackMessage, setFeedbackMessage] = useState<string | null>(null);
+  const [feedbackType, setFeedbackType] = useState<'correct' | 'wrong' | 'show-answer' | null>(
+    null
+  );
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showQuitDialog, setShowQuitDialog] = useState(false);
+  const [incompleteWarning, setIncompleteWarning] = useState(false);
+  const [answerDragOver, setAnswerDragOver] = useState(false);
+  const [bankDragOver, setBankDragOver] = useState(false);
+  const [shakeAnswer, setShakeAnswer] = useState(false);
+  const [successAnswer, setSuccessAnswer] = useState(false);
+  const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastExerciseIdRef = useRef<string | null>(null);
+  const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
+
+  // Reset state when exercise changes
+  useEffect(() => {
+    if (currentExercise && currentExercise.id !== lastExerciseIdRef.current) {
+      lastExerciseIdRef.current = currentExercise.id;
+      const tiles: WordTile[] = currentExercise.correctWords.map((word, index) => ({
+        word,
+        originalIndex: index,
+      }));
+      setBankTiles(shuffle(tiles));
+      setPlacedTiles([]);
+      setFeedbackMessage(null);
+      setFeedbackType(null);
+      setIsProcessing(false);
+      setIncompleteWarning(false);
+      setShakeAnswer(false);
+      setSuccessAnswer(false);
+    }
+  }, [currentExercise]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (advanceTimeoutRef.current) {
+        clearTimeout(advanceTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleAdvance = useCallback(() => {
+    if (roundProgress.current >= roundProgress.total) {
+      const stats = onEndRound();
+      const lastResult = lastSubmitResultRef.current;
+      if (lastResult && lastResult.correct) {
+        stats.score += 1;
+        stats.perfectRound = stats.score === roundProgress.total;
+      }
+      lastSubmitResultRef.current = null;
+      onRoundComplete(stats);
+    } else {
+      onAdvanceWord();
+    }
+  }, [roundProgress, onAdvanceWord, onRoundComplete, onEndRound]);
+
+  const handlePlaceWord = useCallback(
+    (tile: WordTile) => {
+      if (isProcessing) return;
+      setIncompleteWarning(false);
+      setBankTiles((prev) => prev.filter((t) => t !== tile));
+      setPlacedTiles((prev) => [...prev, tile]);
+    },
+    [isProcessing]
+  );
+
+  const handleReturnWord = useCallback(
+    (tile: WordTile) => {
+      if (isProcessing) return;
+      setIncompleteWarning(false);
+      setPlacedTiles((prev) => prev.filter((t) => t !== tile));
+      setBankTiles((prev) => [...prev, tile]);
+    },
+    [isProcessing]
+  );
+
+  const handleSubmit = useCallback(() => {
+    if (isProcessing || !currentExercise) return;
+
+    if (bankTiles.length > 0) {
+      setIncompleteWarning(true);
+      return;
+    }
+
+    setIsProcessing(true);
+
+    const answer = placedTiles.map((t) => t.word).join(' ');
+    const result = onSubmitAnswer(answer);
+
+    lastSubmitResultRef.current = {
+      correct: result.correct,
+      pointsEarned: result.pointsEarned,
+    };
+
+    if (result.correct) {
+      playCorrectSound();
+      setFeedbackMessage(getCorrectFeedback());
+      setFeedbackType('correct');
+      setSuccessAnswer(true);
+
+      advanceTimeoutRef.current = setTimeout(() => {
+        handleAdvance();
+      }, ADVANCE_DELAY_MS);
+    } else {
+      playWrongSound();
+      setShakeAnswer(true);
+      setTimeout(() => setShakeAnswer(false), 500);
+
+      if (result.shouldAdvance) {
+        // Show correct answer
+        const correctSentence = currentExercise.correctWords.join(' ');
+        setFeedbackMessage(getShowCorrectMessage(correctSentence));
+        setFeedbackType('show-answer');
+
+        // Show the correct order
+        const correctTiles = currentExercise.correctWords.map((word, index) => ({
+          word,
+          originalIndex: index,
+        }));
+        setPlacedTiles(correctTiles);
+        setBankTiles([]);
+
+        advanceTimeoutRef.current = setTimeout(() => {
+          handleAdvance();
+        }, ADVANCE_DELAY_MS * 1.5);
+      } else {
+        setFeedbackMessage(getWrongFeedback());
+        setFeedbackType('wrong');
+        setIsProcessing(false);
+      }
+    }
+  }, [
+    isProcessing,
+    currentExercise,
+    bankTiles.length,
+    placedTiles,
+    onSubmitAnswer,
+    handleAdvance,
+    playCorrectSound,
+    playWrongSound,
+  ]);
+
+  const handleSpeak = useCallback(() => {
+    if (placedTiles.length === 0) return;
+    const text = placedTiles.map((t) => t.word).join(' ');
+    speak(text);
+  }, [placedTiles, speak]);
+
+  // Drag and drop handlers
+  const handleDragStart = useCallback(
+    (e: React.DragEvent, tile: WordTile, source: 'bank' | 'placed') => {
+      e.dataTransfer.setData('text/plain', JSON.stringify({ tile, source }));
+      e.dataTransfer.effectAllowed = 'move';
+    },
+    []
+  );
+
+  const handleDropOnAnswer = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setAnswerDragOver(false);
+      if (isProcessing) return;
+      try {
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        if (data.source === 'bank') {
+          handlePlaceWord(
+            bankTiles.find(
+              (t) => t.word === data.tile.word && t.originalIndex === data.tile.originalIndex
+            )!
+          );
+        }
+      } catch {
+        // ignore invalid drag data
+      }
+    },
+    [isProcessing, bankTiles, handlePlaceWord]
+  );
+
+  const handleDropOnBank = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setBankDragOver(false);
+      if (isProcessing) return;
+      try {
+        const data = JSON.parse(e.dataTransfer.getData('text/plain'));
+        if (data.source === 'placed') {
+          handleReturnWord(
+            placedTiles.find(
+              (t) => t.word === data.tile.word && t.originalIndex === data.tile.originalIndex
+            )!
+          );
+        }
+      } catch {
+        // ignore invalid drag data
+      }
+    },
+    [isProcessing, placedTiles, handleReturnWord]
+  );
+
+  const handleDragOverAnswer = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setAnswerDragOver(true);
+  }, []);
+
+  const handleDragOverBank = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setBankDragOver(true);
+  }, []);
+
+  const handleDragLeaveAnswer = useCallback(() => {
+    setAnswerDragOver(false);
+  }, []);
+
+  const handleDragLeaveBank = useCallback(() => {
+    setBankDragOver(false);
+  }, []);
+
+  if (!currentExercise) {
+    return null;
+  }
+
+  const displayPlacedWords = placedTiles.map((tile, index) => {
+    let displayWord = tile.word;
+    if (index === 0) {
+      displayWord = displayWord.charAt(0).toUpperCase() + displayWord.slice(1);
+    }
+    return { ...tile, displayWord };
+  });
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-primary-50 to-primary-100 flex flex-col p-4 sm:p-6 lg:p-8">
+      {/* Progress section */}
+      <header className="w-full max-w-md mx-auto mb-4 sm:mb-6">
+        <Button
+          variant="secondary"
+          size="small"
+          icon={<BackArrowIcon />}
+          onClick={() => setShowQuitDialog(true)}
+          className="mb-4"
+          aria-label={labels.backButton}
+        >
+          {labels.backButton}
+        </Button>
+        <ProgressBar
+          current={roundProgress.current}
+          total={roundProgress.total}
+          labelPrefix=""
+          showLabel={true}
+          aria-label={`Napredek: ${roundProgress.current} od ${roundProgress.total}`}
+        />
+        <p className="text-center text-base sm:text-lg font-medium text-gray-700 mt-2">
+          {labels.sentenceProgress(roundProgress.current, roundProgress.total)}
+        </p>
+      </header>
+
+      {/* Main game card */}
+      <Card padding="lg" shadow="lg" className="w-full max-w-md mx-auto flex-grow flex flex-col">
+        <div className="flex-grow flex flex-col items-center space-y-4 sm:space-y-6">
+          {/* Prompt */}
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800 text-center">
+            {labels.sentenceOrderingPrompt}
+          </h2>
+
+          {/* Answer area */}
+          <div
+            data-testid="answer-area"
+            className={`w-full min-h-[60px] p-3 border-2 border-dashed rounded-xl flex flex-wrap gap-2 items-center transition-all duration-200 ${
+              successAnswer
+                ? 'border-success bg-success-light animate-success-pulse'
+                : answerDragOver
+                  ? 'border-primary-500 bg-primary-100 scale-[1.02]'
+                  : 'border-primary-300 bg-primary-50'
+            } ${shakeAnswer ? 'animate-shake' : ''}`}
+            onDrop={handleDropOnAnswer}
+            onDragOver={handleDragOverAnswer}
+            onDragLeave={handleDragLeaveAnswer}
+          >
+            {displayPlacedWords.map((tile) => (
+              <button
+                key={`placed-${tile.originalIndex}`}
+                type="button"
+                className="px-3 py-2 bg-primary-600 text-white rounded-lg font-medium text-base sm:text-lg shadow-md hover:bg-primary-700 active:scale-95 transition-all cursor-pointer animate-tile-settle draggable:opacity-50 draggable:scale-110"
+                onClick={() => handleReturnWord(tile)}
+                draggable
+                onDragStart={(e) => handleDragStart(e, tile, 'placed')}
+              >
+                {tile.displayWord}
+              </button>
+            ))}
+            {placedTiles.length > 0 && (
+              <span className="text-xl font-bold text-gray-500 ml-1">
+                {currentExercise.endPunctuation}
+              </span>
+            )}
+            {placedTiles.length === 0 && (
+              <p className="text-gray-400 text-sm italic w-full text-center">
+                Klikni ali povleci besede sem
+              </p>
+            )}
+          </div>
+
+          {/* Speak button */}
+          {speechSupported && (
+            <button
+              type="button"
+              onClick={handleSpeak}
+              disabled={placedTiles.length === 0 || speaking}
+              className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-primary-300 rounded-xl text-primary-700 font-medium hover:bg-primary-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              aria-label={labels.speakSentenceButton}
+            >
+              <SpeakerIcon />
+              {labels.speakSentenceButton}
+            </button>
+          )}
+
+          {/* Word bank */}
+          <div
+            data-testid="word-bank"
+            className={`w-full p-3 rounded-xl flex flex-wrap gap-2 justify-center min-h-[50px] transition-all duration-200 ${
+              bankDragOver ? 'bg-gray-100 scale-[1.02]' : 'bg-gray-50'
+            }`}
+            onDrop={handleDropOnBank}
+            onDragOver={handleDragOverBank}
+            onDragLeave={handleDragLeaveBank}
+          >
+            {bankTiles.map((tile) => (
+              <button
+                key={`bank-${tile.originalIndex}`}
+                type="button"
+                className="px-3 py-2 bg-white border-2 border-gray-300 rounded-lg font-medium text-base sm:text-lg shadow-sm hover:border-primary-400 hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all cursor-pointer animate-tile-pop"
+                onClick={() => handlePlaceWord(tile)}
+                draggable
+                onDragStart={(e) => handleDragStart(e, tile, 'bank')}
+              >
+                {tile.word}
+              </button>
+            ))}
+          </div>
+
+          {/* Incomplete warning */}
+          {incompleteWarning && (
+            <p className="text-warning-dark text-sm font-medium">{labels.placeAllWordsPrompt}</p>
+          )}
+
+          {/* Submit button */}
+          <Button
+            variant="primary"
+            size="large"
+            onClick={handleSubmit}
+            className="w-full"
+            disabled={isProcessing}
+          >
+            {labels.checkButton}
+          </Button>
+
+          {/* Feedback message */}
+          {feedbackType && feedbackMessage && (
+            <FeedbackMessage
+              type={feedbackType}
+              message={feedbackMessage}
+              correctAnswer={
+                feedbackType === 'show-answer'
+                  ? currentExercise.correctWords.join(' ')
+                  : undefined
+              }
+            />
+          )}
+        </div>
+      </Card>
+
+      {/* Score display */}
+      <footer className="w-full max-w-md mx-auto mt-4 sm:mt-6" aria-label="Rezultat">
+        <ScoreDisplay
+          current={roundProgress.score}
+          total={roundProgress.total}
+          points={roundProgress.points}
+          showPoints={true}
+        />
+      </footer>
+
+      {/* Quit confirmation dialog */}
+      <ConfirmDialog
+        isOpen={showQuitDialog}
+        title={labels.quitGameTitle}
+        message={labels.quitGameMessage}
+        confirmLabel={labels.confirmQuitButton}
+        cancelLabel={labels.cancelButton}
+        onConfirm={onGoBack}
+        onCancel={() => setShowQuitDialog(false)}
+        variant="warning"
+      />
+    </div>
+  );
+}
+
+export default SentenceOrderingScreen;

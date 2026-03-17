@@ -1,9 +1,17 @@
 import { useState, useCallback, useMemo } from 'react';
-import type { GameMode, Word, GrammarQuestion, CurrentRound, RoundStats } from '../types';
+import type {
+  GameMode,
+  Word,
+  GrammarQuestion,
+  SentenceExercise,
+  CurrentRound,
+  RoundStats,
+} from '../types';
 import { pickRandom } from '../utils/shuffle';
 import { isAnswerCorrect, calculateAttemptPoints } from '../utils/scoring';
 import { words } from '../data/words';
 import { grammarQuestions } from '../data/grammarQuestions';
+import { sentenceExercises } from '../data/sentenceExercises';
 
 /**
  * Number of words per round
@@ -37,10 +45,10 @@ interface SubmitResult {
 }
 
 /**
- * Extended current round that can hold either words or grammar questions
+ * Extended current round that can hold words, grammar questions, or sentence exercises
  */
 interface ExtendedCurrentRound extends Omit<CurrentRound, 'words'> {
-  words: (Word | GrammarQuestion)[];
+  words: (Word | GrammarQuestion | SentenceExercise)[];
 }
 
 /**
@@ -48,7 +56,7 @@ interface ExtendedCurrentRound extends Omit<CurrentRound, 'words'> {
  */
 interface UseGameStateReturn {
   currentMode: GameMode | null;
-  currentWord: Word | GrammarQuestion | null;
+  currentWord: Word | GrammarQuestion | SentenceExercise | null;
   roundProgress: RoundProgress;
   isRoundComplete: boolean;
   currentAttempts: number;
@@ -72,7 +80,7 @@ export function useGameState(): UseGameStateReturn {
   /**
    * Get the current word based on round state
    */
-  const currentWord = useMemo((): Word | GrammarQuestion | null => {
+  const currentWord = useMemo((): Word | GrammarQuestion | SentenceExercise | null => {
     if (!currentRound) return null;
     return currentRound.words[currentRound.currentIndex] || null;
   }, [currentRound]);
@@ -126,9 +134,12 @@ export function useGameState(): UseGameStateReturn {
    * Start a new game with the specified mode
    */
   const startGame = useCallback((mode: GameMode) => {
-    let roundWords: (Word | GrammarQuestion)[];
+    let roundWords: (Word | GrammarQuestion | SentenceExercise)[];
 
-    if (mode === 'grammar-forms') {
+    if (mode === 'sentence-ordering') {
+      // Use sentence exercises for sentence-ordering mode
+      roundWords = pickRandom(sentenceExercises, WORDS_PER_ROUND);
+    } else if (mode === 'grammar-forms') {
       // Use grammar questions for grammar-forms mode
       roundWords = pickRandom(grammarQuestions, WORDS_PER_ROUND);
     } else if (mode === 'plural-forms') {
@@ -176,7 +187,9 @@ export function useGameState(): UseGameStateReturn {
 
       // Determine correct answer based on mode and item type
       let correctAnswer: string;
-      if (currentMode === 'grammar-forms' && 'correctAnswer' in currentWord) {
+      if (currentMode === 'sentence-ordering' && 'correctWords' in currentWord) {
+        correctAnswer = currentWord.correctWords.join(' ');
+      } else if (currentMode === 'grammar-forms' && 'correctAnswer' in currentWord) {
         correctAnswer = currentWord.correctAnswer;
       } else if (
         currentMode === 'plural-forms' &&
