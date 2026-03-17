@@ -21,6 +21,26 @@ export function shuffle<T>(array: T[]): T[] {
  * @param count - Number of items to pick
  * @returns A new array with randomly selected items
  */
+/**
+ * Shuffle an array, guaranteeing the result is not in the original order.
+ * Uses a comparison function to check whether the shuffled array matches
+ * the original ordering.
+ *
+ * @param array - The array to shuffle (must have length >= 2)
+ * @param isOriginalOrder - Returns true if the shuffled array is still in original order
+ * @returns A new shuffled array that is not in original order
+ */
+export function shuffleNotInOrder<T>(
+  array: T[],
+  isOriginalOrder: (shuffled: T[]) => boolean,
+): T[] {
+  let shuffled = shuffle(array);
+  while (isOriginalOrder(shuffled)) {
+    shuffled = shuffle(shuffled);
+  }
+  return shuffled;
+}
+
 export function pickRandom<T>(array: T[], count: number): T[] {
   const shuffled = shuffle(array);
   return shuffled.slice(0, Math.min(count, shuffled.length));

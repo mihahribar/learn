@@ -12,7 +12,7 @@ import { ProgressBar } from '../ui/ProgressBar';
 import { FeedbackMessage } from '../game/FeedbackMessage';
 import { ScoreDisplay } from '../game/ScoreDisplay';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
-import { shuffle } from '../../utils/shuffle';
+import { shuffleNotInOrder } from '../../utils/shuffle';
 
 export interface SentenceOrderingScreenProps {
   currentExercise: SentenceExercise | null;
@@ -121,7 +121,11 @@ export function SentenceOrderingScreen({
       word,
       originalIndex: index,
     }));
-    setBankTiles(shuffle(tiles));
+    setBankTiles(
+      shuffleNotInOrder(tiles, (t) =>
+        t.every((tile, i) => tile.originalIndex === i),
+      ),
+    );
     setPlacedTiles([]);
     setFeedbackMessage(null);
     setFeedbackType(null);
