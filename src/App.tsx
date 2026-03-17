@@ -57,7 +57,7 @@ function AppContent() {
       // Navigate to round complete screen
       setCurrentScreen('round-complete');
     },
-    [gameState.roundProgress.points, progressHook]
+    [gameState.roundProgress.points, gameState.currentMode, progressHook]
   );
 
   const handleRecordWordAttempt = useCallback(

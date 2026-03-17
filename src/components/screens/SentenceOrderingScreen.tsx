@@ -109,27 +109,25 @@ export function SentenceOrderingScreen({
   const [shakeAnswer, setShakeAnswer] = useState(false);
   const [successAnswer, setSuccessAnswer] = useState(false);
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastExerciseIdRef = useRef<string | null>(null);
+  const [lastExerciseId, setLastExerciseId] = useState<string | null>(null);
   const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
 
-  // Reset state when exercise changes
-  useEffect(() => {
-    if (currentExercise && currentExercise.id !== lastExerciseIdRef.current) {
-      lastExerciseIdRef.current = currentExercise.id;
-      const tiles: WordTile[] = currentExercise.correctWords.map((word, index) => ({
-        word,
-        originalIndex: index,
-      }));
-      setBankTiles(shuffle(tiles));
-      setPlacedTiles([]);
-      setFeedbackMessage(null);
-      setFeedbackType(null);
-      setIsProcessing(false);
-      setIncompleteWarning(false);
-      setShakeAnswer(false);
-      setSuccessAnswer(false);
-    }
-  }, [currentExercise]);
+  // Reset state when exercise changes (state-during-render pattern)
+  if (currentExercise && currentExercise.id !== lastExerciseId) {
+    setLastExerciseId(currentExercise.id);
+    const tiles: WordTile[] = currentExercise.correctWords.map((word, index) => ({
+      word,
+      originalIndex: index,
+    }));
+    setBankTiles(shuffle(tiles));
+    setPlacedTiles([]);
+    setFeedbackMessage(null);
+    setFeedbackType(null);
+    setIsProcessing(false);
+    setIncompleteWarning(false);
+    setShakeAnswer(false);
+    setSuccessAnswer(false);
+  }
 
   // Cleanup timeout on unmount
   useEffect(() => {
