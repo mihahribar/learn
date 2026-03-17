@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import type { SentenceExercise, RoundStats } from '../../types';
 import {
   labels,
@@ -108,6 +108,8 @@ export function SentenceOrderingScreen({
   const [bankDragOver, setBankDragOver] = useState(false);
   const [shakeAnswer, setShakeAnswer] = useState(false);
   const [successAnswer, setSuccessAnswer] = useState(false);
+  const [dropInsertIndex, setDropInsertIndex] = useState<number | null>(null);
+  const dropInsertIndexRef = useRef<number | null>(null);
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [lastExerciseId, setLastExerciseId] = useState<string | null>(null);
   const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
@@ -254,25 +256,82 @@ export function SentenceOrderingScreen({
     []
   );
 
+  const handleDragOverPlacedTile = useCallback(
+    (e: React.DragEvent, index: number) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+      setAnswerDragOver(true);
+
+      const rect = e.currentTarget.getBoundingClientRect();
+      const midX = rect.left + rect.width / 2;
+      const insertIdx = e.clientX < midX ? index : index + 1;
+      dropInsertIndexRef.current = insertIdx;
+      setDropInsertIndex(insertIdx);
+    },
+    []
+  );
+
+  const handleDragLeavePlacedTile = useCallback(() => {
+    dropInsertIndexRef.current = null;
+    setDropInsertIndex(null);
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    dropInsertIndexRef.current = null;
+    setDropInsertIndex(null);
+    setAnswerDragOver(false);
+    setBankDragOver(false);
+  }, []);
+
   const handleDropOnAnswer = useCallback(
     (e: React.DragEvent) => {
       e.preventDefault();
       setAnswerDragOver(false);
+      const insertIdx = dropInsertIndexRef.current;
+      dropInsertIndexRef.current = null;
+      setDropInsertIndex(null);
       if (isProcessing) return;
       try {
         const data = JSON.parse(e.dataTransfer.getData('text/plain'));
-        if (data.source === 'bank') {
-          handlePlaceWord(
-            bankTiles.find(
-              (t) => t.word === data.tile.word && t.originalIndex === data.tile.originalIndex
-            )!
+        if (data.source === 'placed') {
+          const tile = placedTiles.find(
+            (t) => t.word === data.tile.word && t.originalIndex === data.tile.originalIndex
           );
+          if (!tile) return;
+          setPlacedTiles((prev) => {
+            const without = prev.filter((t) => t !== tile);
+            if (insertIdx != null) {
+              // Adjust index since we removed the tile
+              const currentIdx = prev.indexOf(tile);
+              const adjustedIdx = insertIdx > currentIdx ? insertIdx - 1 : insertIdx;
+              const result = [...without];
+              result.splice(adjustedIdx, 0, tile);
+              return result;
+            }
+            return [...without, tile];
+          });
+        } else if (data.source === 'bank') {
+          const tile = bankTiles.find(
+            (t) => t.word === data.tile.word && t.originalIndex === data.tile.originalIndex
+          );
+          if (!tile) return;
+          setBankTiles((prev) => prev.filter((t) => t !== tile));
+          setPlacedTiles((prev) => {
+            if (insertIdx != null) {
+              const result = [...prev];
+              result.splice(insertIdx, 0, tile);
+              return result;
+            }
+            return [...prev, tile];
+          });
+          setIncompleteWarning(false);
         }
       } catch {
         // ignore invalid drag data
       }
     },
-    [isProcessing, bankTiles, handlePlaceWord]
+    [isProcessing, bankTiles, placedTiles]
   );
 
   const handleDropOnBank = useCallback(
@@ -300,6 +359,10 @@ export function SentenceOrderingScreen({
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
     setAnswerDragOver(true);
+    if (e.target === e.currentTarget) {
+      dropInsertIndexRef.current = null;
+      setDropInsertIndex(null);
+    }
   }, []);
 
   const handleDragOverBank = useCallback((e: React.DragEvent) => {
@@ -376,18 +439,28 @@ export function SentenceOrderingScreen({
             onDragOver={handleDragOverAnswer}
             onDragLeave={handleDragLeaveAnswer}
           >
-            {displayPlacedWords.map((tile) => (
-              <button
-                key={`placed-${tile.originalIndex}`}
-                type="button"
-                className="px-3 py-2 bg-primary-600 text-white rounded-lg font-medium text-base sm:text-lg shadow-md hover:bg-primary-700 active:scale-95 transition-all cursor-pointer animate-tile-settle draggable:opacity-50 draggable:scale-110"
-                onClick={() => handleReturnWord(tile)}
-                draggable
-                onDragStart={(e) => handleDragStart(e, tile, 'placed')}
-              >
-                {tile.displayWord}
-              </button>
+            {displayPlacedWords.map((tile, index) => (
+              <React.Fragment key={`placed-${tile.originalIndex}`}>
+                {dropInsertIndex === index && (
+                  <div className="w-1 h-8 bg-primary-500 rounded-full animate-pulse" />
+                )}
+                <button
+                  type="button"
+                  className="px-3 py-2 bg-primary-600 text-white rounded-lg font-medium text-base sm:text-lg shadow-md hover:bg-primary-700 active:scale-95 transition-all cursor-pointer animate-tile-settle draggable:opacity-50 draggable:scale-110"
+                  onClick={() => handleReturnWord(tile)}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, tile, 'placed')}
+                  onDragOver={(e) => handleDragOverPlacedTile(e, index)}
+                  onDragLeave={handleDragLeavePlacedTile}
+                  onDragEnd={handleDragEnd}
+                >
+                  {tile.displayWord}
+                </button>
+              </React.Fragment>
             ))}
+            {dropInsertIndex === placedTiles.length && placedTiles.length > 0 && (
+              <div className="w-1 h-8 bg-primary-500 rounded-full animate-pulse" />
+            )}
             {placedTiles.length > 0 && (
               <span className="text-xl font-bold text-gray-500 ml-1">
                 {currentExercise.endPunctuation}
@@ -432,6 +505,7 @@ export function SentenceOrderingScreen({
                 onClick={() => handlePlaceWord(tile)}
                 draggable
                 onDragStart={(e) => handleDragStart(e, tile, 'bank')}
+                onDragEnd={handleDragEnd}
               >
                 {tile.word}
               </button>

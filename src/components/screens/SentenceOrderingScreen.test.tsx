@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { SentenceOrderingScreen } from './SentenceOrderingScreen';
 import type { SentenceExercise } from '../../types';
 
@@ -384,5 +384,83 @@ describe('SentenceOrderingScreen', () => {
     // Speak button is disabled, but let's also verify speak is not called
     // by trying the speak flow with an empty arrangement
     expect(defaultProps.speak).not.toHaveBeenCalled();
+  });
+
+  it('reorders placed tiles via drag and drop', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    // Place words: the, cat, is, sleeping
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('is'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    const answerArea = screen.getByTestId('answer-area');
+
+    // Drag over "cat" tile (index 1) on left side (clientX < midpoint) to insert before it
+    const catBtn = answerArea.querySelectorAll('button')[1];
+    act(() => {
+      catBtn.dispatchEvent(
+        new MouseEvent('dragover', { bubbles: true, cancelable: true, clientX: -1 })
+      );
+    });
+
+    // After re-render, get fresh button and drop sleeping onto answer area
+    const freshCatBtn = answerArea.querySelectorAll('button')[1];
+    const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & { dataTransfer?: unknown };
+    Object.defineProperty(dropEvent, 'dataTransfer', {
+      value: {
+        getData: () =>
+          JSON.stringify({ tile: { word: 'sleeping', originalIndex: 3 }, source: 'placed' }),
+      },
+    });
+    act(() => {
+      freshCatBtn.dispatchEvent(dropEvent);
+    });
+
+    // After reorder: the, sleeping, cat, is
+    const updatedButtons = answerArea.querySelectorAll('button');
+    const words = Array.from(updatedButtons).map((btn) => btn.textContent);
+    expect(words).toEqual(['The', 'sleeping', 'cat', 'is']);
+  });
+
+  it('inserts bank word at specific position via drag and drop', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    // Place two words: the, sleeping
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    const answerArea = screen.getByTestId('answer-area');
+
+    // Drag over "the" tile (index 0) on right side (clientX > midpoint) to insert after it
+    const theBtn = answerArea.querySelectorAll('button')[0];
+    act(() => {
+      theBtn.dispatchEvent(
+        new MouseEvent('dragover', { bubbles: true, cancelable: true, clientX: 1 })
+      );
+    });
+
+    // After re-render, get fresh button and drop cat from bank
+    const freshTheBtn = answerArea.querySelectorAll('button')[0];
+    const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & { dataTransfer?: unknown };
+    Object.defineProperty(dropEvent, 'dataTransfer', {
+      value: {
+        getData: () =>
+          JSON.stringify({ tile: { word: 'cat', originalIndex: 1 }, source: 'bank' }),
+      },
+    });
+    act(() => {
+      freshTheBtn.dispatchEvent(dropEvent);
+    });
+
+    // After insert: the, cat, sleeping
+    const updatedButtons = answerArea.querySelectorAll('button');
+    const words = Array.from(updatedButtons).map((btn) => btn.textContent);
+    expect(words).toEqual(['The', 'cat', 'sleeping']);
+
+    // "cat" should no longer be in the word bank
+    const wordBank = screen.getByTestId('word-bank');
+    expect(wordBank).not.toHaveTextContent('cat');
   });
 });
