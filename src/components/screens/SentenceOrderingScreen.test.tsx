@@ -397,16 +397,25 @@ describe('SentenceOrderingScreen', () => {
 
     const answerArea = screen.getByTestId('answer-area');
 
-    // Drag over "cat" tile (index 1) on left side (clientX < midpoint) to insert before it
-    const catBtn = answerArea.querySelectorAll('button')[1];
+    // Mock tile layout positions (jsdom returns 0 for offsetLeft/offsetWidth)
+    const tileWidth = 80;
+    const tiles = answerArea.querySelectorAll('[data-placed-tile]');
+    tiles.forEach((tile, i) => {
+      Object.defineProperty(tile, 'offsetLeft', { value: i * tileWidth, configurable: true });
+      Object.defineProperty(tile, 'offsetWidth', { value: tileWidth, configurable: true });
+    });
+    // Mock container getBoundingClientRect (used to get containerRect.left)
+    answerArea.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, right: 320, bottom: 40, width: 320, height: 40, x: 0, y: 0, toJSON: () => {} }) as DOMRect;
+
+    // Drag over answer area at position before "cat" (index 1): clientX at start of cat tile
     act(() => {
-      catBtn.dispatchEvent(
-        new MouseEvent('dragover', { bubbles: true, cancelable: true, clientX: -1 })
+      answerArea.dispatchEvent(
+        new MouseEvent('dragover', { bubbles: true, cancelable: true, clientX: tileWidth })
       );
     });
 
-    // After re-render, get fresh button and drop sleeping onto answer area
-    const freshCatBtn = answerArea.querySelectorAll('button')[1];
+    // Drop sleeping onto answer area
     const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & { dataTransfer?: unknown };
     Object.defineProperty(dropEvent, 'dataTransfer', {
       value: {
@@ -415,7 +424,7 @@ describe('SentenceOrderingScreen', () => {
       },
     });
     act(() => {
-      freshCatBtn.dispatchEvent(dropEvent);
+      answerArea.dispatchEvent(dropEvent);
     });
 
     // After reorder: the, sleeping, cat, is
@@ -433,16 +442,24 @@ describe('SentenceOrderingScreen', () => {
 
     const answerArea = screen.getByTestId('answer-area');
 
-    // Drag over "the" tile (index 0) on right side (clientX > midpoint) to insert after it
-    const theBtn = answerArea.querySelectorAll('button')[0];
+    // Mock tile layout positions (jsdom returns 0 for offsetLeft/offsetWidth)
+    const tileWidth = 80;
+    const tiles = answerArea.querySelectorAll('[data-placed-tile]');
+    tiles.forEach((tile, i) => {
+      Object.defineProperty(tile, 'offsetLeft', { value: i * tileWidth, configurable: true });
+      Object.defineProperty(tile, 'offsetWidth', { value: tileWidth, configurable: true });
+    });
+    answerArea.getBoundingClientRect = () =>
+      ({ left: 0, top: 0, right: 160, bottom: 40, width: 160, height: 40, x: 0, y: 0, toJSON: () => {} }) as DOMRect;
+
+    // Drag over answer area at position after "the" (index 0): clientX past first tile's midpoint
     act(() => {
-      theBtn.dispatchEvent(
-        new MouseEvent('dragover', { bubbles: true, cancelable: true, clientX: 1 })
+      answerArea.dispatchEvent(
+        new MouseEvent('dragover', { bubbles: true, cancelable: true, clientX: tileWidth })
       );
     });
 
-    // After re-render, get fresh button and drop cat from bank
-    const freshTheBtn = answerArea.querySelectorAll('button')[0];
+    // Drop cat from bank onto answer area
     const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & { dataTransfer?: unknown };
     Object.defineProperty(dropEvent, 'dataTransfer', {
       value: {
@@ -451,7 +468,7 @@ describe('SentenceOrderingScreen', () => {
       },
     });
     act(() => {
-      freshTheBtn.dispatchEvent(dropEvent);
+      answerArea.dispatchEvent(dropEvent);
     });
 
     // After insert: the, cat, sleeping

@@ -110,6 +110,7 @@ export function SentenceOrderingScreen({
   const [successAnswer, setSuccessAnswer] = useState(false);
   const [dropInsertIndex, setDropInsertIndex] = useState<number | null>(null);
   const dropInsertIndexRef = useRef<number | null>(null);
+  const answerAreaRef = useRef<HTMLDivElement>(null);
   const advanceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [lastExerciseId, setLastExerciseId] = useState<string | null>(null);
   const lastSubmitResultRef = useRef<LastSubmitResult | null>(null);
@@ -260,26 +261,6 @@ export function SentenceOrderingScreen({
     []
   );
 
-  const handleDragOverPlacedTile = useCallback(
-    (e: React.DragEvent, index: number) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
-      setAnswerDragOver(true);
-
-      const rect = e.currentTarget.getBoundingClientRect();
-      const midX = rect.left + rect.width / 2;
-      const insertIdx = e.clientX < midX ? index : index + 1;
-      dropInsertIndexRef.current = insertIdx;
-      setDropInsertIndex(insertIdx);
-    },
-    []
-  );
-
-  const handleDragLeavePlacedTile = useCallback(() => {
-    dropInsertIndexRef.current = null;
-    setDropInsertIndex(null);
-  }, []);
 
   const handleDragEnd = useCallback(() => {
     dropInsertIndexRef.current = null;
@@ -361,12 +342,32 @@ export function SentenceOrderingScreen({
 
   const handleDragOverAnswer = useCallback((e: React.DragEvent) => {
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
+    if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
     setAnswerDragOver(true);
-    if (e.target === e.currentTarget) {
+
+    // Compute insert index from cursor position using offsetLeft (immune to CSS transforms)
+    const container = answerAreaRef.current;
+    if (!container) return;
+    const tiles = container.querySelectorAll<HTMLButtonElement>('[data-placed-tile]');
+    if (tiles.length === 0) {
       dropInsertIndexRef.current = null;
       setDropInsertIndex(null);
+      return;
     }
+
+    const containerRect = container.getBoundingClientRect();
+    // Use offsetLeft (layout position, not affected by transforms) for stable midpoints
+    let insertIdx = tiles.length; // default: after all tiles
+    for (let i = 0; i < tiles.length; i++) {
+      const tile = tiles[i];
+      const midX = containerRect.left + tile.offsetLeft + tile.offsetWidth / 2;
+      if (e.clientX < midX) {
+        insertIdx = i;
+        break;
+      }
+    }
+    dropInsertIndexRef.current = insertIdx;
+    setDropInsertIndex(insertIdx);
   }, []);
 
   const handleDragOverBank = useCallback((e: React.DragEvent) => {
@@ -375,8 +376,13 @@ export function SentenceOrderingScreen({
     setBankDragOver(true);
   }, []);
 
-  const handleDragLeaveAnswer = useCallback(() => {
-    setAnswerDragOver(false);
+  const handleDragLeaveAnswer = useCallback((e: React.DragEvent) => {
+    // Only clear when actually leaving the container, not when entering a child
+    if (answerAreaRef.current && !answerAreaRef.current.contains(e.relatedTarget as Node)) {
+      setAnswerDragOver(false);
+      dropInsertIndexRef.current = null;
+      setDropInsertIndex(null);
+    }
   }, []);
 
   const handleDragLeaveBank = useCallback(() => {
@@ -431,6 +437,7 @@ export function SentenceOrderingScreen({
 
           {/* Answer area */}
           <div
+            ref={answerAreaRef}
             data-testid="answer-area"
             className={`w-full min-h-[60px] p-3 border-2 border-dashed rounded-xl flex flex-wrap gap-2 items-center transition-all duration-200 ${
               successAnswer
@@ -443,28 +450,26 @@ export function SentenceOrderingScreen({
             onDragOver={handleDragOverAnswer}
             onDragLeave={handleDragLeaveAnswer}
           >
-            {displayPlacedWords.map((tile, index) => (
-              <React.Fragment key={`placed-${tile.originalIndex}`}>
-                {dropInsertIndex === index && (
-                  <div className="w-1 h-8 bg-primary-500 rounded-full animate-pulse" />
-                )}
+            {displayPlacedWords.map((tile, index) => {
+              const shift =
+                dropInsertIndex != null && dropInsertIndex <= index
+                  ? 'translate-x-4'
+                  : '';
+              return (
                 <button
+                  key={`placed-${tile.originalIndex}`}
+                  data-placed-tile
                   type="button"
-                  className="px-3 py-2 bg-primary-600 text-white rounded-lg font-medium text-base sm:text-lg shadow-md hover:bg-primary-700 active:scale-95 transition-all cursor-pointer animate-tile-settle draggable:opacity-50 draggable:scale-110"
+                  className={`px-3 py-2 bg-primary-600 text-white rounded-lg font-medium text-base sm:text-lg shadow-md hover:bg-primary-700 active:scale-95 cursor-pointer animate-tile-settle draggable:opacity-50 draggable:scale-110 transition-transform duration-150 ${shift}`}
                   onClick={() => handleReturnWord(tile)}
                   draggable
                   onDragStart={(e) => handleDragStart(e, tile, 'placed')}
-                  onDragOver={(e) => handleDragOverPlacedTile(e, index)}
-                  onDragLeave={handleDragLeavePlacedTile}
                   onDragEnd={handleDragEnd}
                 >
                   {tile.displayWord}
                 </button>
-              </React.Fragment>
-            ))}
-            {dropInsertIndex === placedTiles.length && placedTiles.length > 0 && (
-              <div className="w-1 h-8 bg-primary-500 rounded-full animate-pulse" />
-            )}
+              );
+            })}
             {placedTiles.length > 0 && (
               <span className="text-xl font-bold text-gray-500 ml-1">
                 {currentExercise.endPunctuation}
