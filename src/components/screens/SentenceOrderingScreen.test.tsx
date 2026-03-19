@@ -407,7 +407,17 @@ describe('SentenceOrderingScreen', () => {
     });
     // Mock container getBoundingClientRect (used to get containerRect.left)
     answerArea.getBoundingClientRect = () =>
-      ({ left: 0, top: 0, right: 320, bottom: 40, width: 320, height: 40, x: 0, y: 0, toJSON: () => {} }) as DOMRect;
+      ({
+        left: 0,
+        top: 0,
+        right: 320,
+        bottom: 40,
+        width: 320,
+        height: 40,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }) as DOMRect;
 
     // Drag over answer area at position before "cat" (index 1): clientX at start of cat tile
     act(() => {
@@ -417,7 +427,9 @@ describe('SentenceOrderingScreen', () => {
     });
 
     // Drop sleeping onto answer area
-    const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & { dataTransfer?: unknown };
+    const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & {
+      dataTransfer?: unknown;
+    };
     Object.defineProperty(dropEvent, 'dataTransfer', {
       value: {
         getData: () =>
@@ -451,7 +463,17 @@ describe('SentenceOrderingScreen', () => {
       Object.defineProperty(tile, 'offsetWidth', { value: tileWidth, configurable: true });
     });
     answerArea.getBoundingClientRect = () =>
-      ({ left: 0, top: 0, right: 160, bottom: 40, width: 160, height: 40, x: 0, y: 0, toJSON: () => {} }) as DOMRect;
+      ({
+        left: 0,
+        top: 0,
+        right: 160,
+        bottom: 40,
+        width: 160,
+        height: 40,
+        x: 0,
+        y: 0,
+        toJSON: () => {},
+      }) as DOMRect;
 
     // Drag over answer area at position after "the" (index 0): clientX past first tile's midpoint
     act(() => {
@@ -461,11 +483,12 @@ describe('SentenceOrderingScreen', () => {
     });
 
     // Drop cat from bank onto answer area
-    const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & { dataTransfer?: unknown };
+    const dropEvent = new Event('drop', { bubbles: true, cancelable: true }) as Event & {
+      dataTransfer?: unknown;
+    };
     Object.defineProperty(dropEvent, 'dataTransfer', {
       value: {
-        getData: () =>
-          JSON.stringify({ tile: { word: 'cat', originalIndex: 1 }, source: 'bank' }),
+        getData: () => JSON.stringify({ tile: { word: 'cat', originalIndex: 1 }, source: 'bank' }),
       },
     });
     act(() => {

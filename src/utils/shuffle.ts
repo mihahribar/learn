@@ -30,10 +30,7 @@ export function shuffle<T>(array: T[]): T[] {
  * @param isOriginalOrder - Returns true if the shuffled array is still in original order
  * @returns A new shuffled array that is not in original order
  */
-export function shuffleNotInOrder<T>(
-  array: T[],
-  isOriginalOrder: (shuffled: T[]) => boolean,
-): T[] {
+export function shuffleNotInOrder<T>(array: T[], isOriginalOrder: (shuffled: T[]) => boolean): T[] {
   let shuffled = shuffle(array);
   while (isOriginalOrder(shuffled)) {
     shuffled = shuffle(shuffled);

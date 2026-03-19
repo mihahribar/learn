@@ -64,7 +64,6 @@ const BackArrowIcon = () => (
   </svg>
 );
 
-
 interface LastSubmitResult {
   correct: boolean;
   pointsEarned: number;
@@ -111,11 +110,7 @@ export function SentenceOrderingScreen({
       word,
       originalIndex: index,
     }));
-    setBankTiles(
-      shuffleNotInOrder(tiles, (t) =>
-        t.every((tile, i) => tile.originalIndex === i),
-      ),
-    );
+    setBankTiles(shuffleNotInOrder(tiles, (t) => t.every((tile, i) => tile.originalIndex === i)));
     setPlacedTiles([]);
     setFeedbackMessage(null);
     setFeedbackType(null);
@@ -249,7 +244,6 @@ export function SentenceOrderingScreen({
     },
     []
   );
-
 
   const handleDragEnd = useCallback(() => {
     dropInsertIndexRef.current = null;
@@ -459,9 +453,7 @@ export function SentenceOrderingScreen({
           >
             {displayPlacedWords.map((tile, index) => {
               const shift =
-                dropInsertIndex != null && dropInsertIndex <= index
-                  ? 'translate-x-4'
-                  : '';
+                dropInsertIndex != null && dropInsertIndex <= index ? 'translate-x-4' : '';
               return (
                 <button
                   key={`placed-${tile.originalIndex}`}
@@ -544,9 +536,7 @@ export function SentenceOrderingScreen({
               type={feedbackType}
               message={feedbackMessage}
               correctAnswer={
-                feedbackType === 'show-answer'
-                  ? currentExercise.correctWords.join(' ')
-                  : undefined
+                feedbackType === 'show-answer' ? currentExercise.correctWords.join(' ') : undefined
               }
             />
           )}
