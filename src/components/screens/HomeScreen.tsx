@@ -80,6 +80,24 @@ const PencilIcon = () => (
   </svg>
 );
 
+const SortIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke="currentColor"
+    className="w-6 h-6"
+    aria-hidden="true"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+    />
+  </svg>
+);
+
 const SoundOnIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -252,6 +270,20 @@ export function HomeScreen({
           </Button>
           <span id="grammar-forms-desc" className="sr-only">
             Dopolni stavke s pravilno obliko have got ali has got
+          </span>
+
+          <Button
+            variant="primary"
+            size="large"
+            icon={<SortIcon />}
+            onClick={() => onStartGame('sentence-ordering')}
+            className="w-full py-5 sm:py-6 text-lg sm:text-xl"
+            aria-describedby="sentence-ordering-desc"
+          >
+            {labels.sentenceOrderingButton}
+          </Button>
+          <span id="sentence-ordering-desc" className="sr-only">
+            Razvrsti pomesane besede v pravilen vrstni red stavka
           </span>
         </nav>
 

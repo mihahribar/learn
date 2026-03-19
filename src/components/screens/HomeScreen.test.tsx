@@ -32,13 +32,14 @@ describe('HomeScreen', () => {
     expect(screen.getAllByText('Značke').length).toBeGreaterThan(0);
   });
 
-  it('should render all four game mode buttons', () => {
+  it('should render all five game mode buttons', () => {
     render(<HomeScreen {...defaultProps} />);
 
     expect(screen.getByText('Poslušaj in črkuj')).toBeInTheDocument();
     expect(screen.getByText('Izberi pravilno')).toBeInTheDocument();
     expect(screen.getByText('Množina')).toBeInTheDocument();
     expect(screen.getByText('Dopolni stavke')).toBeInTheDocument();
+    expect(screen.getByText('Razvrsti besede')).toBeInTheDocument();
   });
 
   it('should call onStartGame with correct mode when game button is clicked', () => {
@@ -56,6 +57,9 @@ describe('HomeScreen', () => {
 
     fireEvent.click(screen.getByText('Dopolni stavke'));
     expect(onStartGame).toHaveBeenCalledWith('grammar-forms');
+
+    fireEvent.click(screen.getByText('Razvrsti besede'));
+    expect(onStartGame).toHaveBeenCalledWith('sentence-ordering');
   });
 
   it('should render mute/unmute button when sound is supported', () => {

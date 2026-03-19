@@ -34,12 +34,16 @@ function AppContent() {
       // Calculate total points for the round
       const totalRoundPoints = calculateRoundTotal(stats.score, gameState.roundProgress.points);
 
-      // Update progress
-      progressHook.addPoints(totalRoundPoints);
-      progressHook.incrementRoundsPlayed();
+      // Tag stats with current mode for badge checking
+      const taggedStats = { ...stats, mode: gameState.currentMode ?? undefined };
 
-      // Check for new badges
-      const newBadges = progressHook.checkAndAwardBadges(stats);
+      // Update progress atomically and check for new badges
+      const isSentenceRound = gameState.currentMode === 'sentence-ordering';
+      const newBadges = progressHook.completeRoundAndCheckBadges(
+        totalRoundPoints,
+        isSentenceRound,
+        taggedStats
+      );
 
       // Store data for round complete screen
       setLastRoundStats(stats);
@@ -49,7 +53,7 @@ function AppContent() {
       // Navigate to round complete screen
       setCurrentScreen('round-complete');
     },
-    [gameState.roundProgress.points, progressHook]
+    [gameState.roundProgress.points, gameState.currentMode, progressHook]
   );
 
   const handleRecordWordAttempt = useCallback(
@@ -72,6 +76,18 @@ function AppContent() {
       const result = gameState.submitAnswer(answer);
 
       // Update streak for grammar attempts
+      progressHook.updateStreak(result.correct);
+
+      return result;
+    },
+    [gameState, progressHook]
+  );
+
+  const handleSentenceAttempt = useCallback(
+    (answer: string) => {
+      const result = gameState.submitAnswer(answer);
+
+      // Update streak for sentence ordering attempts
       progressHook.updateStreak(result.correct);
 
       return result;
@@ -109,6 +125,7 @@ function AppContent() {
           onRoundComplete={handleRoundComplete}
           onRecordWordAttempt={handleRecordWordAttempt}
           onGrammarAttempt={handleGrammarAttempt}
+          onSentenceAttempt={handleSentenceAttempt}
           onPlayAgain={handlePlayAgain}
           onGoHome={handleGoHome}
         />

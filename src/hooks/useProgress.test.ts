@@ -79,6 +79,27 @@ describe('useProgress localStorage persistence', () => {
     expect(result.current.progress.wordStats['word-1'].correct).toBe(1);
   });
 
+  it('increments sentence rounds played and persists to storage', () => {
+    const { result } = renderHook(() => useProgress());
+
+    act(() => {
+      result.current.incrementSentenceRoundsPlayed();
+    });
+
+    expect(result.current.progress.sentenceRoundsPlayed).toBe(1);
+
+    // Verify persistence
+    const stored = JSON.parse(window.localStorage.getItem('spellbee_progress') || '{}');
+    expect(stored.sentenceRoundsPlayed).toBe(1);
+
+    // Increment again
+    act(() => {
+      result.current.incrementSentenceRoundsPlayed();
+    });
+
+    expect(result.current.progress.sentenceRoundsPlayed).toBe(2);
+  });
+
   it('updates streak correctly on consecutive correct answers', () => {
     const { result } = renderHook(() => useProgress());
 

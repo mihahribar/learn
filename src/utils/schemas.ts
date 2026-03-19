@@ -29,6 +29,7 @@ export const persistedProgressSchema = z.object({
   currentStreak: z.number().int().nonnegative(),
   longestStreak: z.number().int().nonnegative(),
   consecutiveDays: z.number().int().nonnegative(),
+  sentenceRoundsPlayed: z.number().int().nonnegative().optional(),
 });
 
 /**

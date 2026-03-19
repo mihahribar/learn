@@ -28,7 +28,13 @@ interface UseProgressReturn {
   addPoints: (points: number) => void;
   recordWordAttempt: (wordId: string, correct: boolean) => void;
   incrementRoundsPlayed: () => void;
+  incrementSentenceRoundsPlayed: () => void;
   checkAndAwardBadges: (roundStats?: RoundStats) => Badge[];
+  completeRoundAndCheckBadges: (
+    roundPoints: number,
+    isSentenceRound: boolean,
+    roundStats?: RoundStats
+  ) => Badge[];
   updateStreak: (correct: boolean) => void;
   resetCurrentStreak: () => void;
 }
@@ -208,6 +214,22 @@ export function useProgress(): UseProgressReturn {
   }, [storageAvailable]);
 
   /**
+   * Increment sentence-ordering rounds played
+   */
+  const incrementSentenceRoundsPlayed = useCallback(() => {
+    setProgress((prev) => {
+      const newProgress = {
+        ...prev,
+        sentenceRoundsPlayed: (prev.sentenceRoundsPlayed ?? 0) + 1,
+      };
+      if (storageAvailable) {
+        saveProgress(newProgress);
+      }
+      return newProgress;
+    });
+  }, [storageAvailable]);
+
+  /**
    * Update streak tracking (for "Hot Hand" badge)
    */
   const updateStreak = useCallback(
@@ -280,13 +302,44 @@ export function useProgress(): UseProgressReturn {
     [progress, persistProgress]
   );
 
+  /**
+   * Atomically update progress for a completed round and check badges.
+   * Builds the "next" progress synchronously so badge checks see the updated values.
+   */
+  const completeRoundAndCheckBadges = useCallback(
+    (roundPoints: number, isSentenceRound: boolean, roundStats?: RoundStats): Badge[] => {
+      const nextProgress: PersistedProgress = {
+        ...progress,
+        totalPoints: progress.totalPoints + roundPoints,
+        roundsPlayed: progress.roundsPlayed + 1,
+        lastPlayedDate: getTodayDate(),
+        ...(isSentenceRound
+          ? { sentenceRoundsPlayed: (progress.sentenceRoundsPlayed ?? 0) + 1 }
+          : {}),
+      };
+
+      const newBadges = checkNewBadges(nextProgress, roundStats);
+
+      if (newBadges.length > 0) {
+        const newBadgeIds = newBadges.map((badge) => badge.id);
+        nextProgress.badges = [...nextProgress.badges, ...newBadgeIds];
+      }
+
+      persistProgress(nextProgress);
+      return newBadges;
+    },
+    [progress, persistProgress]
+  );
+
   return {
     progress,
     storageAvailable,
     addPoints,
     recordWordAttempt,
     incrementRoundsPlayed,
+    incrementSentenceRoundsPlayed,
     checkAndAwardBadges,
+    completeRoundAndCheckBadges,
     updateStreak,
     resetCurrentStreak,
   };

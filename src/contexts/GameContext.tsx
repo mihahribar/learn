@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react';
 import { useGameState } from '../hooks/useGameState';
-import type { GameMode, Word, GrammarQuestion, RoundStats } from '../types';
+import type { GameMode, Word, GrammarQuestion, SentenceExercise, RoundStats } from '../types';
 
 /**
  * Round progress information for display
@@ -28,7 +28,7 @@ interface SubmitResult {
  */
 interface GameContextValue {
   currentMode: GameMode | null;
-  currentWord: Word | GrammarQuestion | null;
+  currentWord: Word | GrammarQuestion | SentenceExercise | null;
   roundProgress: RoundProgress;
   isRoundComplete: boolean;
   currentAttempts: number;
