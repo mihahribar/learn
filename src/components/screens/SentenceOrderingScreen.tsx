@@ -10,6 +10,7 @@ import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
 import { ProgressBar } from '../ui/ProgressBar';
 import { FeedbackMessage } from '../game/FeedbackMessage';
+import { ListenButton } from '../game/ListenButton';
 import { ScoreDisplay } from '../game/ScoreDisplay';
 import { ConfirmDialog } from '../ui/ConfirmDialog';
 import { shuffleNotInOrder } from '../../utils/shuffle';
@@ -63,18 +64,6 @@ const BackArrowIcon = () => (
   </svg>
 );
 
-const SpeakerIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    className="w-5 h-5"
-    aria-hidden="true"
-  >
-    <path d="M13.5 4.06c0-1.336-1.616-2.005-2.56-1.06l-4.5 4.5H4.508c-1.141 0-2.318.664-2.66 1.905A9.76 9.76 0 001.5 12c0 .898.121 1.768.35 2.595.341 1.24 1.518 1.905 2.659 1.905h1.93l4.5 4.5c.945.945 2.561.276 2.561-1.06V4.06z" />
-    <path d="M18.584 5.106a.75.75 0 011.06 0c3.808 3.807 3.808 9.98 0 13.788a.75.75 0 11-1.06-1.06 8.25 8.25 0 000-11.668.75.75 0 010-1.06z" />
-  </svg>
-);
 
 interface LastSubmitResult {
   correct: boolean;
@@ -164,7 +153,7 @@ export function SentenceOrderingScreen({
     (tile: WordTile) => {
       if (isProcessing) return;
       setIncompleteWarning(false);
-      setBankTiles((prev) => prev.filter((t) => t !== tile));
+      setBankTiles((prev) => prev.filter((t) => t.originalIndex !== tile.originalIndex));
       setPlacedTiles((prev) => [...prev, tile]);
     },
     [isProcessing]
@@ -174,7 +163,7 @@ export function SentenceOrderingScreen({
     (tile: WordTile) => {
       if (isProcessing) return;
       setIncompleteWarning(false);
-      setPlacedTiles((prev) => prev.filter((t) => t !== tile));
+      setPlacedTiles((prev) => prev.filter((t) => t.originalIndex !== tile.originalIndex));
       setBankTiles((prev) => [...prev, tile]);
     },
     [isProcessing]
@@ -327,11 +316,11 @@ export function SentenceOrderingScreen({
       try {
         const data = JSON.parse(e.dataTransfer.getData('text/plain'));
         if (data.source === 'placed') {
-          handleReturnWord(
-            placedTiles.find(
-              (t) => t.word === data.tile.word && t.originalIndex === data.tile.originalIndex
-            )!
+          const tile = placedTiles.find(
+            (t) => t.word === data.tile.word && t.originalIndex === data.tile.originalIndex
           );
+          if (!tile) return;
+          handleReturnWord(tile);
         }
       } catch {
         // ignore invalid drag data
@@ -356,14 +345,32 @@ export function SentenceOrderingScreen({
     }
 
     const containerRect = container.getBoundingClientRect();
-    // Use offsetLeft (layout position, not affected by transforms) for stable midpoints
+    // Use offset positions (immune to CSS transforms) for stable hit-testing.
+    // Account for multi-row flex-wrap by checking both X and Y axes.
+    const cursorX = e.clientX - containerRect.left + container.scrollLeft;
+    const cursorY = e.clientY - containerRect.top + container.scrollTop;
+    const hasVerticalLayout = tiles[0].offsetHeight > 0;
+
     let insertIdx = tiles.length; // default: after all tiles
     for (let i = 0; i < tiles.length; i++) {
       const tile = tiles[i];
-      const midX = containerRect.left + tile.offsetLeft + tile.offsetWidth / 2;
-      if (e.clientX < midX) {
-        insertIdx = i;
-        break;
+      const midX = tile.offsetLeft + tile.offsetWidth / 2;
+
+      if (!hasVerticalLayout) {
+        // Single-row fallback (or jsdom where offsetHeight is 0): X-only comparison
+        if (cursorX < midX) {
+          insertIdx = i;
+          break;
+        }
+      } else {
+        const tileBottom = tile.offsetTop + tile.offsetHeight;
+        if (cursorY < tileBottom) {
+          // Cursor is above this tile's row, or on the same row and left of midpoint
+          if (cursorX < midX || cursorY < tile.offsetTop) {
+            insertIdx = i;
+            break;
+          }
+        }
       }
     }
     dropInsertIndexRef.current = insertIdx;
@@ -477,24 +484,18 @@ export function SentenceOrderingScreen({
             )}
             {placedTiles.length === 0 && (
               <p className="text-gray-400 text-sm italic w-full text-center">
-                Klikni ali povleci besede sem
+                {labels.sentenceOrderingEmptyPrompt}
               </p>
             )}
           </div>
 
           {/* Speak button */}
-          {speechSupported && (
-            <button
-              type="button"
-              onClick={handleSpeak}
-              disabled={placedTiles.length === 0 || speaking}
-              className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-primary-300 rounded-xl text-primary-700 font-medium hover:bg-primary-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              aria-label={labels.speakSentenceButton}
-            >
-              <SpeakerIcon />
-              {labels.speakSentenceButton}
-            </button>
-          )}
+          <ListenButton
+            speaking={speaking}
+            supported={speechSupported}
+            onListen={handleSpeak}
+            disabled={placedTiles.length === 0}
+          />
 
           {/* Word bank */}
           <div

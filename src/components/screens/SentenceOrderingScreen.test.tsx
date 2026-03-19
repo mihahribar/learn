@@ -119,7 +119,7 @@ describe('SentenceOrderingScreen', () => {
   it('speak button is disabled when no words are placed', () => {
     render(<SentenceOrderingScreen {...defaultProps} />);
 
-    const speakButton = screen.getByLabelText('Poslušaj stavek');
+    const speakButton = screen.getByLabelText('Poslušaj');
     expect(speakButton).toBeDisabled();
   });
 
@@ -128,7 +128,7 @@ describe('SentenceOrderingScreen', () => {
 
     fireEvent.click(screen.getByText('cat'));
 
-    const speakButton = screen.getByLabelText('Poslušaj stavek');
+    const speakButton = screen.getByLabelText('Poslušaj');
     expect(speakButton).not.toBeDisabled();
   });
 
@@ -138,16 +138,17 @@ describe('SentenceOrderingScreen', () => {
     fireEvent.click(screen.getByText('the'));
     fireEvent.click(screen.getByText('cat'));
 
-    const speakButton = screen.getByLabelText('Poslušaj stavek');
+    const speakButton = screen.getByLabelText('Poslušaj');
     fireEvent.click(speakButton);
 
     expect(defaultProps.speak).toHaveBeenCalledWith('the cat');
   });
 
-  it('hides speak button when speech is not supported', () => {
+  it('disables speak button when speech is not supported', () => {
     render(<SentenceOrderingScreen {...defaultProps} speechSupported={false} />);
 
-    expect(screen.queryByLabelText('Poslušaj stavek')).not.toBeInTheDocument();
+    const speakButton = screen.getByLabelText('Poslušaj');
+    expect(speakButton).toBeDisabled();
   });
 
   it('displays auto-capitalized first word and punctuation in answer area', () => {
@@ -479,5 +480,96 @@ describe('SentenceOrderingScreen', () => {
     // "cat" should no longer be in the word bank
     const wordBank = screen.getByTestId('word-bank');
     expect(wordBank).not.toHaveTextContent('cat');
+  });
+
+  it('removes placed word from answer area when clicked back to bank', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    // Place all words
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('is'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    const answerArea = screen.getByTestId('answer-area');
+    const wordBank = screen.getByTestId('word-bank');
+
+    // Verify all words are placed
+    expect(answerArea.querySelectorAll('button')).toHaveLength(4);
+    expect(wordBank.querySelectorAll('button')).toHaveLength(0);
+
+    // Click "cat" (displayed as second placed word) to return it to bank
+    const placedButtons = answerArea.querySelectorAll('button');
+    const catButton = Array.from(placedButtons).find((btn) => btn.textContent === 'cat');
+    expect(catButton).toBeDefined();
+    fireEvent.click(catButton!);
+
+    // Answer area should now have 3 words, bank should have 1
+    expect(answerArea.querySelectorAll('button')).toHaveLength(3);
+    expect(wordBank.querySelectorAll('button')).toHaveLength(1);
+    expect(wordBank).toHaveTextContent('cat');
+    expect(answerArea).not.toHaveTextContent('cat');
+  });
+
+  it('does not duplicate words when clicking a placed word multiple times', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    // Place two words
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+
+    const answerArea = screen.getByTestId('answer-area');
+    const wordBank = screen.getByTestId('word-bank');
+
+    // Click the first placed word ("The") to return it
+    const firstPlacedButton = answerArea.querySelector('button')!;
+    expect(firstPlacedButton.textContent).toBe('The');
+    fireEvent.click(firstPlacedButton);
+
+    // "the" should be back in bank, only "cat" remains placed
+    expect(answerArea.querySelectorAll('button')).toHaveLength(1);
+    expect(wordBank).toHaveTextContent('the');
+
+    // Click the same word again from the bank to re-place it
+    fireEvent.click(screen.getByText('the'));
+
+    // Should have 2 placed words again, no duplicates
+    expect(answerArea.querySelectorAll('button')).toHaveLength(2);
+
+    // Total word count across both areas should always equal the original word count
+    const totalButtons =
+      answerArea.querySelectorAll('button').length + wordBank.querySelectorAll('button').length;
+    expect(totalButtons).toBe(mockExercise.correctWords.length);
+  });
+
+  it('preserves word count invariant after multiple place-and-return cycles', () => {
+    render(<SentenceOrderingScreen {...defaultProps} />);
+
+    const answerArea = screen.getByTestId('answer-area');
+    const wordBank = screen.getByTestId('word-bank');
+    const totalWords = mockExercise.correctWords.length;
+
+    // Place all words one by one
+    fireEvent.click(screen.getByText('the'));
+    fireEvent.click(screen.getByText('cat'));
+    fireEvent.click(screen.getByText('is'));
+    fireEvent.click(screen.getByText('sleeping'));
+
+    expect(answerArea.querySelectorAll('button')).toHaveLength(4);
+    expect(wordBank.querySelectorAll('button')).toHaveLength(0);
+
+    // Return each word and verify counts stay consistent
+    for (let i = 0; i < totalWords; i++) {
+      const firstButton = answerArea.querySelector('button')!;
+      fireEvent.click(firstButton);
+
+      const placedCount = answerArea.querySelectorAll('button').length;
+      const bankCount = wordBank.querySelectorAll('button').length;
+      expect(placedCount + bankCount).toBe(totalWords);
+    }
+
+    // All words should be back in the bank
+    expect(answerArea.querySelectorAll('button')).toHaveLength(0);
+    expect(wordBank.querySelectorAll('button')).toHaveLength(4);
   });
 });

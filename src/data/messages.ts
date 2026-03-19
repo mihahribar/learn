@@ -67,6 +67,7 @@ export const labels = {
   sentenceOrderingPrompt: 'Razvrsti besede v pravilen vrstni red:',
   placeAllWordsPrompt: 'Najprej razvrsti vse besede!',
   speakSentenceButton: 'Poslušaj stavek',
+  sentenceOrderingEmptyPrompt: 'Klikni ali povleci besede sem',
 
   // Feedback
   emptyInputError: 'Vnesi odgovor',

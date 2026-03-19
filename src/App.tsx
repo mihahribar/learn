@@ -37,17 +37,13 @@ function AppContent() {
       // Tag stats with current mode for badge checking
       const taggedStats = { ...stats, mode: gameState.currentMode ?? undefined };
 
-      // Update progress
-      progressHook.addPoints(totalRoundPoints);
-      progressHook.incrementRoundsPlayed();
-
-      // Track sentence-ordering specific rounds
-      if (gameState.currentMode === 'sentence-ordering') {
-        progressHook.incrementSentenceRoundsPlayed();
-      }
-
-      // Check for new badges
-      const newBadges = progressHook.checkAndAwardBadges(taggedStats);
+      // Update progress atomically and check for new badges
+      const isSentenceRound = gameState.currentMode === 'sentence-ordering';
+      const newBadges = progressHook.completeRoundAndCheckBadges(
+        totalRoundPoints,
+        isSentenceRound,
+        taggedStats
+      );
 
       // Store data for round complete screen
       setLastRoundStats(stats);

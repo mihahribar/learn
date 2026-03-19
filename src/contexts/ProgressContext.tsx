@@ -13,6 +13,11 @@ interface ProgressContextValue {
   incrementRoundsPlayed: () => void;
   incrementSentenceRoundsPlayed: () => void;
   checkAndAwardBadges: (roundStats?: RoundStats) => Badge[];
+  completeRoundAndCheckBadges: (
+    roundPoints: number,
+    isSentenceRound: boolean,
+    roundStats?: RoundStats
+  ) => Badge[];
   updateStreak: (correct: boolean) => void;
   resetCurrentStreak: () => void;
 }
