@@ -52,7 +52,9 @@ describe('grammarQuestions data', () => {
   });
 
   it('should have correct TO BE verb forms for each subject type', () => {
-    const toBeQuestions = grammarQuestions.filter((q) => ['am', 'is', 'are'].includes(q.correctAnswer));
+    const toBeQuestions = grammarQuestions.filter((q) =>
+      ['am', 'is', 'are'].includes(q.correctAnswer)
+    );
 
     toBeQuestions.forEach((question) => {
       if (question.subjectType === 'first-person') {
@@ -66,7 +68,9 @@ describe('grammarQuestions data', () => {
   });
 
   it('should have present continuous questions use correct auxiliary per subject type', () => {
-    const continuousQuestions = grammarQuestions.filter((q) => /^(am|is|are) \w+ing$/.test(q.correctAnswer));
+    const continuousQuestions = grammarQuestions.filter((q) =>
+      /^(am|is|are) \w+ing$/.test(q.correctAnswer)
+    );
     continuousQuestions.forEach((question) => {
       if (question.subjectType === 'first-person') {
         expect(question.correctAnswer).toMatch(/^am /);

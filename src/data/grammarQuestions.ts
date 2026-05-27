@@ -486,7 +486,7 @@ export const grammarQuestions: GrammarQuestion[] = [
   },
   {
     id: '66',
-    sentence: 'He _______ breakfast at seven o\'clock.',
+    sentence: "He _______ breakfast at seven o'clock.",
     correctAnswer: 'eats',
     wrongAnswers: ['eat', 'is eating'],
     subjectType: 'singular',
@@ -597,7 +597,7 @@ export const grammarQuestions: GrammarQuestion[] = [
     id: '81',
     sentence: 'I _______ eat meat.',
     correctAnswer: "don't",
-    wrongAnswers: ["doesn't", "am not"],
+    wrongAnswers: ["doesn't", 'am not'],
     subjectType: 'first-person',
   },
   {
