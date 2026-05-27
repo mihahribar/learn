@@ -2,8 +2,8 @@ import type { GrammarQuestion } from '../types';
 
 /**
  * Grammar questions for subject-verb agreement practice
- * Contains "have got/has got" and "TO BE" verb forms
- * Total: 64 sentence completion questions with multiple choice answers
+ * Contains "have got/has got", "TO BE", present simple, and present continuous
+ * Total: 104 sentence completion questions with multiple choice answers
  * Game picks 10 random questions per round
  */
 export const grammarQuestions: GrammarQuestion[] = [
@@ -469,6 +469,306 @@ export const grammarQuestions: GrammarQuestion[] = [
     sentence: 'The dogs _______ in the garden.',
     correctAnswer: 'are',
     wrongAnswers: ['is', 'am'],
+    subjectType: 'plural',
+  },
+
+  // ==========================================
+  // PRESENT SIMPLE QUESTIONS (IDs 65-84)
+  // ==========================================
+
+  // Third-person singular (adds -s/-es)
+  {
+    id: '65',
+    sentence: 'She _______ to school every day.',
+    correctAnswer: 'goes',
+    wrongAnswers: ['go', 'is going'],
+    subjectType: 'singular',
+  },
+  {
+    id: '66',
+    sentence: 'He _______ breakfast at seven o\'clock.',
+    correctAnswer: 'eats',
+    wrongAnswers: ['eat', 'is eating'],
+    subjectType: 'singular',
+  },
+  {
+    id: '67',
+    sentence: 'My cat _______ a lot during the day.',
+    correctAnswer: 'sleeps',
+    wrongAnswers: ['sleep', 'is sleeping'],
+    subjectType: 'singular',
+  },
+  {
+    id: '68',
+    sentence: 'Tom _______ his teeth every morning.',
+    correctAnswer: 'brushes',
+    wrongAnswers: ['brush', 'is brushing'],
+    subjectType: 'singular',
+  },
+  {
+    id: '69',
+    sentence: 'She _______ English and Maths at school.',
+    correctAnswer: 'studies',
+    wrongAnswers: ['study', 'is studying'],
+    subjectType: 'singular',
+  },
+  {
+    id: '70',
+    sentence: 'My dad _______ the car every Saturday.',
+    correctAnswer: 'washes',
+    wrongAnswers: ['wash', 'is washing'],
+    subjectType: 'singular',
+  },
+  {
+    id: '71',
+    sentence: 'The bird _______ every morning.',
+    correctAnswer: 'sings',
+    wrongAnswers: ['sing', 'is singing'],
+    subjectType: 'singular',
+  },
+  {
+    id: '72',
+    sentence: 'Anna _______ her grandma on Sundays.',
+    correctAnswer: 'visits',
+    wrongAnswers: ['visit', 'is visiting'],
+    subjectType: 'singular',
+  },
+  {
+    id: '73',
+    sentence: 'He _______ TV after dinner.',
+    correctAnswer: 'watches',
+    wrongAnswers: ['watch', 'is watching'],
+    subjectType: 'singular',
+  },
+  {
+    id: '74',
+    sentence: 'My mum _______ very well.',
+    correctAnswer: 'cooks',
+    wrongAnswers: ['cook', 'is cooking'],
+    subjectType: 'singular',
+  },
+
+  // First-person and plural (base form)
+  {
+    id: '75',
+    sentence: 'I _______ milk for breakfast every day.',
+    correctAnswer: 'drink',
+    wrongAnswers: ['drinks', 'am drinking'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '76',
+    sentence: 'We _______ football on Saturdays.',
+    correctAnswer: 'play',
+    wrongAnswers: ['plays', 'are playing'],
+    subjectType: 'plural',
+  },
+  {
+    id: '77',
+    sentence: 'They _______ to the park after school.',
+    correctAnswer: 'go',
+    wrongAnswers: ['goes', 'are going'],
+    subjectType: 'plural',
+  },
+  {
+    id: '78',
+    sentence: 'I _______ English at school.',
+    correctAnswer: 'learn',
+    wrongAnswers: ['learns', 'am learning'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '79',
+    sentence: 'My friends _______ bikes to school.',
+    correctAnswer: 'ride',
+    wrongAnswers: ['rides', 'are riding'],
+    subjectType: 'plural',
+  },
+
+  // Present simple negatives
+  {
+    id: '80',
+    sentence: 'She _______ like spiders.',
+    correctAnswer: "doesn't",
+    wrongAnswers: ["don't", "isn't"],
+    subjectType: 'singular',
+  },
+  {
+    id: '81',
+    sentence: 'I _______ eat meat.',
+    correctAnswer: "don't",
+    wrongAnswers: ["doesn't", "am not"],
+    subjectType: 'first-person',
+  },
+  {
+    id: '82',
+    sentence: 'They _______ live in London.',
+    correctAnswer: "don't",
+    wrongAnswers: ["doesn't", "aren't"],
+    subjectType: 'plural',
+  },
+  {
+    id: '83',
+    sentence: 'He _______ speak French.',
+    correctAnswer: "doesn't",
+    wrongAnswers: ["don't", "isn't"],
+    subjectType: 'singular',
+  },
+  {
+    id: '84',
+    sentence: 'We _______ have a pet.',
+    correctAnswer: "don't",
+    wrongAnswers: ["doesn't", "aren't"],
+    subjectType: 'plural',
+  },
+
+  // ==========================================
+  // PRESENT CONTINUOUS QUESTIONS (IDs 85-104)
+  // ==========================================
+
+  // Singular (is + verb-ing)
+  {
+    id: '85',
+    sentence: 'Look! She _______ a book.',
+    correctAnswer: 'is reading',
+    wrongAnswers: ['reads', 'are reading'],
+    subjectType: 'singular',
+  },
+  {
+    id: '86',
+    sentence: 'He _______ his homework right now.',
+    correctAnswer: 'is doing',
+    wrongAnswers: ['does', 'are doing'],
+    subjectType: 'singular',
+  },
+  {
+    id: '87',
+    sentence: 'The dog _______ in the garden at the moment.',
+    correctAnswer: 'is running',
+    wrongAnswers: ['runs', 'are running'],
+    subjectType: 'singular',
+  },
+  {
+    id: '88',
+    sentence: 'Listen! The baby _______ .',
+    correctAnswer: 'is crying',
+    wrongAnswers: ['cries', 'are crying'],
+    subjectType: 'singular',
+  },
+  {
+    id: '89',
+    sentence: 'My sister _______ dinner right now.',
+    correctAnswer: 'is cooking',
+    wrongAnswers: ['cooks', 'are cooking'],
+    subjectType: 'singular',
+  },
+  {
+    id: '90',
+    sentence: 'Tom _______ a picture at the moment.',
+    correctAnswer: 'is drawing',
+    wrongAnswers: ['draws', 'are drawing'],
+    subjectType: 'singular',
+  },
+  {
+    id: '91',
+    sentence: 'She _______ to music now.',
+    correctAnswer: 'is listening',
+    wrongAnswers: ['listens', 'are listening'],
+    subjectType: 'singular',
+  },
+  {
+    id: '92',
+    sentence: 'The cat _______ on the sofa right now.',
+    correctAnswer: 'is sleeping',
+    wrongAnswers: ['sleeps', 'are sleeping'],
+    subjectType: 'singular',
+  },
+  {
+    id: '93',
+    sentence: 'Look! It _______ outside.',
+    correctAnswer: 'is raining',
+    wrongAnswers: ['rains', 'are raining'],
+    subjectType: 'singular',
+  },
+  {
+    id: '94',
+    sentence: 'My brother _______ a new game now.',
+    correctAnswer: 'is playing',
+    wrongAnswers: ['plays', 'are playing'],
+    subjectType: 'singular',
+  },
+
+  // First-person (am + verb-ing)
+  {
+    id: '95',
+    sentence: 'I _______ a letter to my friend.',
+    correctAnswer: 'am writing',
+    wrongAnswers: ['write', 'is writing'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '96',
+    sentence: 'I _______ for the bus right now.',
+    correctAnswer: 'am waiting',
+    wrongAnswers: ['wait', 'is waiting'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '97',
+    sentence: 'I _______ a sandwich at the moment.',
+    correctAnswer: 'am eating',
+    wrongAnswers: ['eat', 'is eating'],
+    subjectType: 'first-person',
+  },
+  {
+    id: '98',
+    sentence: 'Shh! I _______ to do my homework.',
+    correctAnswer: 'am trying',
+    wrongAnswers: ['try', 'is trying'],
+    subjectType: 'first-person',
+  },
+
+  // Plural (are + verb-ing)
+  {
+    id: '99',
+    sentence: 'They _______ football in the park now.',
+    correctAnswer: 'are playing',
+    wrongAnswers: ['play', 'is playing'],
+    subjectType: 'plural',
+  },
+  {
+    id: '100',
+    sentence: 'We _______ a film at the moment.',
+    correctAnswer: 'are watching',
+    wrongAnswers: ['watch', 'is watching'],
+    subjectType: 'plural',
+  },
+  {
+    id: '101',
+    sentence: 'The children _______ in the pool right now.',
+    correctAnswer: 'are swimming',
+    wrongAnswers: ['swim', 'is swimming'],
+    subjectType: 'plural',
+  },
+  {
+    id: '102',
+    sentence: 'Look! The birds _______ south.',
+    correctAnswer: 'are flying',
+    wrongAnswers: ['fly', 'is flying'],
+    subjectType: 'plural',
+  },
+  {
+    id: '103',
+    sentence: 'My parents _______ in the kitchen now.',
+    correctAnswer: 'are cooking',
+    wrongAnswers: ['cook', 'is cooking'],
+    subjectType: 'plural',
+  },
+  {
+    id: '104',
+    sentence: 'We _______ for the test today.',
+    correctAnswer: 'are studying',
+    wrongAnswers: ['study', 'is studying'],
     subjectType: 'plural',
   },
 ];
